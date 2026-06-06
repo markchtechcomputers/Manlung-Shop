@@ -574,7 +574,7 @@
 
     <div id="home-section">
       <div class="countdown-section">
-        <div class="countdown-title">💰 MONEY BAG 💰</div>
+        <div class="countdown-title"> MONEY BAG </div>
         <div class="countdown-video">
           <video id="countdownVideo" autoplay muted loop playsinline>
             <source src="https://files.catbox.moe/jc3q9a.mp4" type="video/mp4">
@@ -825,7 +825,7 @@
 
   // Background audio
   const bgAudio = new Audio("https://files.catbox.moe/nosy3r.wav");
-  bgAudio.loop = false; bgAudio.volume = 0.3;
+  bgAudio.loop = false; bgAudio.volume = 0.1;
   let audioStarted = false;
   document.body.addEventListener("click", () => { if(!audioStarted){ bgAudio.play().catch(()=>{}); audioStarted=true; } }, { once: true });
 
