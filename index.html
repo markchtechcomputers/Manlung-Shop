@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>Adict Manlung | Money Bag — Official Store</title>
   <style>
     * {
@@ -16,19 +16,9 @@
       background: #000000;
       color: #f0f0f0;
       overflow-x: hidden;
-      position: relative;
     }
 
-    #sparkleCanvas {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
-      z-index: 1;
-    }
-
+    /* Fast loading - no heavy animations initially */
     .main-content {
       position: relative;
       z-index: 2;
@@ -50,7 +40,6 @@
       gap: 16px;
       padding: 20px 0 16px;
       border-bottom: 1px solid #2a2a2a;
-      backdrop-filter: blur(2px);
     }
 
     .logo {
@@ -101,7 +90,6 @@
     .cart-icon:hover {
       border-color: #FFD700;
       box-shadow: 0 0 15px rgba(255,215,0,0.5);
-      transform: scale(1.02);
     }
     #cartCountBadge {
       background: #FFD700;
@@ -314,7 +302,6 @@
       align-items: center;
       justify-content: center;
       overflow: hidden;
-      position: relative;
     }
     .product-img img {
       width: 100%;
@@ -345,38 +332,35 @@
       margin: 8px 0;
       color: white;
     }
-    .btn-add {
+    .btn-add, .btn-buy-now {
       width: 100%;
-      background: #1f1f1f;
-      border: 1px solid #3f3f3f;
       padding: 10px;
       border-radius: 40px;
       font-weight: 600;
       cursor: pointer;
-      color: white;
       transition: 0.2s;
+      margin-top: 6px;
+    }
+    .btn-add {
+      background: #1f1f1f;
+      border: 1px solid #3f3f3f;
+      color: white;
     }
     .btn-add:hover {
       background: #FFD966;
       color: black;
     }
     .btn-buy-now {
-      width: 100%;
       background: #FFD966;
       border: none;
-      padding: 10px;
-      border-radius: 40px;
-      font-weight: 700;
-      cursor: pointer;
       color: black;
-      margin-top: 8px;
-      transition: 0.2s;
+      font-weight: 700;
     }
     .btn-buy-now:hover {
       background: white;
     }
 
-    /* MERCHANDISE PAGE - LUXURY DRIP STORE */
+    /* MERCHANDISE PAGE */
     .merch-hero {
       text-align: center;
       padding: 40px 20px;
@@ -408,14 +392,13 @@
       background: linear-gradient(145deg, #111118, #0a0a0a);
       border-radius: 32px;
       overflow: hidden;
-      transition: all 0.4s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+      transition: all 0.3s ease;
       border: 1px solid rgba(255,215,0,0.2);
       position: relative;
     }
     .merch-card:hover {
-      transform: translateY(-8px) scale(1.02);
+      transform: translateY(-5px);
       border-color: #FFD966;
-      box-shadow: 0 20px 40px rgba(0,0,0,0.5), 0 0 20px rgba(255,215,0,0.2);
     }
     .merch-img {
       height: 300px;
@@ -430,10 +413,6 @@
       width: 100%;
       height: 100%;
       object-fit: cover;
-      transition: transform 0.5s;
-    }
-    .merch-card:hover .merch-img img {
-      transform: scale(1.05);
     }
     .merch-tag {
       position: absolute;
@@ -501,7 +480,6 @@
       cursor: pointer;
       color: white;
       font-size: 0.8rem;
-      transition: 0.2s;
     }
     .size-btn:hover, .size-btn.selected {
       background: #FFD966;
@@ -700,20 +678,21 @@
       font-size: 0.7rem;
       color: #8f8f8f;
     }
+
     @media (max-width: 768px) {
       .container { padding: 0 16px; }
       .hero-text h1 { font-size: 2rem; }
       .timer-number { font-size: 1.5rem; }
+      .timer-block { padding: 10px 14px; min-width: 65px; }
       .merch-hero h1 { font-size: 2rem; }
     }
   </style>
 </head>
 <body>
 
-<canvas id="sparkleCanvas"></canvas>
-
 <div class="main-content">
   <div class="container">
+    <!-- Header -->
     <div class="navbar">
       <div class="logo">Adict <span>Manlung</span></div>
       <div class="nav-links">
@@ -759,19 +738,19 @@
       </div>
     </div>
 
-    <!-- MUSIC SECTION -->
+    <!-- MUSIC SECTION (EASY TO EDIT) -->
     <div id="music-section" style="display: none;">
       <h2 class="section-title">🎧 Digital Singles & EPs</h2>
       <div class="product-grid" id="digitalGrid"></div>
     </div>
 
-    <!-- CD SECTION - FIXED WORKING PAYMENT URLS -->
+    <!-- CD SECTION -->
     <div id="cds-section" style="display: none;">
       <h2 class="section-title">💿 Physical CDs & Bundles</h2>
       <div class="product-grid" id="cdGrid"></div>
     </div>
 
-    <!-- MERCHANDISE SECTION -->
+    <!-- MERCHANDISE SECTION (EASY TO EDIT) -->
     <div id="merch-section" style="display: none;">
       <div class="merch-hero">
         <h1>👕 OFFICIAL DRIP</h1>
@@ -811,7 +790,6 @@
         <h3>📞 Booking & Inquiries</h3>
         <p><strong style="background:#1a1a1a; display:inline-block; padding:6px 18px; border-radius:40px; color:#FFD966;">adictmanlung@gmail.com</strong></p>
         <p style="margin-top:16px;">WhatsApp/Call: <strong>+254 724 356 178</strong></p>
-        <p style="margin-top:10px;">🎤 For shows, features, and press</p>
       </div>
     </div>
   </div>
@@ -824,98 +802,85 @@
 <div id="cartSidebar" class="cart-overlay">
   <div class="cart-header"><span>YOUR BASKET</span><button class="close-cart" id="closeCartBtn">✕</button></div>
   <div id="cartItemsContainer" class="cart-items">Cart empty.</div>
-  <div id="cartFooter" style="display:none;"><div class="cart-total"><span>TOTAL</span><span id="cartTotalPrice">$0.00</span></div>
-  <div class="payment-icons">💳 M-Pesa • Visa • Mastercard</div>
-  <button class="checkout-btn" id="checkoutBtn">PROCEED TO PAYMENT</button></div>
+  <div id="cartFooter" style="display:none;">
+    <div class="cart-total"><span>TOTAL</span><span id="cartTotalPrice">$0.00</span></div>
+    <div class="payment-icons" style="text-align:center; font-size:0.7rem; color:#888; margin:10px 0;">💳 M-Pesa • Visa • Mastercard</div>
+    <button class="checkout-btn" id="checkoutBtn">PROCEED TO PAYMENT</button>
+  </div>
 </div>
 
 <div id="toastMsg" class="toast-msg">Added to cart</div>
 
 <!-- Floating WhatsApp -->
-<a href="https://wa.me/254724356178?text=Hi%20Adict%20Manlung!%20I%20have%20a%20question%20about%20Money%20Bag%20merchandise" target="_blank" class="whatsapp-float">
+<a href="https://wa.me/254724356178?text=Hi%20Adict%20Manlung!%20I%20have%20a%20question" target="_blank" class="whatsapp-float">
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="32" height="32" fill="white">
     <path d="M12.032 2.016c-5.52 0-10 4.48-10 10 0 1.776.464 3.456 1.296 4.944L2 22l5.28-1.44c1.44.84 3.072 1.44 4.752 1.44 5.52 0 10-4.48 10-10s-4.48-10-10-10zm0 18.432c-1.488 0-2.928-.384-4.176-1.104l-.288-.144-3.12.864.864-3.024-.144-.288c-.72-1.248-1.104-2.688-1.104-4.176 0-4.608 3.744-8.352 8.352-8.352 4.608 0 8.352 3.744 8.352 8.352 0 4.608-3.744 8.352-8.352 8.352zm4.464-6.336c-.24-.12-1.44-.72-1.632-.816-.192-.096-.336-.12-.48.12-.144.24-.528.816-.672.984-.144.168-.264.192-.48.072-.864-.432-1.44-.768-2.016-1.344-.504-.48-.84-1.056-.936-1.32-.096-.24-.024-.36.096-.48.12-.12.24-.288.36-.432.12-.144.168-.264.264-.432.096-.168.048-.312-.024-.432-.072-.12-.48-1.152-.672-1.584-.168-.384-.336-.336-.48-.336h-.408c-.144 0-.36.048-.552.264-.192.216-.72.72-.72 1.752 0 1.032.72 2.016.816 2.16.096.144 1.392 2.16 3.36 3.024.48.216.864.336 1.152.432.48.144.912.12 1.248.072.384-.048 1.152-.48 1.296-.96.144-.48.144-.888.096-.984z"/>
   </svg>
 </a>
 
 <script>
-  // SPARKLE CANVAS
-  const canvas = document.getElementById('sparkleCanvas');
-  let ctx = canvas.getContext('2d');
-  let particles = [];
-  function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
-  class Sparkle { constructor(x,y,size,speed){ this.x=x; this.y=y; this.size=size; this.speed=speed; this.opacity=Math.random()*0.6+0.3; } update() { this.y -= this.speed; if(this.y+this.size<0){ this.y=canvas.height+this.size; this.x=Math.random()*canvas.width; } } draw(){ ctx.beginPath(); ctx.arc(this.x,this.y,this.size,0,Math.PI*2); ctx.fillStyle=`rgba(255,255,255,${this.opacity})`; ctx.fill(); } }
-  function initSparkles(count=200){ particles=[]; for(let i=0;i<count;i++){ particles.push(new Sparkle(Math.random()*canvas.width, Math.random()*canvas.height, Math.random()*2.5+0.8, Math.random()*1.2+0.4)); } }
-  function animate(){ ctx.clearRect(0,0,canvas.width,canvas.height); ctx.fillStyle='#000000'; ctx.fillRect(0,0,canvas.width,canvas.height); for(let p of particles){ p.update(); p.draw(); } requestAnimationFrame(animate); }
-  window.addEventListener('resize',()=>{ resizeCanvas(); initSparkles(200); });
-  resizeCanvas(); initSparkles(200); animate();
-
-  // RELEASE DATE
-  const RELEASE_DATE = new Date(2026, 5, 8, 0, 0, 0);
-  function getRemainingTime() { return Math.max(0, RELEASE_DATE.getTime() - new Date().getTime()); }
-  function updateCountdown(){
-    const remaining=getRemainingTime();
-    if(remaining===0){
-      document.getElementById("days").innerText="00"; document.getElementById("hours").innerText="00";
-      document.getElementById("minutes").innerText="00"; document.getElementById("seconds").innerText="00";
-      return;
-    }
-    document.getElementById("days").innerText=String(Math.floor(remaining/86400000)).padStart(2,'0');
-    document.getElementById("hours").innerText=String(Math.floor((remaining%86400000)/3600000)).padStart(2,'0');
-    document.getElementById("minutes").innerText=String(Math.floor((remaining%3600000)/60000)).padStart(2,'0');
-    document.getElementById("seconds").innerText=String(Math.floor((remaining%60000)/1000)).padStart(2,'0');
-  }
-  setInterval(updateCountdown,1000); updateCountdown();
-
-  // PRODUCTS with WORKING Stripe Checkout URLs
-  // These are REAL Stripe payment links that will work
-  const products = [
-    { id:1, title:"My Gee", type:"Digital Single", price:1.99, category:"digital", imgUrl:"https://files.catbox.moe/ez3isw.png", purchaseUrl:"https://buy.stripe.com/7sI5mC1vU1dOdYc9AA", description:"Ghetto realities, loyalty and camaraderie.", stock:999, featured:false },
-    { id:2, title:"Unfinished Business", type:"Digital Single", price:1.99, category:"digital", imgUrl:"https://files.catbox.moe/0snz7n.png", purchaseUrl:"https://buy.stripe.com/7sI5mC1vU1dOdYc9AA", description:"Nairobi streets, corruption, resilience.", stock:999, featured:false },
-    { id:3, title:"Black Africa", type:"Digital EP", price:4.99, category:"digital", imgUrl:"https://files.catbox.moe/7wugkl.png", purchaseUrl:"https://buy.stripe.com/7sI5mC1vU1dOdYc9AA", description:"Identity, black gene, African heritage.", stock:999, featured:true },
-    { id:4, title:"Still Outside", type:"Digital Single", price:1.99, category:"digital", imgUrl:"https://files.catbox.moe/qu7s1e.png", purchaseUrl:"https://buy.stripe.com/7sI5mC1vU1dOdYc9AA", description:"Rise from humble beginnings.", stock:999, featured:false },
-    // CDS WITH WORKING PAYMENT URL - Using a valid Stripe test link that will redirect to payment
-    { id:5, title:"MANLUNG CD (Signed)", type:"Physical CD", price:14.99, category:"cd", imgUrl:"https://files.catbox.moe/vzkm0u.png", purchaseUrl:"https://buy.stripe.com/7sI5mC1vU1dOdYc9AA", description:"Limited edition signed CD with lyric booklet.", stock:47, featured:true },
-    { id:6, title:"Money Bag Bundle", type:"CD + Digital", price:12.99, category:"cd", imgUrl:"https://files.catbox.moe/vzkm0u.png", purchaseUrl:"https://buy.stripe.com/7sI5mC1vU1dOdYc9AA", description:"The new anthem + physical CD.", stock:38, featured:true }
+  // ============================================
+  // EASY EDIT SECTION - UPDATE PRODUCTS HERE
+  // ============================================
+  
+  // DIGITAL MUSIC PRODUCTS (Add new releases here)
+  const digitalProducts = [
+    { id:1, title:"My Gee", price:1.99, imgUrl:"https://files.catbox.moe/ez3isw.png", purchaseUrl:"https://buy.stripe.com/7sI5mC1vU1dOdYc9AA", featured:false, stock:999 },
+    { id:2, title:"Unfinished Business", price:1.99, imgUrl:"https://files.catbox.moe/0snz7n.png", purchaseUrl:"https://buy.stripe.com/7sI5mC1vU1dOdYc9AA", featured:false, stock:999 },
+    { id:3, title:"Black Africa", price:4.99, imgUrl:"https://files.catbox.moe/7wugkl.png", purchaseUrl:"https://buy.stripe.com/7sI5mC1vU1dOdYc9AA", featured:true, stock:999 },
+    { id:4, title:"Still Outside", price:1.99, imgUrl:"https://files.catbox.moe/qu7s1e.png", purchaseUrl:"https://buy.stripe.com/7sI5mC1vU1dOdYc9AA", featured:false, stock:999 }
   ];
 
-  // MERCH Coming Soon items
+  // PHYSICAL CD PRODUCTS (Update stock and prices here)
+  const cdProducts = [
+    { id:5, title:"MANLUNG CD (Signed)", price:14.99, imgUrl:"https://files.catbox.moe/vzkm0u.png", purchaseUrl:"https://buy.stripe.com/7sI5mC1vU1dOdYc9AA", featured:true, stock:47 },
+    { id:6, title:"Money Bag Bundle", price:12.99, imgUrl:"https://files.catbox.moe/vzkm0u.png", purchaseUrl:"https://buy.stripe.com/7sI5mC1vU1dOdYc9AA", featured:true, stock:38 }
+  ];
+
+  // MERCHANDISE ITEMS (Add new merch here - set comingSoon: false when available)
   const merchItems = [
-    { id:101, title:"Money Bag Hoodie", type:"Limited Edition", price:49.99, imgUrl:"https://placehold.co/600x600/1a1a1a/FFD966?text=MONEY+BAG+HOODIE", comingSoon:true, description:"Premium heavyweight hoodie • Embroidered front logo • Soft cotton blend" },
-    { id:102, title:"Manlung Signature Tee", type:"Essential", price:29.99, imgUrl:"https://placehold.co/600x600/1a1a1a/FFD966?text=MANLUNG+TEE", comingSoon:true, description:"100% combed cotton • Screen printed design • Regular fit" },
-    { id:103, title:"Drip Cap", type:"Accessory", price:24.99, imgUrl:"https://placehold.co/600x600/1a1a1a/FFD966?text=DRIP+CAP", comingSoon:true, description:"Structured snapback • Embroidered logo • Adjustable strap" },
-    { id:104, title:"Money Bag Chain", type:"Jewelry", price:39.99, imgUrl:"https://placehold.co/600x600/1a1a1a/FFD966?text=CHAIN", comingSoon:true, description:"Gold-plated pendant • Money bag design • 20 inch chain" },
-    { id:105, title:"Sweatpants", type:"Limited", price:54.99, imgUrl:"https://placehold.co/600x600/1a1a1a/FFD966?text=SWEATPANTS", comingSoon:true, description:"French terry fleece • Side stripes • Tapered fit" },
-    { id:106, title:"Poster Bundle", type:"Collector", price:19.99, imgUrl:"https://placehold.co/600x600/1a1a1a/FFD966?text=POSTER", comingSoon:true, description:"Signed poster + lyric booklet • Limited run" }
+    { id:101, title:"Money Bag Hoodie", price:49.99, imgUrl:"https://placehold.co/600x600/1a1a1a/FFD966?text=HOODIE", description:"Premium heavyweight hoodie • Embroidered logo", comingSoon:true },
+    { id:102, title:"Manlung Signature Tee", price:29.99, imgUrl:"https://placehold.co/600x600/1a1a1a/FFD966?text=TEE", description:"100% combed cotton • Screen printed design", comingSoon:true },
+    { id:103, title:"Drip Cap", price:24.99, imgUrl:"https://placehold.co/600x600/1a1a1a/FFD966?text=CAP", description:"Structured snapback • Embroidered logo", comingSoon:true },
+    { id:104, title:"Money Bag Chain", price:39.99, imgUrl:"https://placehold.co/600x600/1a1a1a/FFD966?text=CHAIN", description:"Gold-plated pendant • Money bag design", comingSoon:true }
   ];
 
+  // TESTIMONIALS (Edit fan reviews here)
   const testimonials = [
     { name:"@nairobigram", text:"Adict Manlung speaks for the streets. Best hip-hop from Kenya right now!", stars:5 },
     { name:"DJ Rufftone", text:"Raw energy, real lyrics. 'Money Bag' is a certified banger.", stars:5 },
     { name:"Kenyan Hip Hop Hub", text:"The future of Kenyan hip-hop. Cop the CD while stocks last.", stars:4 }
   ];
 
-  // Cart
+  // RELEASE DATE (Update for next release - year, month-1, day)
+  const RELEASE_DATE = new Date(2026, 5, 8, 0, 0, 0); // June 8, 2026
+
+  // ============================================
+  // DO NOT EDIT BELOW - Everything works automatically
+  // ============================================
+
+  // Combine products for cart
+  const allProducts = [...digitalProducts, ...cdProducts];
+
+  // Cart functions
   let cart = [];
   function saveCart(){ localStorage.setItem("manlungCart",JSON.stringify(cart)); updateBadge(); renderCartUI(); }
   function loadCart(){ const s=localStorage.getItem("manlungCart"); cart=s?JSON.parse(s):[]; updateBadge(); renderCartUI(); }
   function updateBadge(){ document.getElementById("cartCountBadge").innerText=cart.reduce((s,i)=>s+i.quantity,0); }
   function showToast(m){ const t=document.getElementById("toastMsg"); t.innerText=m; t.style.opacity="1"; setTimeout(()=>t.style.opacity="0",1600); }
+  
   function addToCart(product){
     const existing=cart.find(i=>i.id===product.id);
     if(existing){ existing.quantity++; showToast(`${product.title} x${existing.quantity}`); }
     else { cart.push({...product, quantity:1}); showToast(`"${product.title}" added`); }
     saveCart();
   }
-  function removeItem(pid){ cart=cart.filter(i=>i.id!==pid); saveCart(); showToast("Removed"); }
-  function updateQty(pid,delta){
-    const idx=cart.findIndex(i=>i.id===pid);
-    if(idx===-1)return;
-    const newQty=cart[idx].quantity+delta;
-    if(newQty<=0) cart.splice(idx,1);
-    else cart[idx].quantity=newQty;
-    saveCart();
+  
+  function directCheckout(product){
+    if(product && product.purchaseUrl){ window.open(product.purchaseUrl, "_blank"); showToast(`Redirecting to secure checkout`); }
+    else showToast("Payment link unavailable");
   }
+  
   function renderCartUI(){
     const cont=document.getElementById("cartItemsContainer");
     const footerDiv=document.getElementById("cartFooter");
@@ -931,99 +896,93 @@
     document.querySelectorAll(".remove-item").forEach(btn=>btn.addEventListener("click",()=>removeItem(parseInt(btn.dataset.id))));
   }
   
-  // DIRECT CHECKOUT FUNCTION - Opens Stripe payment page immediately
-  function directCheckout(product){
-    if(product && product.purchaseUrl){
-      window.open(product.purchaseUrl, "_blank");
-      showToast(`Redirecting to secure checkout for ${product.title}`);
-    } else {
-      showToast("Payment link unavailable. Contact support.");
-    }
+  function updateQty(pid,delta){
+    const idx=cart.findIndex(i=>i.id===pid);
+    if(idx===-1)return;
+    const newQty=cart[idx].quantity+delta;
+    if(newQty<=0) cart.splice(idx,1);
+    else cart[idx].quantity=newQty;
+    saveCart();
   }
+  function removeItem(pid){ cart=cart.filter(i=>i.id!==pid); saveCart(); showToast("Removed"); }
   
   function processCheckout(){
     if(cart.length===0){ showToast("Cart empty"); return; }
-    // For single item, go directly to its payment page
     if(cart.length === 1){
-      const item = cart[0];
-      const product = products.find(p=>p.id===item.id);
-      if(product && product.purchaseUrl){
-        window.open(product.purchaseUrl, "_blank");
-        showToast(`Redirecting to secure checkout for $${(item.price*item.quantity).toFixed(2)}`);
-      } else {
-        alert(`🎵 Adict Manlung Order\nTotal: $${(item.price*item.quantity).toFixed(2)}\n\nM-Pesa Till: 123456 | Account: MANLUNG\nFor assistance: adictmanlung@gmail.com`);
-      }
+      const product = allProducts.find(p=>p.id===cart[0].id);
+      if(product) directCheckout(product);
     } else {
-      const total = cart.reduce((s,i)=>s+(i.price*i.quantity),0).toFixed(2);
-      alert(`🎵 Multiple Items Order\nTotal: $${total}\n\nPlease complete payment via:\nM-Pesa Till: 123456 | Account: MANLUNG\n\nOr contact adictmanlung@gmail.com for payment link`);
+      alert(`Multiple Items Order: $${cart.reduce((s,i)=>s+(i.price*i.quantity),0).toFixed(2)}\n\nM-Pesa Till: 123456 | Account: MANLUNG`);
     }
   }
 
-  // Render Products with BUY NOW button
+  // Countdown
+  function updateCountdown(){
+    const remaining = Math.max(0, RELEASE_DATE.getTime() - new Date().getTime());
+    if(remaining===0){
+      ["days","hours","minutes","seconds"].forEach(id=>document.getElementById(id).innerText="00");
+      return;
+    }
+    document.getElementById("days").innerText=String(Math.floor(remaining/86400000)).padStart(2,'0');
+    document.getElementById("hours").innerText=String(Math.floor((remaining%86400000)/3600000)).padStart(2,'0');
+    document.getElementById("minutes").innerText=String(Math.floor((remaining%3600000)/60000)).padStart(2,'0');
+    document.getElementById("seconds").innerText=String(Math.floor((remaining%60000)/1000)).padStart(2,'0');
+  }
+  setInterval(updateCountdown,1000); updateCountdown();
+
+  // Render Products
   function renderProducts(){
     const digitalGrid=document.getElementById("digitalGrid");
     const cdGrid=document.getElementById("cdGrid");
     digitalGrid.innerHTML=""; cdGrid.innerHTML="";
     
-    products.filter(p=>p.category==="digital").forEach(p=>{
+    digitalProducts.forEach(p=>{
       const card=document.createElement("div"); card.className="product-card";
-      let stockHtml="";
-      if(p.featured) stockHtml+=`<div class="featured-badge">⭐ FEATURED</div>`;
       card.innerHTML=`
-        ${stockHtml}
-        <div class="product-img"><img src="${p.imgUrl}"></div>
+        ${p.featured ? '<div class="featured-badge">⭐ FEATURED</div>' : ''}
+        <div class="product-img"><img src="${p.imgUrl}" loading="lazy"></div>
         <div class="product-info">
           <div class="product-type">DIGITAL</div>
           <div class="product-title">${p.title}</div>
           <div class="product-price">$${p.price}</div>
           <button class="btn-add" data-id="${p.id}">ADD TO CART</button>
-          <button class="btn-buy-now buy-now" data-id="${p.id}" data-url="${p.purchaseUrl}">BUY NOW →</button>
+          <button class="btn-buy-now buy-now" data-id="${p.id}">BUY NOW →</button>
         </div>
       `;
       digitalGrid.appendChild(card);
     });
     
-    products.filter(p=>p.category==="cd").forEach(p=>{
+    cdProducts.forEach(p=>{
       const card=document.createElement("div"); card.className="product-card";
-      let stockHtml="";
-      if(p.stock<50) stockHtml=`<div class="stock-badge">🔥 Only ${p.stock} left</div>`;
-      if(p.featured) stockHtml+=`<div class="featured-badge">⭐ BESTSELLER</div>`;
       card.innerHTML=`
-        ${stockHtml}
-        <div class="product-img"><img src="${p.imgUrl}"></div>
+        ${p.stock<50 ? `<div class="stock-badge">🔥 Only ${p.stock} left</div>` : ''}
+        ${p.featured ? '<div class="featured-badge">⭐ BESTSELLER</div>' : ''}
+        <div class="product-img"><img src="${p.imgUrl}" loading="lazy"></div>
         <div class="product-info">
           <div class="product-type">PHYSICAL CD</div>
           <div class="product-title">${p.title}</div>
           <div class="product-price">$${p.price}</div>
           <button class="btn-add" data-id="${p.id}">ADD TO CART</button>
-          <button class="btn-buy-now buy-now" data-id="${p.id}" data-url="${p.purchaseUrl}">BUY NOW →</button>
+          <button class="btn-buy-now buy-now" data-id="${p.id}">BUY NOW →</button>
         </div>
       `;
       cdGrid.appendChild(card);
     });
     
-    // Add to cart buttons
-    document.querySelectorAll(".btn-add").forEach(btn=>btn.addEventListener("click",(e)=>{ e.stopPropagation(); const pid=parseInt(btn.dataset.id); const prod=products.find(p=>p.id===pid); if(prod) addToCart(prod); }));
-    
-    // Buy Now buttons - direct to payment
-    document.querySelectorAll(".buy-now").forEach(btn=>btn.addEventListener("click",(e)=>{ 
-      e.stopPropagation(); 
-      const pid=parseInt(btn.dataset.id); 
-      const prod=products.find(p=>p.id===pid); 
-      if(prod) directCheckout(prod); 
-    }));
+    document.querySelectorAll(".btn-add").forEach(btn=>btn.addEventListener("click",(e)=>{ e.stopPropagation(); const prod=allProducts.find(p=>p.id==parseInt(btn.dataset.id)); if(prod) addToCart(prod); }));
+    document.querySelectorAll(".buy-now").forEach(btn=>btn.addEventListener("click",(e)=>{ e.stopPropagation(); const prod=allProducts.find(p=>p.id==parseInt(btn.dataset.id)); if(prod) directCheckout(prod); }));
   }
 
-  // Render Merchandise
+  // Render Merch
   function renderMerch(){
-    const merchGrid=document.getElementById("merchGrid");
-    if(!merchGrid) return;
-    merchGrid.innerHTML="";
+    const grid=document.getElementById("merchGrid");
+    if(!grid) return;
+    grid.innerHTML="";
     merchItems.forEach(item=>{
       const card=document.createElement("div"); card.className="merch-card";
       card.innerHTML=`
         <div class="merch-img">
-          <img src="${item.imgUrl}" alt="${item.title}">
+          <img src="${item.imgUrl}" loading="lazy">
           <div class="merch-tag">🔥 PREMIUM</div>
           ${item.comingSoon ? '<div class="coming-soon-overlay"><div class="coming-soon-text">COMING SOON</div></div>' : ''}
         </div>
@@ -1031,24 +990,22 @@
           <div class="merch-title">${item.title}</div>
           <div class="merch-desc">${item.description}</div>
           <div class="size-selector">
-            <button class="size-btn">S</button>
-            <button class="size-btn">M</button>
-            <button class="size-btn">L</button>
-            <button class="size-btn">XL</button>
-            <button class="size-btn">XXL</button>
+            <button class="size-btn">S</button><button class="size-btn">M</button><button class="size-btn">L</button>
+            <button class="size-btn">XL</button><button class="size-btn">XXL</button>
           </div>
           <div class="merch-price-row">
             <span class="merch-price">$${item.price}</span>
-            <button class="merch-btn" data-id="${item.id}" ${item.comingSoon ? 'disabled style="opacity:0.5; cursor:not-allowed;"' : ''}>${item.comingSoon ? 'NOTIFY ME' : 'PRE-ORDER'}</button>
+            <button class="merch-btn" ${item.comingSoon ? 'disabled style="opacity:0.5;"' : ''}>${item.comingSoon ? 'NOTIFY ME' : 'PRE-ORDER'}</button>
           </div>
         </div>
       `;
-      merchGrid.appendChild(card);
+      grid.appendChild(card);
     });
-    document.querySelectorAll(".merch-btn:not([disabled])").forEach(btn=>btn.addEventListener("click",(e)=>{ e.stopPropagation(); showToast("📦 This item is coming soon! Subscribe to get notified."); }));
     document.querySelectorAll(".size-btn").forEach(btn=>btn.addEventListener("click",(e)=>{ e.stopPropagation(); document.querySelectorAll(".size-btn").forEach(b=>b.classList.remove("selected")); btn.classList.add("selected"); showToast(`Size ${btn.innerText} selected`); }));
+    document.querySelectorAll(".merch-btn:not([disabled])").forEach(btn=>btn.addEventListener("click",()=>showToast("Coming soon! Subscribe to get notified.")));
   }
 
+  // Render Testimonials
   function renderTestimonials(){
     const grid=document.getElementById("testimonialsGrid");
     grid.innerHTML=testimonials.map(t=>`
@@ -1060,31 +1017,34 @@
     `).join("");
   }
 
+  // Email signup
   document.getElementById("subscribeEmailBtn")?.addEventListener("click",()=>{
     const email=document.getElementById("captureEmail").value;
-    if(email.includes("@")&&email.includes(".")){ showToast("✅ Subscribed! You'll get updates."); document.getElementById("captureEmail").value=""; }
-    else showToast("Please enter valid email");
+    if(email.includes("@")&&email.includes(".")){ showToast("✅ Subscribed!"); document.getElementById("captureEmail").value=""; }
+    else showToast("Enter valid email");
   });
 
+  // Navigation
   const sections={ home:document.getElementById("home-section"), music:document.getElementById("music-section"), cds:document.getElementById("cds-section"), merch:document.getElementById("merch-section"), contact:document.getElementById("contact-section") };
   function showSection(s){ Object.values(sections).forEach(v=>{ if(v) v.style.display="none"; }); if(sections[s]) sections[s].style.display="block"; }
   document.querySelectorAll(".nav-links a").forEach(a=>a.addEventListener("click",(e)=>showSection(e.target.getAttribute("data-nav"))));
-  document.getElementById("shopNowBtn")?.addEventListener("click",()=>{ showSection("music"); });
+  document.getElementById("shopNowBtn")?.addEventListener("click",()=>showSection("music"));
 
+  // Cart sidebar
   const cartSidebar=document.getElementById("cartSidebar");
   document.getElementById("cartIconBtn")?.addEventListener("click",()=>cartSidebar.classList.add("open"));
   document.getElementById("closeCartBtn")?.addEventListener("click",()=>cartSidebar.classList.remove("open"));
   document.getElementById("checkoutBtn")?.addEventListener("click",processCheckout);
 
+  // Initialize
   renderProducts(); renderMerch(); renderTestimonials(); loadCart();
   showSection("home");
 </script>
 <style>
   .cart-qty-btn { background:#2c2c3a; border:none; width:26px; border-radius:20px; cursor:pointer; color:#FFD966; margin:0 3px; }
   .remove-item { background:#2a1a1a; border:none; border-radius:20px; padding:2px 10px; cursor:pointer; color:#ffaaaa; font-size:0.7rem; margin-left:5px; }
-  .payment-icons { text-align:center; font-size:0.7rem; color:#888; margin:10px 0; }
-  .btn-buy-now { margin-top: 8px; background: #FFD966; color: black; border: none; }
-  .btn-buy-now:hover { background: white; }
+  .size-btn.selected { background: #FFD966; color: black; }
+  img { loading: lazy; }
 </style>
 </body>
 </html>
