@@ -84,7 +84,6 @@
       color: white;
     }
 
-    /* FANCY CART ICON */
     .cart-icon {
       background: linear-gradient(135deg, #1f1f2f, #0f0f1a);
       padding: 6px 20px;
@@ -115,7 +114,6 @@
       font-weight: 800;
     }
 
-    /* Hero */
     .hero {
       display: flex;
       flex-wrap: wrap;
@@ -186,7 +184,6 @@
       border-radius: 24px;
     }
 
-    /* COUNTDOWN SECTION - NO BLACK BACKGROUND, PURE TRANSPARENT */
     .countdown-section {
       text-align: center;
       margin: 16px 0 32px;
@@ -206,10 +203,8 @@
       -webkit-background-clip: text;
       background-clip: text;
       color: transparent;
-      text-shadow: 0 0 10px rgba(255,200,0,0.2);
     }
 
-    /* MONEY BAG IMAGE - Properly sized, no shadow, pure */
     .money-bag-clickable {
       display: inline-block;
       cursor: pointer;
@@ -246,7 +241,6 @@
       border-radius: 28px;
       min-width: 90px;
       border: 1px solid rgba(255,215,0,0.3);
-      box-shadow: 0 0 12px rgba(255,215,0,0.1);
     }
 
     .timer-number {
@@ -269,10 +263,8 @@
       font-size: 0.9rem;
       font-weight: 500;
       color: #FFD966;
-      transition: opacity 0.3s;
     }
 
-    /* Section Titles */
     .section-title {
       font-size: 1.6rem;
       font-weight: 700;
@@ -282,7 +274,6 @@
       padding-left: 16px;
     }
 
-    /* Product Grid */
     .product-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -324,11 +315,6 @@
       width: 100%;
       height: 100%;
       object-fit: cover;
-      transition: transform 0.3s;
-    }
-
-    .product-card:hover .product-img img {
-      transform: scale(1.03);
     }
 
     .product-info {
@@ -377,7 +363,6 @@
       border-color: #FFD966;
     }
 
-    /* Subscribe & Contact */
     .subscribe-section, .contact-info {
       border-radius: 28px;
       padding: 24px;
@@ -408,7 +393,6 @@
       color: #FFD966;
     }
 
-    /* Cart Sidebar */
     .cart-overlay {
       position: fixed;
       top: 0;
@@ -423,7 +407,6 @@
       display: flex;
       flex-direction: column;
       border-left: 2px solid #FFD966;
-      box-shadow: -5px 0 30px rgba(0,0,0,0.8);
     }
 
     .cart-overlay.open {
@@ -582,7 +565,7 @@
       color: #FFD966;
     }
 
-    /* IMPROVED CELEBRATION EFFECTS - Fire Wax + Ribbons + Joy */
+    /* CELEBRATION EFFECTS */
     .celebration-overlay {
       position: fixed;
       top: 0;
@@ -697,7 +680,6 @@
     <div id="home-section">
       <div class="countdown-section" id="countdownSection">
         <div class="countdown-title">MONEY BAG</div>
-        <!-- Clickable Money Bag Image - proper size, pure, no background -->
         <div class="money-bag-preview">
           <a href="https://www.youtube.com/watch?v=Is2A5T_Fcoo&list=RDIs2A5T_Fcoo&start_radio=1" target="_blank" class="money-bag-clickable">
             <img src="https://files.catbox.moe/vzkm0u.png" alt="Money Bag - Official Cover">
@@ -709,7 +691,7 @@
           <div class="timer-block"><div class="timer-number" id="minutes">00</div><div class="timer-label">MINUTES</div></div>
           <div class="timer-block"><div class="timer-number" id="seconds">00</div><div class="timer-label">SECONDS</div></div>
         </div>
-        <div id="releaseMessage" class="release-message">MIDNIGHT RELEASE • CLICK THE COVER TO PREVIEW</div>
+        <div id="releaseMessage" class="release-message">🎉 NOW PLAYING — MONEY BAG 🎉</div>
       </div>
 
       <div class="hero">
@@ -719,7 +701,7 @@
             <p><strong>Karungu, Kenya | Independent Hip-Hop</strong></p>
             <p>Adict Manlung is a raw voice from the streets of Karungu, painting vivid pictures of struggle, ambition, poverty, survival, loyalty, and growth. A <em>"rapper on a mission"</em> drawing from lived experiences in the trenches.</p>
             <p>Since 2025: <strong>My Gee, Unfinished Business, Black Africa, Still Outside</strong>. Each track is a chapter of unfinished business with the world.</p>
-            <p>Upcoming release <strong>"Money Bag"</strong> — his most ambitious statement yet.</p>
+            <p><strong style="color:#FFD966;">"Money Bag" — OUT NOW!</strong></p>
           </div>
           <button class="btn-primary" id="shopNowBtn">EXPLORE MUSIC →</button>
         </div>
@@ -756,7 +738,6 @@
   </footer>
 </div>
 
-<!-- Cart Sidebar -->
 <div id="cartSidebar" class="cart-overlay">
   <div class="cart-header"><span>YOUR BASKET</span><button class="close-cart" id="closeCartBtn">✕</button></div>
   <div id="cartItemsContainer" class="cart-items"><div class="empty-cart" style="text-align:center; padding:20px;">Cart empty. Add music.</div></div>
@@ -790,20 +771,29 @@
     } 
   }, { once: true });
 
-  // COUNTDOWN: NEXT MIDNIGHT (12:00 AM)
-  function getNextMidnight() {
-    let now = new Date();
-    let midnight = new Date(now);
-    midnight.setHours(24, 0, 0, 0);
-    return midnight;
+  // ========== FIXED RELEASE DATE: JUNE 8, 2026 at 00:00 MIDNIGHT ==========
+  // This is a FIXED date - it will NOT change on page reload
+  const RELEASE_DATE = new Date(2026, 5, 8, 0, 0, 0); // June 8, 2026 00:00:00
+  
+  // Calculate remaining time (will be 0 if already released)
+  function getRemainingTime() {
+    const now = new Date();
+    const diff = RELEASE_DATE.getTime() - now.getTime();
+    return Math.max(0, diff);
   }
-  let releaseMoment = getNextMidnight();
 
-  // CELEBRATION EFFECTS - Enhanced with ribbons
+  // CELEBRATION EFFECTS - 1 week after release
   let celebrationActive = false;
   let celebrationInterval = null;
   const celebrationDiv = document.getElementById('celebrationOverlay');
   const releaseMessageDiv = document.getElementById('releaseMessage');
+
+  function isWithinCelebrationWeek() {
+    const now = new Date();
+    const weekAfter = new Date(RELEASE_DATE);
+    weekAfter.setDate(RELEASE_DATE.getDate() + 7);
+    return (now >= RELEASE_DATE && now <= weekAfter);
+  }
 
   function createWaxDrop() {
     const drop = document.createElement('div');
@@ -860,7 +850,7 @@
     celebrationDiv.style.display = 'block';
     if (celebrationInterval) clearInterval(celebrationInterval);
     celebrationInterval = setInterval(() => {
-      if (celebrationActive) {
+      if (celebrationActive && isWithinCelebrationWeek()) {
         for (let i = 0; i < 8; i++) createWaxDrop();
         for (let i = 0; i < 6; i++) createFireSpark();
         for (let i = 0; i < 5; i++) createRibbon();
@@ -868,7 +858,6 @@
         createGlowPulse();
       }
     }, 600);
-    // initial burst
     for (let i = 0; i < 20; i++) setTimeout(() => createWaxDrop(), i * 70);
     for (let i = 0; i < 15; i++) setTimeout(() => createFireSpark(), i * 90);
     for (let i = 0; i < 20; i++) setTimeout(() => createRibbon(), i * 100);
@@ -883,31 +872,51 @@
     celebrationActive = false;
   }
 
-  // UPDATE COUNTDOWN
+  // UPDATE COUNTDOWN with FIXED release date
   function updateCountdown() {
-    const now = new Date().getTime();
-    const target = releaseMoment.getTime();
-    let distance = target - now;
-
-    if (distance <= 0) {
+    const remaining = getRemainingTime();
+    const isReleased = remaining === 0;
+    
+    if (isReleased) {
+      // Countdown at zero
       document.getElementById("days").innerText = "00";
       document.getElementById("hours").innerText = "00";
       document.getElementById("minutes").innerText = "00";
       document.getElementById("seconds").innerText = "00";
-      // Hide the release message after midnight
-      if (releaseMessageDiv) releaseMessageDiv.style.display = 'none';
-      if (!celebrationActive) {
-        startCelebration();
+      
+      // Show release message
+      if (releaseMessageDiv) {
+        releaseMessageDiv.style.display = 'block';
+        releaseMessageDiv.innerHTML = '🎉 NOW PLAYING — MONEY BAG 🎉';
+        releaseMessageDiv.style.color = '#FFD966';
+      }
+      
+      // Start celebration if within 1 week of release
+      if (isWithinCelebrationWeek()) {
+        if (!celebrationActive) {
+          startCelebration();
+        }
+      } else {
+        if (celebrationActive) {
+          stopCelebration();
+        }
       }
       return;
     }
-    if (celebrationActive && distance > 0) stopCelebration();
-    if (releaseMessageDiv && distance > 0) releaseMessageDiv.style.display = 'block';
-
-    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-    const hours = Math.floor((distance % (86400000)) / 3600000);
-    const minutes = Math.floor((distance % 3600000) / 60000);
-    const seconds = Math.floor((distance % 60000) / 1000);
+    
+    // If not released yet, stop celebration and show countdown
+    if (celebrationActive) stopCelebration();
+    
+    if (releaseMessageDiv) {
+      releaseMessageDiv.style.display = 'block';
+      releaseMessageDiv.innerHTML = 'MIDNIGHT RELEASE • CLICK THE COVER TO PREVIEW';
+      releaseMessageDiv.style.color = '#FFD966';
+    }
+    
+    const days = Math.floor(remaining / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((remaining % (86400000)) / 3600000);
+    const minutes = Math.floor((remaining % 3600000) / 60000);
+    const seconds = Math.floor((remaining % 60000) / 1000);
     
     document.getElementById("days").innerText = String(days).padStart(2, '0');
     document.getElementById("hours").innerText = String(hours).padStart(2, '0');
@@ -925,7 +934,7 @@
     { id:3, title:"Black Africa", type:"Digital EP", price:4.99, category:"digital", imgUrl:"https://files.catbox.moe/7wugkl.png", stripeUrl:"https://buy.stripe.com/test_fZu00i1B6dBQcty4TVgfu02", description:`Black Africa reflects identity, black gene, and African heritage.` },
     { id:4, title:"Still Outside", type:"Digital Single", price:1.99, category:"digital", imgUrl:"https://files.catbox.moe/qu7s1e.png", stripeUrl:"https://buy.stripe.com/test_cNid86Vq41g8di3PRgfu03", description:`Rise from humble beginnings.` },
     { id:5, title:"MANLUNG - Debut CD", type:"Physical CD Signed", price:14.99, category:"cd", imgUrl:"https://files.catbox.moe/vzkm0u.png", stripeUrl:"https://buy.stripe.com/test_aFa14mdjO8hwfFKfyzgfu04", description:`Limited edition signed CD.` },
-    { id:6, title:"Money Bag (PRE-ORDER)", type:"CD + Digital Bundle", price:12.99, category:"cd", imgUrl:"https://files.catbox.moe/vzkm0u.png", stripeUrl:"https://buy.stripe.com/test_8x4gy1B61T8eBG4TVgfu05", description:`PRE-ORDER: Upcoming anthem "Money Bag".` }
+    { id:6, title:"Money Bag", type:"CD + Digital Bundle", price:12.99, category:"cd", imgUrl:"https://files.catbox.moe/vzkm0u.png", stripeUrl:"https://buy.stripe.com/test_8x4gy1B61T8eBG4TVgfu05", description:`"Money Bag" — the new anthem.` }
   ];
 
   let cart = [];
@@ -1038,14 +1047,12 @@
   document.getElementById("closeModalBtn")?.addEventListener("click",()=>document.getElementById("songModal").style.display="none");
   window.addEventListener("click",(e)=>{ if(e.target===document.getElementById("songModal")) document.getElementById("songModal").style.display="none"; });
 
-  // Navigation
   const sections={ home:document.getElementById("home-section"), music:document.getElementById("music-section"), cds:document.getElementById("cds-section"), contact:document.getElementById("contact-section") };
   function showSection(section){ Object.values(sections).forEach(s=>{ if(s) s.style.display="none"; }); if(sections[section]) sections[section].style.display="block"; }
   document.querySelectorAll(".nav-links a").forEach(link=>link.addEventListener("click",(e)=>showSection(e.target.getAttribute("data-nav"))));
   document.getElementById("shopNowBtn")?.addEventListener("click",()=>showSection("music"));
   document.getElementById("subscribeYTBtn")?.addEventListener("click",()=>window.open("https://www.youtube.com/@iamadictmanlung","_blank"));
 
-  // Cart sidebar - manual close only
   const cartSidebar=document.getElementById("cartSidebar");
   document.getElementById("cartIconBtn")?.addEventListener("click",()=>cartSidebar.classList.add("open"));
   document.getElementById("closeCartBtn")?.addEventListener("click",()=>cartSidebar.classList.remove("open"));
@@ -1053,6 +1060,10 @@
   
   renderProducts(); loadCart();
   showSection("home");
+  
+  console.log("Release date set to: June 8, 2026 00:00:00");
+  console.log("Current time:", new Date());
+  console.log("Celebration active for 1 week after release");
 </script>
 </body>
 </html>
