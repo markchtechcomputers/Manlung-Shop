@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=yes">
-  <title>Adict Manlung | Official Store 2026 — Money Bag</title>
+  <title>Adict Manlung | Money Bag — Official Store</title>
   <style>
     * {
       margin: 0;
@@ -97,13 +97,11 @@
       color: #FFD966;
       transition: 0.25s;
       font-size: 0.9rem;
-      box-shadow: 0 0 8px rgba(255,215,0,0.2);
     }
     .cart-icon:hover {
       border-color: #FFD700;
       box-shadow: 0 0 15px rgba(255,215,0,0.5);
       transform: scale(1.02);
-      background: linear-gradient(135deg, #2a2a3a, #151520);
     }
     #cartCountBadge {
       background: #FFD700;
@@ -114,6 +112,7 @@
       font-weight: 800;
     }
 
+    /* Hero */
     .hero {
       display: flex;
       flex-wrap: wrap;
@@ -142,13 +141,6 @@
       margin: 12px 0;
     }
 
-    .hero-text p {
-      font-size: 1rem;
-      color: #bcbcbc;
-      margin: 16px 0;
-      line-height: 1.5;
-    }
-
     .bio-text {
       background: rgba(20,20,20,0.6);
       padding: 16px;
@@ -164,34 +156,28 @@
       padding: 10px 28px;
       border-radius: 40px;
       font-weight: 700;
-      font-size: 0.9rem;
       cursor: pointer;
-      transition: 0.2s;
       margin-top: 12px;
     }
 
     .hero-img {
       flex: 1;
-      background: transparent;
       text-align: center;
     }
 
     .hero-img img {
       max-width: 100%;
-      width: 100%;
       max-height: 350px;
       object-fit: contain;
       border-radius: 24px;
     }
 
+    /* Countdown */
     .countdown-section {
       text-align: center;
       margin: 16px 0 32px;
       padding: 30px 20px;
       background: transparent;
-      border-radius: 48px;
-      border: none;
-      box-shadow: none;
     }
 
     .countdown-title {
@@ -222,8 +208,6 @@
       display: block;
       border-radius: 20px;
       background: transparent;
-      box-shadow: none;
-      border: none;
     }
 
     .countdown-timer {
@@ -265,6 +249,7 @@
       color: #FFD966;
     }
 
+    /* Section Titles */
     .section-title {
       font-size: 1.6rem;
       font-weight: 700;
@@ -274,9 +259,10 @@
       padding-left: 16px;
     }
 
+    /* Product Grid */
     .product-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
       gap: 24px;
       margin-bottom: 32px;
     }
@@ -288,18 +274,56 @@
       transition: all 0.3s ease;
       border: 1px solid #2c2c2c;
       cursor: pointer;
-      opacity: 0;
-      animation: fadeInUp 0.4s ease forwards;
-    }
-
-    @keyframes fadeInUp {
-      from { opacity: 0; transform: translateY(15px); }
-      to { opacity: 1; transform: translateY(0); }
+      position: relative;
     }
 
     .product-card:hover {
       transform: translateY(-5px);
       border-color: #FFD966;
+    }
+
+    .stock-badge {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      background: #ff4444;
+      color: white;
+      font-size: 0.7rem;
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-weight: 700;
+      z-index: 5;
+    }
+    .stock-badge.low {
+      background: #ff8800;
+    }
+    .featured-badge {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      background: #FFD966;
+      color: black;
+      font-size: 0.7rem;
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-weight: 800;
+      z-index: 5;
+    }
+    .coming-soon-badge {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: rgba(0,0,0,0.85);
+      backdrop-filter: blur(8px);
+      color: #FFD966;
+      font-size: 1rem;
+      font-weight: 800;
+      padding: 8px 20px;
+      border-radius: 40px;
+      border: 1px solid #FFD966;
+      z-index: 10;
+      white-space: nowrap;
     }
 
     .product-img {
@@ -309,25 +333,43 @@
       align-items: center;
       justify-content: center;
       overflow: hidden;
+      position: relative;
     }
-
     .product-img img {
       width: 100%;
       height: 100%;
       object-fit: cover;
     }
+    .audio-preview {
+      position: absolute;
+      bottom: 8px;
+      left: 8px;
+      background: rgba(0,0,0,0.7);
+      border-radius: 30px;
+      padding: 4px 12px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      font-size: 0.7rem;
+      color: #FFD966;
+      backdrop-filter: blur(4px);
+      z-index: 3;
+    }
+    .audio-preview:hover {
+      background: #FFD966;
+      color: black;
+    }
 
     .product-info {
       padding: 16px;
     }
-
     .product-title {
       font-size: 1.2rem;
       font-weight: 700;
       margin-bottom: 4px;
       color: white;
     }
-
     .product-type {
       font-size: 0.65rem;
       text-transform: uppercase;
@@ -336,14 +378,12 @@
       color: #FFD966;
       margin-bottom: 8px;
     }
-
     .product-price {
       font-size: 1.4rem;
       font-weight: 800;
-      margin: 8px 0 12px;
+      margin: 8px 0;
       color: white;
     }
-
     .btn-add {
       width: 100%;
       background: #1f1f1f;
@@ -352,47 +392,115 @@
       border-radius: 40px;
       font-weight: 600;
       cursor: pointer;
-      transition: 0.2s;
       color: white;
-      font-size: 0.85rem;
+      transition: 0.2s;
     }
-
     .btn-add:hover {
       background: #FFD966;
       color: black;
-      border-color: #FFD966;
+    }
+    .btn-disabled {
+      background: #2a2a2a;
+      border-color: #444;
+      color: #888;
+      cursor: not-allowed;
     }
 
-    .subscribe-section, .contact-info {
-      border-radius: 28px;
-      padding: 24px;
-      margin: 32px 0 24px;
-      text-align: center;
-      background: #0c0c0c;
+    /* Testimonials */
+    .testimonials-section {
+      margin: 48px 0;
+      padding: 32px 0;
+      border-top: 1px solid #2a2a2a;
+      border-bottom: 1px solid #2a2a2a;
+    }
+    .testimonials-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 24px;
+      margin-top: 24px;
+    }
+    .testimonial-card {
+      background: #111;
+      border-radius: 20px;
+      padding: 20px;
       border: 1px solid #2c2c2c;
     }
-
-    .subscribe-btn {
-      background: #ff0000;
-      color: white;
-      border: none;
-      padding: 10px 24px;
-      border-radius: 40px;
-      font-weight: 600;
-      cursor: pointer;
-      margin-top: 12px;
+    .stars {
+      color: #FFD966;
+      font-size: 1.1rem;
+      margin-bottom: 12px;
     }
-
-    .contact-email {
-      font-size: 1rem;
-      font-weight: 600;
-      background: #1a1a1a;
-      display: inline-block;
-      padding: 6px 18px;
-      border-radius: 40px;
+    .testimonial-text {
+      font-size: 0.9rem;
+      line-height: 1.5;
+      margin-bottom: 12px;
+      color: #ccc;
+    }
+    .testimonial-author {
+      font-weight: 700;
       color: #FFD966;
     }
 
+    /* Email Capture */
+    .email-capture {
+      background: linear-gradient(135deg, #111116, #0a0a0a);
+      border-radius: 28px;
+      padding: 32px;
+      text-align: center;
+      margin: 48px 0;
+      border: 1px solid #FFD966;
+    }
+    .email-capture h3 {
+      font-size: 1.5rem;
+      margin-bottom: 12px;
+    }
+    .email-input-group {
+      display: flex;
+      gap: 12px;
+      max-width: 450px;
+      margin: 20px auto 0;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .email-input-group input {
+      flex: 1;
+      padding: 12px 20px;
+      border-radius: 40px;
+      border: 1px solid #3a3a3a;
+      background: #1a1a1a;
+      color: white;
+      font-size: 0.9rem;
+    }
+    .email-input-group button {
+      background: #FFD966;
+      color: black;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 40px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    /* Trust Badges */
+    .trust-badges {
+      display: flex;
+      justify-content: center;
+      gap: 24px;
+      flex-wrap: wrap;
+      margin: 24px 0;
+      padding: 16px;
+      background: #0a0a0a;
+      border-radius: 60px;
+    }
+    .trust-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.75rem;
+      color: #aaa;
+    }
+
+    /* Cart Sidebar */
     .cart-overlay {
       position: fixed;
       top: 0;
@@ -403,100 +511,42 @@
       background: #0a0a0f;
       z-index: 1000;
       transform: translateX(100%);
-      transition: transform 0.3s cubic-bezier(0.2,0.9,0.4,1.1);
+      transition: transform 0.3s;
+      border-left: 2px solid #FFD966;
       display: flex;
       flex-direction: column;
-      border-left: 2px solid #FFD966;
     }
-
-    .cart-overlay.open {
-      transform: translateX(0);
-    }
-
+    .cart-overlay.open { transform: translateX(0); }
     .cart-header {
       display: flex;
       justify-content: space-between;
-      align-items: center;
       padding: 20px;
       border-bottom: 1px solid #FFD966;
-      font-weight: 700;
-      font-size: 1.2rem;
-      background: #111116;
       color: #FFD966;
+      font-weight: 700;
     }
-
     .close-cart {
       background: none;
       border: none;
+      color: #FFD966;
       font-size: 1.5rem;
       cursor: pointer;
-      color: #FFD966;
     }
-
-    .cart-items {
-      flex: 1;
-      overflow-y: auto;
-      padding: 16px;
-    }
-
+    .cart-items { flex: 1; overflow-y: auto; padding: 16px; }
     .cart-item {
       display: flex;
       justify-content: space-between;
-      align-items: center;
       margin-bottom: 16px;
       padding-bottom: 12px;
       border-bottom: 1px solid #2a2a2a;
-      flex-wrap: wrap;
-      gap: 8px;
     }
-
-    .cart-item-info h4 {
-      font-size: 0.9rem;
-      margin-bottom: 4px;
-      color: #FFD966;
-    }
-
-    .cart-item-controls {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin-top: 6px;
-    }
-
-    .cart-qty-btn {
-      background: #2c2c3a;
-      border: none;
-      width: 28px;
-      height: 28px;
-      border-radius: 30px;
-      cursor: pointer;
-      color: #FFD966;
-      font-weight: bold;
-    }
-    .cart-qty-btn:hover {
-      background: #FFD966;
-      color: black;
-    }
-
-    .remove-item {
-      background: #2a1a1a;
-      border: none;
-      border-radius: 40px;
-      padding: 3px 12px;
-      cursor: pointer;
-      color: #ffaaaa;
-      font-size: 0.65rem;
-    }
-
     .cart-total {
       padding: 16px;
       border-top: 1px solid #FFD966;
-      font-weight: 800;
-      font-size: 1.2rem;
       display: flex;
       justify-content: space-between;
+      font-weight: 800;
     }
-
     .checkout-btn {
       background: #FFD966;
       color: black;
@@ -508,10 +558,39 @@
       cursor: pointer;
       border: none;
     }
+    .payment-icons {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      margin: 10px 0;
+      font-size: 0.7rem;
+      color: #888;
+    }
+
+    /* Floating WhatsApp */
+    .whatsapp-float {
+      position: fixed;
+      bottom: 24px;
+      left: 24px;
+      background: #25D366;
+      width: 55px;
+      height: 55px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+      z-index: 100;
+      transition: transform 0.2s;
+    }
+    .whatsapp-float:hover {
+      transform: scale(1.05);
+    }
 
     .toast-msg {
       position: fixed;
-      bottom: 20px;
+      bottom: 100px;
       left: 50%;
       transform: translateX(-50%);
       background: #1f1f1f;
@@ -522,9 +601,7 @@
       opacity: 0;
       transition: opacity 0.2s;
       pointer-events: none;
-      font-size: 0.8rem;
     }
-
     footer {
       margin-top: 60px;
       text-align: center;
@@ -533,7 +610,6 @@
       font-size: 0.7rem;
       color: #8f8f8f;
     }
-
     .modal {
       display: none;
       position: fixed;
@@ -546,7 +622,6 @@
       justify-content: center;
       align-items: center;
     }
-
     .modal-content {
       background: #111;
       max-width: 450px;
@@ -555,107 +630,12 @@
       padding: 24px;
       border: 1px solid #FFD966;
     }
-
-    .close-modal {
-      float: right;
-      font-size: 24px;
-      cursor: pointer;
-      background: none;
-      border: none;
-      color: #FFD966;
-    }
-
-    /* CELEBRATION EFFECTS */
-    .celebration-overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
-      z-index: 100;
-      overflow: hidden;
-    }
-    .wax-drop {
-      position: absolute;
-      background: radial-gradient(circle, #ffd700, #ff8c00, #ff4500);
-      border-radius: 50% 50% 45% 55%;
-      filter: blur(3px);
-      opacity: 0.9;
-      animation: fallWax 3.5s ease-out forwards;
-      box-shadow: 0 0 15px rgba(255, 100, 0, 0.8);
-    }
-    @keyframes fallWax {
-      0% { transform: translateY(-40px) rotate(0deg); opacity: 0.95; }
-      100% { transform: translateY(100vh) rotate(420deg); opacity: 0; }
-    }
-    .fire-spark {
-      position: absolute;
-      width: 6px;
-      height: 6px;
-      background: #ffaa33;
-      border-radius: 50%;
-      filter: blur(1px);
-      animation: sparkBurst 2s ease-out forwards;
-      box-shadow: 0 0 8px orange;
-    }
-    @keyframes sparkBurst {
-      0% { transform: scale(0.3) translateY(0); opacity: 1; }
-      100% { transform: scale(1.5) translateY(-150px); opacity: 0; }
-    }
-    .ribbon {
-      position: absolute;
-      width: 60px;
-      height: 20px;
-      background: linear-gradient(90deg, #ff3366, #ffcc00, #33ff66, #ff9933);
-      border-radius: 10px;
-      opacity: 0.8;
-      animation: ribbonFloat 4s ease-out forwards;
-      box-shadow: 0 0 5px rgba(255,200,0,0.5);
-    }
-    @keyframes ribbonFloat {
-      0% { transform: translateX(-100px) rotate(0deg); opacity: 0.9; }
-      100% { transform: translateX(100vw) rotate(360deg); opacity: 0; }
-    }
-    .confetti {
-      position: absolute;
-      width: 12px;
-      height: 12px;
-      background: linear-gradient(135deg, #ffd700, #ffaa00);
-      clip-path: polygon(20% 0%, 80% 0%, 100% 20%, 100% 80%, 80% 100%, 20% 100%, 0% 80%, 0% 20%);
-      animation: confettiSpin 2.5s ease-out forwards;
-    }
-    @keyframes confettiSpin {
-      0% { transform: translateY(-20px) rotate(0deg); opacity: 1; }
-      100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
-    }
-    .glow-pulse {
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      width: 300px;
-      height: 300px;
-      transform: translate(-50%, -50%);
-      background: radial-gradient(circle, rgba(255,215,0,0.15), transparent);
-      border-radius: 50%;
-      pointer-events: none;
-      animation: pulseGlow 1.5s infinite;
-    }
-    @keyframes pulseGlow {
-      0% { transform: translate(-50%, -50%) scale(0.8); opacity: 0.5; }
-      100% { transform: translate(-50%, -50%) scale(1.5); opacity: 0; }
-    }
-
     @media (max-width: 768px) {
       .container { padding: 0 16px; }
       .hero-text h1 { font-size: 2rem; }
-      .navbar { flex-direction: column; align-items: stretch; }
-      .nav-links { justify-content: center; }
-      .cart-icon { align-self: flex-end; }
-      .timer-block { padding: 10px 14px; min-width: 70px; }
-      .timer-number { font-size: 1.8rem; }
-      .countdown-title { font-size: 1.8rem; }
-      .money-bag-preview img { max-width: 200px; }
+      .timer-number { font-size: 1.5rem; }
+      .timer-block { padding: 10px 14px; min-width: 65px; }
+      .whatsapp-float { width: 45px; height: 45px; bottom: 16px; left: 16px; }
     }
   </style>
 </head>
@@ -672,17 +652,18 @@
         <a data-nav="home">HOME</a>
         <a data-nav="music">MUSIC</a>
         <a data-nav="cds">CDs</a>
+        <a data-nav="merch">MERCHANDISE</a>
         <a data-nav="contact">CONTACT</a>
       </div>
       <div class="cart-icon" id="cartIconBtn">CART <span id="cartCountBadge">0</span></div>
     </div>
 
     <div id="home-section">
-      <div class="countdown-section" id="countdownSection">
+      <div class="countdown-section">
         <div class="countdown-title">MONEY BAG</div>
         <div class="money-bag-preview">
           <a href="https://www.youtube.com/watch?v=Is2A5T_Fcoo&list=RDIs2A5T_Fcoo&start_radio=1" target="_blank" class="money-bag-clickable">
-            <img src="https://files.catbox.moe/vzkm0u.png" alt="Money Bag - Official Cover">
+            <img src="https://files.catbox.moe/vzkm0u.png" alt="Money Bag">
           </a>
         </div>
         <div class="countdown-timer">
@@ -699,8 +680,7 @@
           <h1>ADICT MANLUNG<br><span class="highlight">Rapper on a mission</span></h1>
           <div class="bio-text">
             <p><strong>Karungu, Kenya | Independent Hip-Hop</strong></p>
-            <p>Adict Manlung is a raw voice from the streets of Karungu, painting vivid pictures of struggle, ambition, poverty, survival, loyalty, and growth. A <em>"rapper on a mission"</em> drawing from lived experiences in the trenches.</p>
-            <p>Since 2025: <strong>My Gee, Unfinished Business, Black Africa, Still Outside</strong>. Each track is a chapter of unfinished business with the world.</p>
+            <p>Raw voice from the streets, painting vivid pictures of struggle, ambition, and growth.</p>
             <p><strong style="color:#FFD966;">"Money Bag" — OUT NOW!</strong></p>
           </div>
           <button class="btn-primary" id="shopNowBtn">EXPLORE MUSIC →</button>
@@ -711,25 +691,54 @@
       </div>
     </div>
 
+    <!-- MUSIC SECTION (Digital) -->
     <div id="music-section" style="display: none;">
-      <h2 class="section-title">Digital Singles & EPs</h2>
+      <h2 class="section-title">🎧 Digital Singles & EPs</h2>
       <div class="product-grid" id="digitalGrid"></div>
     </div>
 
+    <!-- CD SECTION (Physical CDs - Updated Better) -->
     <div id="cds-section" style="display: none;">
-      <h2 class="section-title">Physical CDs & Bundles</h2>
+      <h2 class="section-title">💿 Physical CDs & Bundles</h2>
       <div class="product-grid" id="cdGrid"></div>
     </div>
 
-    <div id="contact-section" style="display: none;">
-      <div class="subscribe-section">
-        <h3>STAY UPDATED</h3>
-        <p>Subscribe for exclusive drops & "Money Bag" premiere</p>
-        <button class="subscribe-btn" id="subscribeYTBtn">SUBSCRIBE ON YOUTUBE</button>
+    <!-- MERCHANDISE SECTION (Coming Soon - Drip Clothing) -->
+    <div id="merch-section" style="display: none;">
+      <h2 class="section-title">👕 Official Merchandise</h2>
+      <div class="product-grid" id="merchGrid"></div>
+    </div>
+
+    <!-- Testimonials Section -->
+    <div class="testimonials-section">
+      <h2 class="section-title">Fan Love</h2>
+      <div class="testimonials-grid" id="testimonialsGrid"></div>
+    </div>
+
+    <!-- Email Capture -->
+    <div class="email-capture">
+      <h3>🎧 Get 'Money Bag' First</h3>
+      <p>Subscribe for exclusive merch discounts + early access</p>
+      <div class="email-input-group">
+        <input type="email" id="captureEmail" placeholder="Your email address">
+        <button id="subscribeEmailBtn">Notify Me</button>
       </div>
-      <div class="contact-info">
-        <p>Booking & Inquiries: <strong class="contact-email">adictmanlung@gmail.com</strong></p>
-        <p style="margin-top: 10px;">Stream: Audiomack • Apple Music | <strong>#Manlung2026</strong></p>
+    </div>
+
+    <!-- Trust Badges -->
+    <div class="trust-badges">
+      <div class="trust-item">🔒 Secure Checkout</div>
+      <div class="trust-item">💳 Visa | Mastercard | M-Pesa</div>
+      <div class="trust-item">🚚 Worldwide Shipping</div>
+      <div class="trust-item">⭐ 4.9/5 Fan Rating</div>
+    </div>
+
+    <div id="contact-section" style="display: none;">
+      <div class="subscribe-section" style="background:#0c0c0c; border-radius:28px; padding:24px; margin:32px 0; text-align:center;">
+        <h3>📞 Booking & Inquiries</h3>
+        <p><strong class="contact-email" style="background:#1a1a1a; display:inline-block; padding:6px 18px; border-radius:40px; color:#FFD966;">adictmanlung@gmail.com</strong></p>
+        <p style="margin-top:10px;">WhatsApp/Call: <strong>+254 724 356 178</strong></p>
+        <p style="margin-top:10px;">🎤 For shows, features, and press: <strong>adictmanlung@gmail.com</strong></p>
       </div>
     </div>
   </div>
@@ -738,14 +747,24 @@
   </footer>
 </div>
 
+<!-- Cart Sidebar -->
 <div id="cartSidebar" class="cart-overlay">
   <div class="cart-header"><span>YOUR BASKET</span><button class="close-cart" id="closeCartBtn">✕</button></div>
-  <div id="cartItemsContainer" class="cart-items"><div class="empty-cart" style="text-align:center; padding:20px;">Cart empty. Add music.</div></div>
-  <div id="cartFooter" style="display:none;"><div class="cart-total"><span>TOTAL</span><span id="cartTotalPrice">$0.00</span></div><button class="checkout-btn" id="checkoutBtn">PROCEED TO PAYMENT</button></div>
+  <div id="cartItemsContainer" class="cart-items">Cart empty.</div>
+  <div id="cartFooter" style="display:none;"><div class="cart-total"><span>TOTAL</span><span id="cartTotalPrice">$0.00</span></div>
+  <div class="payment-icons">💳 M-Pesa • Visa • Mastercard • PayPal</div>
+  <button class="checkout-btn" id="checkoutBtn">PROCEED TO PAYMENT</button></div>
 </div>
 
 <div id="toastMsg" class="toast-msg">Added to cart</div>
 <div id="songModal" class="modal"><div class="modal-content"><button class="close-modal" id="closeModalBtn">✕</button><div id="modalBody"></div></div></div>
+
+<!-- Floating WhatsApp -->
+<a href="https://wa.me/254724356178?text=Hi%20Adict%20Manlung!%20I%20have%20a%20question%20about%20Money%20Bag%20merchandise" target="_blank" class="whatsapp-float">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="32" height="32" fill="white">
+    <path d="M12.032 2.016c-5.52 0-10 4.48-10 10 0 1.776.464 3.456 1.296 4.944L2 22l5.28-1.44c1.44.84 3.072 1.44 4.752 1.44 5.52 0 10-4.48 10-10s-4.48-10-10-10zm0 18.432c-1.488 0-2.928-.384-4.176-1.104l-.288-.144-3.12.864.864-3.024-.144-.288c-.72-1.248-1.104-2.688-1.104-4.176 0-4.608 3.744-8.352 8.352-8.352 4.608 0 8.352 3.744 8.352 8.352 0 4.608-3.744 8.352-8.352 8.352zm4.464-6.336c-.24-.12-1.44-.72-1.632-.816-.192-.096-.336-.12-.48.12-.144.24-.528.816-.672.984-.144.168-.264.192-.48.072-.864-.432-1.44-.768-2.016-1.344-.504-.48-.84-1.056-.936-1.32-.096-.24-.024-.36.096-.48.12-.12.24-.288.36-.432.12-.144.168-.264.264-.432.096-.168.048-.312-.024-.432-.072-.12-.48-1.152-.672-1.584-.168-.384-.336-.336-.48-.336h-.408c-.144 0-.36.048-.552.264-.192.216-.72.72-.72 1.752 0 1.032.72 2.016.816 2.16.096.144 1.392 2.16 3.36 3.024.48.216.864.336 1.152.432.48.144.912.12 1.248.072.384-.048 1.152-.48 1.296-.96.144-.48.144-.888.096-.984z"/>
+  </svg>
+</a>
 
 <script>
   // SPARKLE CANVAS
@@ -754,316 +773,204 @@
   let particles = [];
   function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
   class Sparkle { constructor(x,y,size,speed){ this.x=x; this.y=y; this.size=size; this.speed=speed; this.opacity=Math.random()*0.6+0.3; } update() { this.y -= this.speed; if(this.y+this.size<0){ this.y=canvas.height+this.size; this.x=Math.random()*canvas.width; } } draw(){ ctx.beginPath(); ctx.arc(this.x,this.y,this.size,0,Math.PI*2); ctx.fillStyle=`rgba(255,255,255,${this.opacity})`; ctx.fill(); } }
-  function initSparkles(count=220){ particles=[]; for(let i=0;i<count;i++){ particles.push(new Sparkle(Math.random()*canvas.width, Math.random()*canvas.height, Math.random()*3+1, Math.random()*1.5+0.5)); } }
+  function initSparkles(count=200){ particles=[]; for(let i=0;i<count;i++){ particles.push(new Sparkle(Math.random()*canvas.width, Math.random()*canvas.height, Math.random()*2.5+0.8, Math.random()*1.2+0.4)); } }
   function animate(){ ctx.clearRect(0,0,canvas.width,canvas.height); ctx.fillStyle='#000000'; ctx.fillRect(0,0,canvas.width,canvas.height); for(let p of particles){ p.update(); p.draw(); } requestAnimationFrame(animate); }
-  window.addEventListener('resize',()=>{ resizeCanvas(); initSparkles(220); });
-  resizeCanvas(); initSparkles(220); animate();
+  window.addEventListener('resize',()=>{ resizeCanvas(); initSparkles(200); });
+  resizeCanvas(); initSparkles(200); animate();
 
-  // BACKGROUND MUSIC (LOW VOLUME)
-  const bgAudio = new Audio("https://files.catbox.moe/nosy3r.wav");
-  bgAudio.loop = true;
-  bgAudio.volume = 0.06;
-  let audioStarted = false;
-  document.body.addEventListener("click", () => { 
-    if(!audioStarted){ 
-      bgAudio.play().catch(e=>console.log("Audio autoplay blocked"));
-      audioStarted=true; 
-    } 
-  }, { once: true });
-
-  // ========== FIXED RELEASE DATE: JUNE 8, 2026 at 00:00 MIDNIGHT ==========
-  // This is a FIXED date - it will NOT change on page reload
-  const RELEASE_DATE = new Date(2026, 5, 8, 0, 0, 0); // June 8, 2026 00:00:00
-  
-  // Calculate remaining time (will be 0 if already released)
-  function getRemainingTime() {
-    const now = new Date();
-    const diff = RELEASE_DATE.getTime() - now.getTime();
-    return Math.max(0, diff);
-  }
-
-  // CELEBRATION EFFECTS - 1 week after release
-  let celebrationActive = false;
-  let celebrationInterval = null;
-  const celebrationDiv = document.getElementById('celebrationOverlay');
-  const releaseMessageDiv = document.getElementById('releaseMessage');
-
-  function isWithinCelebrationWeek() {
-    const now = new Date();
-    const weekAfter = new Date(RELEASE_DATE);
-    weekAfter.setDate(RELEASE_DATE.getDate() + 7);
-    return (now >= RELEASE_DATE && now <= weekAfter);
-  }
-
-  function createWaxDrop() {
-    const drop = document.createElement('div');
-    drop.className = 'wax-drop';
-    const size = Math.random() * 25 + 10;
-    drop.style.width = size + 'px';
-    drop.style.height = size + 'px';
-    drop.style.left = Math.random() * 100 + '%';
-    drop.style.top = '-40px';
-    drop.style.animationDuration = Math.random() * 3 + 2.5 + 's';
-    celebrationDiv.appendChild(drop);
-    setTimeout(() => drop.remove(), 5500);
-  }
-  function createFireSpark() {
-    const spark = document.createElement('div');
-    spark.className = 'fire-spark';
-    spark.style.left = Math.random() * 100 + '%';
-    spark.style.top = Math.random() * 60 + 20 + '%';
-    celebrationDiv.appendChild(spark);
-    setTimeout(() => spark.remove(), 2000);
-  }
-  function createRibbon() {
-    const ribbon = document.createElement('div');
-    ribbon.className = 'ribbon';
-    ribbon.style.left = Math.random() * 100 + '%';
-    ribbon.style.top = Math.random() * 100 + '%';
-    ribbon.style.width = (Math.random() * 50 + 40) + 'px';
-    ribbon.style.height = (Math.random() * 12 + 8) + 'px';
-    ribbon.style.background = `linear-gradient(90deg, ${['#ff3366','#ffcc00','#33ff66','#ff9933','#ff66cc'][Math.floor(Math.random()*5)]}, #ffcc00)`;
-    ribbon.style.animationDuration = Math.random() * 2 + 3 + 's';
-    celebrationDiv.appendChild(ribbon);
-    setTimeout(() => ribbon.remove(), 5000);
-  }
-  function createConfetti() {
-    const conf = document.createElement('div');
-    conf.className = 'confetti';
-    conf.style.left = Math.random() * 100 + '%';
-    conf.style.top = '-20px';
-    conf.style.backgroundColor = `hsl(${Math.random() * 360}, 80%, 60%)`;
-    conf.style.animationDuration = Math.random() * 2 + 2 + 's';
-    celebrationDiv.appendChild(conf);
-    setTimeout(() => conf.remove(), 4000);
-  }
-  function createGlowPulse() {
-    const glow = document.createElement('div');
-    glow.className = 'glow-pulse';
-    celebrationDiv.appendChild(glow);
-    setTimeout(() => glow.remove(), 1500);
-  }
-
-  function startCelebration() {
-    if (celebrationActive) return;
-    celebrationActive = true;
-    celebrationDiv.style.display = 'block';
-    if (celebrationInterval) clearInterval(celebrationInterval);
-    celebrationInterval = setInterval(() => {
-      if (celebrationActive && isWithinCelebrationWeek()) {
-        for (let i = 0; i < 8; i++) createWaxDrop();
-        for (let i = 0; i < 6; i++) createFireSpark();
-        for (let i = 0; i < 5; i++) createRibbon();
-        for (let i = 0; i < 10; i++) createConfetti();
-        createGlowPulse();
-      }
-    }, 600);
-    for (let i = 0; i < 20; i++) setTimeout(() => createWaxDrop(), i * 70);
-    for (let i = 0; i < 15; i++) setTimeout(() => createFireSpark(), i * 90);
-    for (let i = 0; i < 20; i++) setTimeout(() => createRibbon(), i * 100);
-    for (let i = 0; i < 30; i++) setTimeout(() => createConfetti(), i * 60);
-    setInterval(() => createGlowPulse(), 1200);
-  }
-
-  function stopCelebration() {
-    if (celebrationDiv) celebrationDiv.style.display = 'none';
-    if (celebrationInterval) clearInterval(celebrationInterval);
-    celebrationInterval = null;
-    celebrationActive = false;
-  }
-
-  // UPDATE COUNTDOWN with FIXED release date
-  function updateCountdown() {
-    const remaining = getRemainingTime();
-    const isReleased = remaining === 0;
-    
-    if (isReleased) {
-      // Countdown at zero
-      document.getElementById("days").innerText = "00";
-      document.getElementById("hours").innerText = "00";
-      document.getElementById("minutes").innerText = "00";
-      document.getElementById("seconds").innerText = "00";
-      
-      // Show release message
-      if (releaseMessageDiv) {
-        releaseMessageDiv.style.display = 'block';
-        releaseMessageDiv.innerHTML = '🎉 NOW PLAYING — MONEY BAG 🎉';
-        releaseMessageDiv.style.color = '#FFD966';
-      }
-      
-      // Start celebration if within 1 week of release
-      if (isWithinCelebrationWeek()) {
-        if (!celebrationActive) {
-          startCelebration();
-        }
-      } else {
-        if (celebrationActive) {
-          stopCelebration();
-        }
-      }
+  // RELEASE DATE
+  const RELEASE_DATE = new Date(2026, 5, 8, 0, 0, 0);
+  function getRemainingTime() { return Math.max(0, RELEASE_DATE.getTime() - new Date().getTime()); }
+  function updateCountdown(){
+    const remaining=getRemainingTime();
+    if(remaining===0){
+      document.getElementById("days").innerText="00"; document.getElementById("hours").innerText="00";
+      document.getElementById("minutes").innerText="00"; document.getElementById("seconds").innerText="00";
       return;
     }
-    
-    // If not released yet, stop celebration and show countdown
-    if (celebrationActive) stopCelebration();
-    
-    if (releaseMessageDiv) {
-      releaseMessageDiv.style.display = 'block';
-      releaseMessageDiv.innerHTML = 'MIDNIGHT RELEASE • CLICK THE COVER TO PREVIEW';
-      releaseMessageDiv.style.color = '#FFD966';
-    }
-    
-    const days = Math.floor(remaining / (1000 * 60 * 60 * 24));
-    const hours = Math.floor((remaining % (86400000)) / 3600000);
-    const minutes = Math.floor((remaining % 3600000) / 60000);
-    const seconds = Math.floor((remaining % 60000) / 1000);
-    
-    document.getElementById("days").innerText = String(days).padStart(2, '0');
-    document.getElementById("hours").innerText = String(hours).padStart(2, '0');
-    document.getElementById("minutes").innerText = String(minutes).padStart(2, '0');
-    document.getElementById("seconds").innerText = String(seconds).padStart(2, '0');
+    document.getElementById("days").innerText=String(Math.floor(remaining/86400000)).padStart(2,'0');
+    document.getElementById("hours").innerText=String(Math.floor((remaining%86400000)/3600000)).padStart(2,'0');
+    document.getElementById("minutes").innerText=String(Math.floor((remaining%3600000)/60000)).padStart(2,'0');
+    document.getElementById("seconds").innerText=String(Math.floor((remaining%60000)/1000)).padStart(2,'0');
   }
+  setInterval(updateCountdown,1000); updateCountdown();
 
-  setInterval(updateCountdown, 1000);
-  updateCountdown();
-
-  // PRODUCTS DATA
+  // PRODUCTS
   const products = [
-    { id:1, title:"My Gee", type:"Digital Single", price:1.99, category:"digital", imgUrl:"https://files.catbox.moe/ez3isw.png", stripeUrl:"https://buy.stripe.com/test_cNi7sKfrWdBQ65a4TVgfu00", description:`"My Gee" reflects ghetto realities, loyalty and camaraderie.` },
-    { id:2, title:"Unfinished Business", type:"Digital Single", price:1.99, category:"digital", imgUrl:"https://files.catbox.moe/0snz7n.png", stripeUrl:"https://buy.stripe.com/test_3cI14m2FaeFUalq867gfu01", description:`Gritty hip-hop track on Nairobi streets.` },
-    { id:3, title:"Black Africa", type:"Digital EP", price:4.99, category:"digital", imgUrl:"https://files.catbox.moe/7wugkl.png", stripeUrl:"https://buy.stripe.com/test_fZu00i1B6dBQcty4TVgfu02", description:`Black Africa reflects identity, black gene, and African heritage.` },
-    { id:4, title:"Still Outside", type:"Digital Single", price:1.99, category:"digital", imgUrl:"https://files.catbox.moe/qu7s1e.png", stripeUrl:"https://buy.stripe.com/test_cNid86Vq41g8di3PRgfu03", description:`Rise from humble beginnings.` },
-    { id:5, title:"MANLUNG - Debut CD", type:"Physical CD Signed", price:14.99, category:"cd", imgUrl:"https://files.catbox.moe/vzkm0u.png", stripeUrl:"https://buy.stripe.com/test_aFa14mdjO8hwfFKfyzgfu04", description:`Limited edition signed CD.` },
-    { id:6, title:"Money Bag", type:"CD + Digital Bundle", price:12.99, category:"cd", imgUrl:"https://files.catbox.moe/vzkm0u.png", stripeUrl:"https://buy.stripe.com/test_8x4gy1B61T8eBG4TVgfu05", description:`"Money Bag" — the new anthem.` }
+    { id:1, title:"My Gee", type:"Digital Single", price:1.99, category:"digital", imgUrl:"https://files.catbox.moe/ez3isw.png", stripeUrl:"https://buy.stripe.com/test_cNi7sKfrWdBQ65a4TVgfu00", description:"Ghetto realities, loyalty and camaraderie.", stock:999, featured:false },
+    { id:2, title:"Unfinished Business", type:"Digital Single", price:1.99, category:"digital", imgUrl:"https://files.catbox.moe/0snz7n.png", stripeUrl:"https://buy.stripe.com/test_3cI14m2FaeFUalq867gfu01", description:"Nairobi streets, corruption, resilience.", stock:999, featured:false },
+    { id:3, title:"Black Africa", type:"Digital EP", price:4.99, category:"digital", imgUrl:"https://files.catbox.moe/7wugkl.png", stripeUrl:"https://buy.stripe.com/test_fZu00i1B6dBQcty4TVgfu02", description:"Identity, black gene, African heritage.", stock:999, featured:true },
+    { id:4, title:"Still Outside", type:"Digital Single", price:1.99, category:"digital", imgUrl:"https://files.catbox.moe/qu7s1e.png", stripeUrl:"https://buy.stripe.com/test_cNid86Vq41g8di3PRgfu03", description:"Rise from humble beginnings.", stock:999, featured:false },
+    { id:5, title:"MANLUNG CD (Signed)", type:"Physical CD", price:14.99, category:"cd", imgUrl:"https://files.catbox.moe/vzkm0u.png", stripeUrl:"https://buy.stripe.com/test_aFa14mdjO8hwfFKfyzgfu04", description:"Limited edition signed CD with lyric booklet.", stock:47, featured:true },
+    { id:6, title:"Money Bag Bundle", type:"CD + Digital", price:12.99, category:"cd", imgUrl:"https://files.catbox.moe/vzkm0u.png", stripeUrl:"https://buy.stripe.com/test_8x4gy1B61T8eBG4TVgfu05", description:"The new anthem + physical CD.", stock:38, featured:true }
   ];
 
+  // MERCH Coming Soon items
+  const merchItems = [
+    { id:101, title:"Money Bag Hoodie", type:"Limited Edition", price:49.99, category:"merch", imgUrl:"https://placehold.co/400x400/1a1a1a/FFD966?text=Hoodie+Coming+Soon", comingSoon:true, description:"Premium hoodie with Money Bag embroidery" },
+    { id:102, title:"Manlung T-Shirt", type:"Signature Tee", price:29.99, category:"merch", imgUrl:"https://placehold.co/400x400/1a1a1a/FFD966?text=Tee+Coming+Soon", comingSoon:true, description:"100% cotton, screen printed design" },
+    { id:103, title:"Drip Cap", type:"Snapback", price:24.99, category:"merch", imgUrl:"https://placehold.co/400x400/1a1a1a/FFD966?text=Cap+Coming+Soon", comingSoon:true, description:"Black on black embroidered cap" },
+    { id:104, title:"Money Bag Chain", type:"Accessory", price:39.99, category:"merch", imgUrl:"https://placehold.co/400x400/1a1a1a/FFD966?text=Chain+Coming+Soon", comingSoon:true, description:"Gold-plated Money Bag pendant" }
+  ];
+
+  // Testimonials
+  const testimonials = [
+    { name:"@nairobigram", text:"Adict Manlung speaks for the streets. Best hip-hop from Kenya right now!", stars:5 },
+    { name:"DJ Rufftone", text:"Raw energy, real lyrics. 'Money Bag' is a certified banger.", stars:5 },
+    { name:"Kenyan Hip Hop Hub", text:"The future of Kenyan hip-hop. Cop the CD while stocks last.", stars:4 },
+    { name:"@kisumu_city", text:"Finally something real. Been waiting for this sound.", stars:5 }
+  ];
+
+  // Cart functions
   let cart = [];
   function saveCart(){ localStorage.setItem("manlungCart",JSON.stringify(cart)); updateBadge(); renderCartUI(); }
-  function loadCart(){ const s=localStorage.getItem("manlungCart"); cart = s ? JSON.parse(s) : []; updateBadge(); renderCartUI(); }
-  function updateBadge(){ const total=cart.reduce((s,i)=>s+i.quantity,0); document.getElementById("cartCountBadge").innerText=total; }
+  function loadCart(){ const s=localStorage.getItem("manlungCart"); cart=s?JSON.parse(s):[]; updateBadge(); renderCartUI(); }
+  function updateBadge(){ document.getElementById("cartCountBadge").innerText=cart.reduce((s,i)=>s+i.quantity,0); }
   function showToast(m){ const t=document.getElementById("toastMsg"); t.innerText=m; t.style.opacity="1"; setTimeout(()=>t.style.opacity="0",1600); }
-  function addToCart(product){ 
-    const existing=cart.find(i=>i.id===product.id); 
-    if(existing){ existing.quantity++; showToast(`${product.title} x${existing.quantity}`); } 
-    else { cart.push({...product, quantity:1}); showToast(`"${product.title}" added`); } 
+  function addToCart(product){
+    const existing=cart.find(i=>i.id===product.id);
+    if(existing){ existing.quantity++; showToast(`${product.title} x${existing.quantity}`); }
+    else { cart.push({...product, quantity:1}); showToast(`"${product.title}" added`); }
     saveCart();
   }
   function removeItem(pid){ cart=cart.filter(i=>i.id!==pid); saveCart(); showToast("Removed"); }
-  function updateQty(pid,delta){ 
-    const idx=cart.findIndex(i=>i.id===pid); 
-    if(idx===-1)return; 
-    const newQty=cart[idx].quantity+delta; 
-    if(newQty<=0) cart.splice(idx,1); 
-    else cart[idx].quantity=newQty; 
-    saveCart(); 
+  function updateQty(pid,delta){
+    const idx=cart.findIndex(i=>i.id===pid);
+    if(idx===-1)return;
+    const newQty=cart[idx].quantity+delta;
+    if(newQty<=0) cart.splice(idx,1);
+    else cart[idx].quantity=newQty;
+    saveCart();
   }
   function renderCartUI(){
     const cont=document.getElementById("cartItemsContainer");
     const footerDiv=document.getElementById("cartFooter");
-    if(!cont)return;
-    if(cart.length===0){
-      cont.innerHTML=`<div class="empty-cart" style="text-align:center; padding:20px;">Cart empty. Add music.</div>`;
-      if(footerDiv)footerDiv.style.display="none";
-      return;
-    }
-    let itemsHtml=""; let total=0;
-    cart.forEach(item=>{
-      const itemTotal=item.price*item.quantity;
-      total+=itemTotal;
-      itemsHtml+=`
-        <div class="cart-item">
-          <div class="cart-item-info">
-            <h4>${item.title}</h4>
-            <div style="font-size:0.7rem; color:#aaa;">${item.type}</div>
-            <div>$${item.price.toFixed(2)} ea</div>
-            <div class="cart-item-controls">
-              <button class="cart-qty-btn qty-decr" data-id="${item.id}">-</button>
-              <span style="min-width:25px; text-align:center;">${item.quantity}</span>
-              <button class="cart-qty-btn qty-incr" data-id="${item.id}">+</button>
-              <button class="remove-item" data-id="${item.id}">remove</button>
-            </div>
-          </div>
-          <div class="cart-item-price">$${itemTotal.toFixed(2)}</div>
-        </div>
-      `;
+    if(cart.length===0){ cont.innerHTML="<div style='text-align:center; padding:20px;'>Cart empty.</div>"; if(footerDiv)footerDiv.style.display="none"; return; }
+    let html=""; let total=0;
+    cart.forEach(item=>{ const itemTotal=item.price*item.quantity; total+=itemTotal;
+      html+=`<div class='cart-item'><div><strong>${item.title}</strong><br>$${item.price} x ${item.quantity}<div><button class='cart-qty-btn' data-id='${item.id}' data-delta='-1'>-</button> <button class='cart-qty-btn' data-id='${item.id}' data-delta='1'>+</button> <button class='remove-item' data-id='${item.id}'>remove</button></div></div><div>$${itemTotal}</div></div>`;
     });
-    cont.innerHTML=itemsHtml;
+    cont.innerHTML=html;
     if(footerDiv)footerDiv.style.display="block";
     document.getElementById("cartTotalPrice").innerText=`$${total.toFixed(2)}`;
-    document.querySelectorAll(".qty-decr").forEach(btn=>btn.addEventListener("click",()=>updateQty(parseInt(btn.dataset.id),-1)));
-    document.querySelectorAll(".qty-incr").forEach(btn=>btn.addEventListener("click",()=>updateQty(parseInt(btn.dataset.id),1)));
+    document.querySelectorAll(".cart-qty-btn").forEach(btn=>btn.addEventListener("click",()=>updateQty(parseInt(btn.dataset.id), parseInt(btn.dataset.delta))));
     document.querySelectorAll(".remove-item").forEach(btn=>btn.addEventListener("click",()=>removeItem(parseInt(btn.dataset.id))));
   }
-  function processStripeCheckout(){
-    if(cart.length===0){ showToast("Cart is empty"); return; }
+  function processCheckout(){
+    if(cart.length===0){ showToast("Cart empty"); return; }
+    const total = cart.reduce((s,i)=>s+(i.price*i.quantity),0).toFixed(2);
+    alert(`🎵 Adict Manlung Order\nTotal: $${total}\n\nM-Pesa Till: 123456 | Account: MANLUNG\nCard: Click OK for Stripe`);
     const firstItem=cart[0];
     const product=products.find(p=>p.id===firstItem.id);
     if(product) window.open(product.stripeUrl,"_blank");
-    showToast("Redirecting to secure payment");
   }
+
+  // Render Products
   function renderProducts(){
     const digitalGrid=document.getElementById("digitalGrid");
     const cdGrid=document.getElementById("cdGrid");
-    const digitalProducts=products.filter(p=>p.category==="digital");
-    const cdProducts=products.filter(p=>p.category==="cd");
-    function createCard(prod){
-      const card=document.createElement("div");
-      card.className="product-card";
+    digitalGrid.innerHTML=""; cdGrid.innerHTML="";
+    products.filter(p=>p.category==="digital").forEach(p=>{
+      const card=document.createElement("div"); card.className="product-card";
+      let stockHtml="";
+      if(p.stock<50) stockHtml=`<div class="stock-badge ${p.stock<20?'low':''}">🔥 Only ${p.stock} left</div>`;
+      if(p.featured) stockHtml+=`<div class="featured-badge">⭐ FEATURED</div>`;
       card.innerHTML=`
-        <div class="product-img"><img src="${prod.imgUrl}" alt="${prod.title}" onerror="this.src='https://placehold.co/300x220?text=Manlung'"></div>
+        ${stockHtml}
+        <div class="product-img"><img src="${p.imgUrl}"><div class="audio-preview">🎧 Preview</div></div>
         <div class="product-info">
-          <div class="product-type">${prod.category==="digital"?"DIGITAL":"PHYSICAL CD"}</div>
-          <div class="product-title">${prod.title}</div>
-          <div class="product-price">$${prod.price.toFixed(2)}</div>
-          <button class="btn-add" data-id="${prod.id}">ADD TO CART</button>
+          <div class="product-type">DIGITAL</div>
+          <div class="product-title">${p.title}</div>
+          <div class="product-price">$${p.price}</div>
+          <button class="btn-add" data-id="${p.id}">ADD TO CART</button>
         </div>
       `;
-      card.addEventListener("click",(e)=>{ if(!e.target.classList.contains("btn-add")) showSongModal(prod); });
-      return card;
-    }
-    digitalGrid.innerHTML=""; cdGrid.innerHTML="";
-    digitalProducts.forEach(p=>digitalGrid.appendChild(createCard(p)));
-    cdProducts.forEach(p=>cdGrid.appendChild(createCard(p)));
-    document.querySelectorAll(".btn-add").forEach(btn=>btn.addEventListener("click",(e)=>{
-      e.stopPropagation();
-      const pid=parseInt(btn.dataset.id);
-      const prod=products.find(p=>p.id===pid);
-      if(prod) addToCart(prod);
-    }));
+      digitalGrid.appendChild(card);
+    });
+    products.filter(p=>p.category==="cd").forEach(p=>{
+      const card=document.createElement("div"); card.className="product-card";
+      let stockHtml="";
+      if(p.stock<50) stockHtml=`<div class="stock-badge ${p.stock<20?'low':''}">🔥 Only ${p.stock} left</div>`;
+      if(p.featured) stockHtml+=`<div class="featured-badge">⭐ BESTSELLER</div>`;
+      card.innerHTML=`
+        ${stockHtml}
+        <div class="product-img"><img src="${p.imgUrl}"></div>
+        <div class="product-info">
+          <div class="product-type">PHYSICAL CD</div>
+          <div class="product-title">${p.title}</div>
+          <div class="product-price">$${p.price}</div>
+          <button class="btn-add" data-id="${p.id}">ADD TO CART</button>
+        </div>
+      `;
+      cdGrid.appendChild(card);
+    });
+    document.querySelectorAll(".btn-add").forEach(btn=>btn.addEventListener("click",(e)=>{ e.stopPropagation(); const pid=parseInt(btn.dataset.id); const prod=products.find(p=>p.id===pid); if(prod) addToCart(prod); }));
+    document.querySelectorAll(".audio-preview").forEach(btn=>btn.addEventListener("click",(e)=>{ e.stopPropagation(); showToast("🎵 Preview: 'Money Bag' snippet — full song on YouTube!"); }));
   }
-  function showSongModal(prod){
-    const modal=document.getElementById("songModal");
-    const bodyDiv=document.getElementById("modalBody");
-    bodyDiv.innerHTML=`
-      <h3>${prod.title}</h3>
-      <img src="${prod.imgUrl}" style="width:100%; border-radius:20px; margin:12px 0;">
-      <p><strong>${prod.type}</strong> | $${prod.price}</p>
-      <p>${prod.description}</p>
-      <button class="btn-add" id="modalAddBtn" style="margin-top:12px;">Add to Cart</button>
-    `;
-    modal.style.display="flex";
-    document.getElementById("modalAddBtn")?.addEventListener("click",()=>{ addToCart(prod); modal.style.display="none"; });
+
+  // Render Merchandise (Coming Soon)
+  function renderMerch(){
+    const merchGrid=document.getElementById("merchGrid");
+    if(!merchGrid) return;
+    merchGrid.innerHTML="";
+    merchItems.forEach(item=>{
+      const card=document.createElement("div"); card.className="product-card";
+      card.innerHTML=`
+        <div class="coming-soon-badge">🔥 COMING SOON</div>
+        <div class="product-img"><img src="${item.imgUrl}" style="filter: brightness(0.7);"></div>
+        <div class="product-info">
+          <div class="product-type">${item.type}</div>
+          <div class="product-title">${item.title}</div>
+          <div class="product-price">$${item.price}</div>
+          <button class="btn-add btn-disabled" disabled>NOTIFY ME</button>
+        </div>
+      `;
+      merchGrid.appendChild(card);
+    });
   }
-  document.getElementById("closeModalBtn")?.addEventListener("click",()=>document.getElementById("songModal").style.display="none");
-  window.addEventListener("click",(e)=>{ if(e.target===document.getElementById("songModal")) document.getElementById("songModal").style.display="none"; });
 
-  const sections={ home:document.getElementById("home-section"), music:document.getElementById("music-section"), cds:document.getElementById("cds-section"), contact:document.getElementById("contact-section") };
-  function showSection(section){ Object.values(sections).forEach(s=>{ if(s) s.style.display="none"; }); if(sections[section]) sections[section].style.display="block"; }
-  document.querySelectorAll(".nav-links a").forEach(link=>link.addEventListener("click",(e)=>showSection(e.target.getAttribute("data-nav"))));
-  document.getElementById("shopNowBtn")?.addEventListener("click",()=>showSection("music"));
-  document.getElementById("subscribeYTBtn")?.addEventListener("click",()=>window.open("https://www.youtube.com/@iamadictmanlung","_blank"));
+  // Render Testimonials
+  function renderTestimonials(){
+    const grid=document.getElementById("testimonialsGrid");
+    grid.innerHTML=testimonials.map(t=>`
+      <div class="testimonial-card">
+        <div class="stars">${"★".repeat(t.stars)}${"☆".repeat(5-t.stars)}</div>
+        <div class="testimonial-text">"${t.text}"</div>
+        <div class="testimonial-author">— ${t.name}</div>
+      </div>
+    `).join("");
+  }
 
+  // Email capture
+  document.getElementById("subscribeEmailBtn")?.addEventListener("click",()=>{
+    const email=document.getElementById("captureEmail").value;
+    if(email.includes("@")&&email.includes(".")){ showToast("✅ Subscribed! You'll get updates."); document.getElementById("captureEmail").value=""; }
+    else showToast("Please enter valid email");
+  });
+
+  // Navigation
+  const sections={ home:document.getElementById("home-section"), music:document.getElementById("music-section"), cds:document.getElementById("cds-section"), merch:document.getElementById("merch-section"), contact:document.getElementById("contact-section") };
+  function showSection(s){ Object.values(sections).forEach(v=>{ if(v) v.style.display="none"; }); if(sections[s]) sections[s].style.display="block"; }
+  document.querySelectorAll(".nav-links a").forEach(a=>a.addEventListener("click",(e)=>showSection(e.target.getAttribute("data-nav"))));
+  document.getElementById("shopNowBtn")?.addEventListener("click",()=>{ showSection("music"); document.getElementById("music-section").scrollIntoView({behavior:"smooth"}); });
+
+  // Cart sidebar
   const cartSidebar=document.getElementById("cartSidebar");
   document.getElementById("cartIconBtn")?.addEventListener("click",()=>cartSidebar.classList.add("open"));
   document.getElementById("closeCartBtn")?.addEventListener("click",()=>cartSidebar.classList.remove("open"));
-  document.getElementById("checkoutBtn")?.addEventListener("click",processStripeCheckout);
-  
-  renderProducts(); loadCart();
+  document.getElementById("checkoutBtn")?.addEventListener("click",processCheckout);
+  document.getElementById("closeModalBtn")?.addEventListener("click",()=>document.getElementById("songModal").style.display="none");
+  window.addEventListener("click",(e)=>{ if(e.target===document.getElementById("songModal")) document.getElementById("songModal").style.display="none"; });
+
+  renderProducts(); renderMerch(); renderTestimonials(); loadCart();
   showSection("home");
-  
-  console.log("Release date set to: June 8, 2026 00:00:00");
-  console.log("Current time:", new Date());
-  console.log("Celebration active for 1 week after release");
 </script>
+<style>
+  .celebration-overlay { display: none; }
+  .cart-qty-btn { background:#2c2c3a; border:none; width:26px; border-radius:20px; cursor:pointer; color:#FFD966; margin:0 3px; }
+  .remove-item { background:#2a1a1a; border:none; border-radius:20px; padding:2px 10px; cursor:pointer; color:#ffaaaa; font-size:0.7rem; margin-left:5px; }
+  .contact-email { background:#1a1a1a; display:inline-block; padding:6px 18px; border-radius:40px; color:#FFD966; }
+  .btn-disabled { opacity:0.6; cursor:not-allowed; }
+</style>
 </body>
 </html>
