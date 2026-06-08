@@ -341,7 +341,7 @@
       background: #ddd;
     }
 
-    /* MERCHANDISE PAGE */
+    /* ENHANCED MERCHANDISE PAGE with HOODIE SECTION */
     .merch-hero {
       text-align: center;
       padding: 40px 20px;
@@ -364,23 +364,25 @@
     }
     .merch-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-      gap: 28px;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 32px;
       margin-bottom: 48px;
     }
+    /* Dedicated Hoodie Card with Color Options */
     .merch-card {
       background: rgba(255,255,255,0.02);
-      border-radius: 24px;
+      border-radius: 28px;
       overflow: hidden;
       transition: 0.3s;
       border: 1px solid rgba(255,255,255,0.06);
     }
     .merch-card:hover {
-      transform: translateY(-4px);
-      border-color: rgba(255,255,255,0.15);
+      transform: translateY(-6px);
+      border-color: rgba(255,255,255,0.2);
+      box-shadow: 0 15px 30px -12px rgba(0,0,0,0.4);
     }
     .merch-img {
-      height: 280px;
+      height: 320px;
       background: #050505;
       display: flex;
       align-items: center;
@@ -392,6 +394,10 @@
       width: 100%;
       height: 100%;
       object-fit: cover;
+      transition: transform 0.5s;
+    }
+    .merch-card:hover .merch-img img {
+      transform: scale(1.04);
     }
     .merch-tag {
       position: absolute;
@@ -399,19 +405,20 @@
       right: 16px;
       background: white;
       color: black;
-      padding: 4px 12px;
-      border-radius: 30px;
-      font-size: 0.65rem;
-      font-weight: 700;
+      padding: 5px 14px;
+      border-radius: 40px;
+      font-size: 0.7rem;
+      font-weight: 800;
       z-index: 3;
+      letter-spacing: 0.5px;
     }
     .merch-info {
-      padding: 20px;
+      padding: 24px;
     }
     .merch-title {
-      font-size: 1.2rem;
-      font-weight: 600;
-      margin-bottom: 8px;
+      font-size: 1.3rem;
+      font-weight: 700;
+      margin-bottom: 6px;
     }
     .merch-desc {
       color: #aaa;
@@ -419,30 +426,24 @@
       margin-bottom: 16px;
       line-height: 1.4;
     }
-    .merch-price-row {
+    .color-swatches {
       display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-top: 12px;
+      gap: 12px;
+      margin: 12px 0 16px;
+      flex-wrap: wrap;
     }
-    .merch-price {
-      font-size: 1.4rem;
-      font-weight: 700;
-      color: white;
-    }
-    .merch-btn {
-      background: transparent;
-      border: 1px solid rgba(255,255,255,0.3);
-      padding: 8px 20px;
-      border-radius: 40px;
-      font-weight: 600;
+    .color-option {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
       cursor: pointer;
-      color: white;
-      transition: 0.2s;
+      border: 2px solid transparent;
+      transition: all 0.2s;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.3);
     }
-    .merch-btn:hover {
-      background: white;
-      color: black;
+    .color-option.selected {
+      border-color: white;
+      transform: scale(1.08);
     }
     .size-selector {
       margin: 12px 0;
@@ -452,17 +453,50 @@
     }
     .size-btn {
       background: rgba(255,255,255,0.05);
-      border: 1px solid rgba(255,255,255,0.1);
-      width: 38px;
-      padding: 6px;
-      border-radius: 30px;
+      border: 1px solid rgba(255,255,255,0.15);
+      width: 42px;
+      padding: 7px;
+      border-radius: 40px;
       cursor: pointer;
       color: white;
-      font-size: 0.75rem;
+      font-size: 0.8rem;
+      font-weight: 500;
+      transition: 0.2s;
     }
     .size-btn:hover, .size-btn.selected {
       background: white;
       color: black;
+      border-color: white;
+    }
+    .merch-price-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 16px;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .merch-price {
+      font-size: 1.6rem;
+      font-weight: 800;
+      color: white;
+    }
+    .merch-pay-btn {
+      background: white;
+      color: black;
+      border: none;
+      padding: 10px 24px;
+      border-radius: 40px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: 0.2s;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 0.85rem;
+    }
+    .merch-pay-btn:hover {
+      background: #ddd;
+      transform: scale(1.02);
     }
     .coming-soon-overlay {
       position: absolute;
@@ -684,6 +718,7 @@
       .navbar { flex-direction: column; align-items: stretch; }
       .nav-links { justify-content: center; }
       .cart-icon { align-self: flex-end; }
+      .merch-grid { grid-template-columns: 1fr; }
     }
   </style>
 </head>
@@ -704,7 +739,7 @@
       <div class="cart-icon" id="cartIconBtn">CART <span id="cartCountBadge">0</span></div>
     </div>
 
-    <!-- HOME SECTION - No countdown numbers, just the Money Bag image -->
+    <!-- HOME SECTION -->
     <div id="home-section">
       <div class="money-bag-section">
         <div class="money-bag-preview">
@@ -713,7 +748,6 @@
           </a>
         </div>
       </div>
-
       <div class="hero">
         <div class="hero-text">
           <h1>ADICT MANLUNG<br><span class="highlight">Rapper on a mission</span></h1>
@@ -741,7 +775,7 @@
       <div class="product-grid" id="cdGrid"></div>
     </div>
 
-    <!-- MERCHANDISE SECTION -->
+    <!-- MERCHANDISE SECTION with UPDATED HOODIE -->
     <div id="merch-section" style="display: none;">
       <div class="merch-hero">
         <h1>Official Drip</h1>
@@ -808,13 +842,14 @@
 
 <script>
   // ============================================
-  // PRODUCTS WITH YOUR WORKING STRIPE LINKS
+  // PRODUCTS WITH UPDATED STRIPE LINKS
   // ============================================
   const digitalProducts = [
     { id:1, title:"My Gee", price:1.99, imgUrl:"https://files.catbox.moe/ez3isw.png", purchaseUrl:"https://buy.stripe.com/test_cNi7sKfrWdBQ65a4TVgfu00", featured:false, stock:999 },
     { id:2, title:"Unfinished Business", price:1.99, imgUrl:"https://files.catbox.moe/0snz7n.png", purchaseUrl:"https://buy.stripe.com/test_3cI14m2FaeFUalq867gfu01", featured:false, stock:999 },
     { id:3, title:"Black Africa", price:4.99, imgUrl:"https://files.catbox.moe/7wugkl.png", purchaseUrl:"https://buy.stripe.com/test_fZu00i1B6dBQcty4TVgfu02", featured:true, stock:999 },
-    { id:4, title:"Still Outside", price:1.99, imgUrl:"https://files.catbox.moe/qu7s1e.png", purchaseUrl:"https://buy.stripe.com/test_cNid86Vq41g8di3PRgfu03", featured:false, stock:999 }
+    // UPDATED: Still Outside payment link
+    { id:4, title:"Still Outside", price:1.99, imgUrl:"https://files.catbox.moe/qu7s1e.png", purchaseUrl:"https://buy.stripe.com/test_cNidR86Vq41g8di3PRgfu03", featured:false, stock:999 }
   ];
 
   const cdProducts = [
@@ -822,10 +857,26 @@
     { id:6, title:"Money Bag Bundle", price:12.99, imgUrl:"https://files.catbox.moe/vzkm0u.png", purchaseUrl:"https://buy.stripe.com/test_8x24gy1B61T8eBG4TVgfu05", featured:true, stock:38 }
   ];
 
+  // ENHANCED MERCH: Hoodie with color options and direct payment
   const merchItems = [
-    { id:101, title:"Money Bag Hoodie", price:49.99, imgUrl:"https://placehold.co/600x600/1a1a1a/ffffff?text=HOODIE", description:"Premium heavyweight hoodie • Embroidered logo", comingSoon:true },
-    { id:102, title:"Manlung Tee", price:29.99, imgUrl:"https://placehold.co/600x600/1a1a1a/ffffff?text=TEE", description:"100% combed cotton • Screen printed", comingSoon:true },
-    { id:103, title:"Drip Cap", price:24.99, imgUrl:"https://placehold.co/600x600/1a1a1a/ffffff?text=CAP", description:"Structured snapback • Embroidered", comingSoon:true }
+    { 
+      id:101, 
+      title:"Money Bag Hoodie", 
+      price:49.99, 
+      imgUrl:"https://files.catbox.moe/js0kqn.jpg", 
+      description:"Premium heavyweight hoodie • Embroidered Money Bag logo • Soft cotton blend", 
+      comingSoon:false,
+      paymentUrl:"https://buy.stripe.com/test_cNieVc6VqbtI8di3PRgfu06",
+      colors: [
+        { name:"White", code:"#FFFFFF", border:"1px solid #ccc" },
+        { name:"Black", code:"#111111", border:"none" },
+        { name:"Blue", code:"#3B82F6", border:"none" },
+        { name:"Red", code:"#EF4444", border:"none" },
+        { name:"Green", code:"#10B981", border:"none" }
+      ]
+    },
+    { id:102, title:"Manlung Tee", price:29.99, imgUrl:"https://placehold.co/600x600/1a1a1a/ffffff?text=TEE", description:"100% combed cotton • Screen printed design", comingSoon:true },
+    { id:103, title:"Drip Cap", price:24.99, imgUrl:"https://placehold.co/600x600/1a1a1a/ffffff?text=CAP", description:"Structured snapback • Embroidered logo", comingSoon:true }
   ];
 
   const testimonials = [
@@ -835,7 +886,7 @@
 
   const allProducts = [...digitalProducts, ...cdProducts];
 
-  // Cart functions
+  // Cart functions (same as before)
   let cart = [];
   function saveCart(){ localStorage.setItem("manlungCart",JSON.stringify(cart)); updateBadge(); renderCartUI(); }
   function loadCart(){ const s=localStorage.getItem("manlungCart"); cart=s?JSON.parse(s):[]; updateBadge(); renderCartUI(); }
@@ -932,34 +983,107 @@
     document.querySelectorAll(".buy-now").forEach(btn=>btn.addEventListener("click",(e)=>{ e.stopPropagation(); const prod=allProducts.find(p=>p.id==parseInt(btn.dataset.id)); if(prod) directCheckout(prod); }));
   }
 
+  // RENDER ENHANCED MERCHANDISE with Hoodie color selector
   function renderMerch(){
     const grid=document.getElementById("merchGrid");
     if(!grid) return;
     grid.innerHTML="";
-    merchItems.forEach(item=>{
-      const card=document.createElement("div"); card.className="merch-card";
-      card.innerHTML=`
-        <div class="merch-img">
-          <img src="${item.imgUrl}" loading="lazy">
-          <div class="merch-tag">PREMIUM</div>
-          ${item.comingSoon ? '<div class="coming-soon-overlay"><div class="coming-soon-text">COMING SOON</div></div>' : ''}
-        </div>
-        <div class="merch-info">
-          <div class="merch-title">${item.title}</div>
-          <div class="merch-desc">${item.description}</div>
-          <div class="size-selector">
-            <button class="size-btn">S</button><button class="size-btn">M</button><button class="size-btn">L</button>
-            <button class="size-btn">XL</button><button class="size-btn">XXL</button>
+    
+    merchItems.forEach(item => {
+      const card = document.createElement("div");
+      card.className = "merch-card";
+      
+      if(item.comingSoon) {
+        card.innerHTML = `
+          <div class="merch-img">
+            <img src="${item.imgUrl}" loading="lazy">
+            <div class="merch-tag">PREMIUM</div>
+            <div class="coming-soon-overlay"><div class="coming-soon-text">COMING SOON</div></div>
           </div>
-          <div class="merch-price-row">
-            <span class="merch-price">$${item.price}</span>
-            <button class="merch-btn" ${item.comingSoon ? 'disabled style="opacity:0.5;"' : ''}>NOTIFY ME</button>
+          <div class="merch-info">
+            <div class="merch-title">${item.title}</div>
+            <div class="merch-desc">${item.description}</div>
+            <div class="size-selector">
+              <button class="size-btn">S</button><button class="size-btn">M</button><button class="size-btn">L</button>
+              <button class="size-btn">XL</button><button class="size-btn">XXL</button>
+            </div>
+            <div class="merch-price-row">
+              <span class="merch-price">$${item.price}</span>
+              <button class="merch-btn" disabled style="opacity:0.5;">NOTIFY ME</button>
+            </div>
           </div>
-        </div>
-      `;
+        `;
+      } else {
+        // Hoodie with color options
+        let colorHtml = `<div class="color-swatches" id="colors-${item.id}">`;
+        let selectedColor = item.colors[0].name;
+        item.colors.forEach((color, idx) => {
+          const isSelected = idx === 0 ? 'selected' : '';
+          colorHtml += `<div class="color-option ${isSelected}" style="background-color: ${color.code}; border: ${color.border || 'none'};" data-color="${color.name}" data-id="${item.id}"></div>`;
+        });
+        colorHtml += `</div>`;
+        
+        card.innerHTML = `
+          <div class="merch-img">
+            <img src="${item.imgUrl}" loading="lazy">
+            <div class="merch-tag">LIMITED</div>
+          </div>
+          <div class="merch-info">
+            <div class="merch-title">${item.title}</div>
+            <div class="merch-desc">${item.description}</div>
+            ${colorHtml}
+            <div class="size-selector" id="sizes-${item.id}">
+              <button class="size-btn" data-size="S">S</button>
+              <button class="size-btn" data-size="M">M</button>
+              <button class="size-btn" data-size="L">L</button>
+              <button class="size-btn" data-size="XL">XL</button>
+              <button class="size-btn" data-size="XXL">XXL</button>
+            </div>
+            <div class="merch-price-row">
+              <span class="merch-price">$${item.price}</span>
+              <a href="${item.paymentUrl}" target="_blank" class="merch-pay-btn">BUY NOW →</a>
+            </div>
+          </div>
+        `;
+      }
       grid.appendChild(card);
     });
-    document.querySelectorAll(".size-btn").forEach(btn=>btn.addEventListener("click",(e)=>{ e.stopPropagation(); document.querySelectorAll(".size-btn").forEach(b=>b.classList.remove("selected")); btn.classList.add("selected"); showToast(`Size ${btn.innerText} selected`); }));
+    
+    // Attach color selector events for hoodie
+    const hoodieItem = merchItems.find(i => i.id === 101);
+    if(hoodieItem && !hoodieItem.comingSoon) {
+      const colorOptions = document.querySelectorAll(`.color-option[data-id="101"]`);
+      colorOptions.forEach(opt => {
+        opt.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const container = document.getElementById(`colors-101`);
+          container.querySelectorAll('.color-option').forEach(c => c.classList.remove('selected'));
+          opt.classList.add('selected');
+          showToast(`Color: ${opt.dataset.color} selected`);
+        });
+      });
+      
+      const sizeBtns = document.querySelectorAll(`#sizes-101 .size-btn`);
+      sizeBtns.forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          sizeBtns.forEach(b => b.classList.remove('selected'));
+          btn.classList.add('selected');
+          showToast(`Size: ${btn.dataset.size} selected`);
+        });
+      });
+    }
+    
+    // For coming soon items, add size selection feedback
+    document.querySelectorAll(".merch-card:not(.coming-soon-overlay) .size-btn").forEach(btn => {
+      btn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        const parent = btn.parentElement;
+        parent.querySelectorAll(".size-btn").forEach(b => b.classList.remove("selected"));
+        btn.classList.add("selected");
+        showToast(`Size ${btn.innerText} selected`);
+      });
+    });
   }
 
   function renderTestimonials(){
@@ -997,6 +1121,8 @@
   .remove-item { background:rgba(255,80,80,0.15); border:none; border-radius:20px; padding:2px 10px; cursor:pointer; color:#ffaaaa; font-size:0.7rem; margin-left:5px; }
   .size-btn.selected { background: white; color: black; }
   img { loading: lazy; }
+  .color-option { transition: all 0.2s ease; cursor: pointer; }
+  .color-option:hover { transform: scale(1.1); }
 </style>
 </body>
 </html>
