@@ -12,17 +12,29 @@
     }
 
     body {
-      font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
-      background: #000000;
-      color: #f0f0f0;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #0a0a0a;
+      color: #e8e8e8;
       overflow-x: hidden;
     }
 
-    /* Fast loading - no heavy animations initially */
+    /* Subtle white cracks / texture overlay */
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      background-image: radial-gradient(rgba(255,255,255,0.03) 1px, transparent 1px);
+      background-size: 40px 40px;
+      z-index: 0;
+    }
+
     .main-content {
       position: relative;
       z-index: 2;
-      background: transparent;
     }
 
     .container {
@@ -31,42 +43,43 @@
       padding: 0 24px;
     }
 
-    /* Header */
+    /* Header - Clean black */
     .navbar {
       display: flex;
       justify-content: space-between;
       align-items: center;
       flex-wrap: wrap;
       gap: 16px;
-      padding: 20px 0 16px;
-      border-bottom: 1px solid #2a2a2a;
+      padding: 24px 0 20px;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
     }
 
     .logo {
-      font-size: 1.6rem;
-      font-weight: 800;
-      letter-spacing: -0.5px;
+      font-size: 1.5rem;
+      font-weight: 600;
+      letter-spacing: -0.3px;
       color: white;
     }
 
     .logo span {
-      color: #aaa;
-      font-weight: 500;
+      color: #888;
+      font-weight: 400;
     }
 
     .nav-links {
       display: flex;
-      gap: 24px;
+      gap: 32px;
       font-weight: 500;
       flex-wrap: wrap;
     }
 
     .nav-links a {
       text-decoration: none;
-      color: #ddd;
+      color: #ccc;
       transition: 0.2s;
       cursor: pointer;
-      font-size: 0.9rem;
+      font-size: 0.85rem;
+      letter-spacing: 0.5px;
     }
 
     .nav-links a:hover {
@@ -74,40 +87,40 @@
     }
 
     .cart-icon {
-      background: linear-gradient(135deg, #1f1f2f, #0f0f1a);
-      padding: 6px 20px;
+      background: rgba(255,255,255,0.05);
+      padding: 8px 22px;
       border-radius: 40px;
-      font-weight: 700;
+      font-weight: 600;
       display: flex;
       align-items: center;
       gap: 10px;
       cursor: pointer;
-      border: 1px solid rgba(255,215,0,0.5);
-      color: #FFD966;
+      border: 1px solid rgba(255,255,255,0.15);
+      color: #ddd;
       transition: 0.25s;
-      font-size: 0.9rem;
+      font-size: 0.85rem;
     }
     .cart-icon:hover {
-      border-color: #FFD700;
-      box-shadow: 0 0 15px rgba(255,215,0,0.5);
+      border-color: rgba(255,255,255,0.4);
+      background: rgba(255,255,255,0.1);
     }
     #cartCountBadge {
-      background: #FFD700;
-      color: #000;
+      background: white;
+      color: black;
       border-radius: 30px;
       padding: 2px 8px;
       font-size: 0.7rem;
-      font-weight: 800;
+      font-weight: 700;
     }
 
-    /* Hero */
+    /* Hero Section - No countdown text */
     .hero {
       display: flex;
       flex-wrap: wrap;
-      gap: 32px;
+      gap: 48px;
       align-items: center;
       justify-content: space-between;
-      padding: 40px 0 32px;
+      padding: 60px 0 40px;
     }
 
     .hero-text {
@@ -115,37 +128,50 @@
     }
 
     .hero-text h1 {
-      font-size: 2.8rem;
-      font-weight: 800;
+      font-size: 3.2rem;
+      font-weight: 700;
       line-height: 1.2;
       color: white;
-      margin-bottom: 12px;
+      margin-bottom: 16px;
+      letter-spacing: -0.5px;
     }
 
-    .hero-text .highlight {
-      color: #cccccc;
-      border-left: 3px solid white;
-      padding-left: 16px;
-      margin: 12px 0;
+    .hero-text h1 .highlight {
+      color: #aaa;
+      font-weight: 400;
+      border-left: 2px solid white;
+      padding-left: 20px;
+      margin-left: 8px;
     }
 
     .bio-text {
-      background: rgba(20,20,20,0.6);
-      padding: 16px;
+      background: rgba(255,255,255,0.03);
+      padding: 20px;
       border-radius: 20px;
-      border-left: 3px solid white;
-      margin-top: 16px;
+      border-left: 2px solid white;
+      margin-top: 20px;
+    }
+
+    .bio-text p {
+      font-size: 0.95rem;
+      line-height: 1.5;
+      color: #bbb;
     }
 
     .btn-primary {
       background: white;
       color: black;
       border: none;
-      padding: 10px 28px;
+      padding: 12px 32px;
       border-radius: 40px;
-      font-weight: 700;
+      font-weight: 600;
       cursor: pointer;
-      margin-top: 12px;
+      margin-top: 20px;
+      font-size: 0.85rem;
+      transition: 0.2s;
+    }
+    .btn-primary:hover {
+      background: #ddd;
     }
 
     .hero-img {
@@ -155,148 +181,99 @@
 
     .hero-img img {
       max-width: 100%;
-      max-height: 350px;
+      max-height: 380px;
       object-fit: contain;
       border-radius: 24px;
     }
 
-    /* Countdown */
-    .countdown-section {
+    /* Money Bag Image Section - Clean */
+    .money-bag-section {
       text-align: center;
-      margin: 16px 0 32px;
-      padding: 30px 20px;
-      background: transparent;
+      margin: 20px 0 20px;
+      padding: 20px;
     }
-
-    .countdown-title {
-      font-size: 2.5rem;
-      font-weight: 800;
-      letter-spacing: 3px;
-      margin-bottom: 20px;
-      background: linear-gradient(135deg, #FFD966, #FFA500, #FFD700);
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-    }
-
     .money-bag-clickable {
       display: inline-block;
       cursor: pointer;
       transition: transform 0.2s ease;
-      max-width: 260px;
-      margin: 0 auto;
+      max-width: 240px;
     }
     .money-bag-clickable:hover {
       transform: scale(1.02);
     }
     .money-bag-preview img {
       width: 100%;
-      max-width: 260px;
+      max-width: 240px;
       height: auto;
       display: block;
-      border-radius: 20px;
+      border-radius: 16px;
       background: transparent;
-    }
-
-    .countdown-timer {
-      display: flex;
-      justify-content: center;
-      gap: 20px;
-      margin: 20px 0;
-      flex-wrap: wrap;
-    }
-
-    .timer-block {
-      background: rgba(17,17,24,0.7);
-      backdrop-filter: blur(4px);
-      padding: 16px 22px;
-      border-radius: 28px;
-      min-width: 90px;
-      border: 1px solid rgba(255,215,0,0.3);
-    }
-
-    .timer-number {
-      font-size: 2.5rem;
-      font-weight: 800;
-      color: #FFD966;
-      line-height: 1;
-    }
-
-    .timer-label {
-      font-size: 0.7rem;
-      text-transform: uppercase;
-      letter-spacing: 2px;
-      color: #bbb;
-      margin-top: 6px;
-    }
-
-    .release-message {
-      margin-top: 12px;
-      font-size: 0.9rem;
-      font-weight: 500;
-      color: #FFD966;
     }
 
     /* Section Titles */
     .section-title {
-      font-size: 1.6rem;
-      font-weight: 700;
-      margin: 40px 0 20px;
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin: 48px 0 24px;
       color: white;
-      border-left: 4px solid #FFD966;
+      border-left: 3px solid white;
       padding-left: 16px;
+      letter-spacing: -0.3px;
     }
 
     /* Product Grid */
     .product-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-      gap: 24px;
-      margin-bottom: 32px;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 28px;
+      margin-bottom: 40px;
     }
 
     .product-card {
-      background: #0c0c0c;
-      border-radius: 24px;
+      background: rgba(255,255,255,0.02);
+      border-radius: 20px;
       overflow: hidden;
       transition: all 0.3s ease;
-      border: 1px solid #2c2c2c;
+      border: 1px solid rgba(255,255,255,0.06);
       cursor: pointer;
       position: relative;
     }
 
     .product-card:hover {
-      transform: translateY(-5px);
-      border-color: #FFD966;
+      transform: translateY(-4px);
+      border-color: rgba(255,255,255,0.2);
+      background: rgba(255,255,255,0.04);
     }
 
     .stock-badge {
       position: absolute;
       top: 12px;
       right: 12px;
-      background: #ff4444;
-      color: white;
+      background: rgba(0,0,0,0.7);
+      backdrop-filter: blur(4px);
+      color: #ff8888;
       font-size: 0.7rem;
       padding: 4px 10px;
       border-radius: 20px;
-      font-weight: 700;
+      font-weight: 600;
       z-index: 5;
+      border: 1px solid rgba(255,255,255,0.1);
     }
     .featured-badge {
       position: absolute;
       top: 12px;
       left: 12px;
-      background: #FFD966;
+      background: white;
       color: black;
-      font-size: 0.7rem;
+      font-size: 0.65rem;
       padding: 4px 10px;
       border-radius: 20px;
-      font-weight: 800;
+      font-weight: 700;
       z-index: 5;
     }
 
     .product-img {
-      background: #030303;
+      background: #050505;
       height: 220px;
       display: flex;
       align-items: center;
@@ -307,29 +284,33 @@
       width: 100%;
       height: 100%;
       object-fit: cover;
+      transition: transform 0.3s;
+    }
+    .product-card:hover .product-img img {
+      transform: scale(1.03);
     }
 
     .product-info {
-      padding: 16px;
+      padding: 18px;
     }
     .product-title {
-      font-size: 1.2rem;
-      font-weight: 700;
+      font-size: 1.1rem;
+      font-weight: 600;
       margin-bottom: 4px;
       color: white;
     }
     .product-type {
-      font-size: 0.65rem;
+      font-size: 0.6rem;
       text-transform: uppercase;
-      letter-spacing: 1px;
+      letter-spacing: 1.5px;
       font-weight: 600;
-      color: #FFD966;
+      color: #aaa;
       margin-bottom: 8px;
     }
     .product-price {
-      font-size: 1.4rem;
-      font-weight: 800;
-      margin: 8px 0;
+      font-size: 1.3rem;
+      font-weight: 700;
+      margin: 10px 0 12px;
       color: white;
     }
     .btn-add, .btn-buy-now {
@@ -339,69 +320,67 @@
       font-weight: 600;
       cursor: pointer;
       transition: 0.2s;
-      margin-top: 6px;
+      margin-top: 8px;
+      font-size: 0.8rem;
     }
     .btn-add {
-      background: #1f1f1f;
-      border: 1px solid #3f3f3f;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.15);
       color: white;
     }
     .btn-add:hover {
-      background: #FFD966;
-      color: black;
+      background: rgba(255,255,255,0.15);
     }
     .btn-buy-now {
-      background: #FFD966;
+      background: white;
       border: none;
       color: black;
       font-weight: 700;
     }
     .btn-buy-now:hover {
-      background: white;
+      background: #ddd;
     }
 
     /* MERCHANDISE PAGE */
     .merch-hero {
       text-align: center;
       padding: 40px 20px;
-      background: linear-gradient(135deg, #1a1a2e, #0a0a0a);
-      border-radius: 48px;
+      background: rgba(255,255,255,0.02);
+      border-radius: 32px;
       margin-bottom: 40px;
-      border: 1px solid rgba(255,215,0,0.3);
+      border: 1px solid rgba(255,255,255,0.06);
     }
     .merch-hero h1 {
-      font-size: 3rem;
-      background: linear-gradient(135deg, #FFD966, #FFA500);
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
+      font-size: 2.5rem;
+      font-weight: 600;
+      letter-spacing: -0.5px;
+      color: white;
       margin-bottom: 16px;
     }
     .merch-hero p {
       color: #aaa;
-      max-width: 600px;
+      max-width: 500px;
       margin: 0 auto;
     }
     .merch-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-      gap: 32px;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 28px;
       margin-bottom: 48px;
     }
     .merch-card {
-      background: linear-gradient(145deg, #111118, #0a0a0a);
-      border-radius: 32px;
+      background: rgba(255,255,255,0.02);
+      border-radius: 24px;
       overflow: hidden;
-      transition: all 0.3s ease;
-      border: 1px solid rgba(255,215,0,0.2);
-      position: relative;
+      transition: 0.3s;
+      border: 1px solid rgba(255,255,255,0.06);
     }
     .merch-card:hover {
-      transform: translateY(-5px);
-      border-color: #FFD966;
+      transform: translateY(-4px);
+      border-color: rgba(255,255,255,0.15);
     }
     .merch-img {
-      height: 300px;
+      height: 280px;
       background: #050505;
       display: flex;
       align-items: center;
@@ -418,25 +397,25 @@
       position: absolute;
       top: 16px;
       right: 16px;
-      background: #FFD966;
+      background: white;
       color: black;
-      padding: 6px 14px;
+      padding: 4px 12px;
       border-radius: 30px;
-      font-size: 0.7rem;
-      font-weight: 800;
+      font-size: 0.65rem;
+      font-weight: 700;
       z-index: 3;
     }
     .merch-info {
-      padding: 24px;
+      padding: 20px;
     }
     .merch-title {
-      font-size: 1.4rem;
-      font-weight: 800;
+      font-size: 1.2rem;
+      font-weight: 600;
       margin-bottom: 8px;
     }
     .merch-desc {
       color: #aaa;
-      font-size: 0.85rem;
+      font-size: 0.8rem;
       margin-bottom: 16px;
       line-height: 1.4;
     }
@@ -444,25 +423,25 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-top: 16px;
+      margin-top: 12px;
     }
     .merch-price {
-      font-size: 1.6rem;
-      font-weight: 800;
-      color: #FFD966;
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: white;
     }
     .merch-btn {
       background: transparent;
-      border: 1.5px solid #FFD966;
-      padding: 10px 24px;
+      border: 1px solid rgba(255,255,255,0.3);
+      padding: 8px 20px;
       border-radius: 40px;
-      font-weight: 700;
+      font-weight: 600;
       cursor: pointer;
-      color: #FFD966;
+      color: white;
       transition: 0.2s;
     }
     .merch-btn:hover {
-      background: #FFD966;
+      background: white;
       color: black;
     }
     .size-selector {
@@ -472,17 +451,17 @@
       flex-wrap: wrap;
     }
     .size-btn {
-      background: #2a2a2a;
-      border: none;
-      width: 40px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      width: 38px;
       padding: 6px;
       border-radius: 30px;
       cursor: pointer;
       color: white;
-      font-size: 0.8rem;
+      font-size: 0.75rem;
     }
     .size-btn:hover, .size-btn.selected {
-      background: #FFD966;
+      background: white;
       color: black;
     }
     .coming-soon-overlay {
@@ -491,7 +470,7 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background: rgba(0,0,0,0.7);
+      background: rgba(0,0,0,0.75);
       backdrop-filter: blur(4px);
       display: flex;
       align-items: center;
@@ -499,20 +478,20 @@
       z-index: 10;
     }
     .coming-soon-text {
-      background: #FFD966;
+      background: white;
       color: black;
-      padding: 12px 24px;
+      padding: 10px 20px;
       border-radius: 40px;
-      font-weight: 800;
-      font-size: 1rem;
+      font-weight: 700;
+      font-size: 0.85rem;
     }
 
     /* Testimonials */
     .testimonials-section {
       margin: 48px 0;
       padding: 32px 0;
-      border-top: 1px solid #2a2a2a;
-      border-bottom: 1px solid #2a2a2a;
+      border-top: 1px solid rgba(255,255,255,0.06);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
     }
     .testimonials-grid {
       display: grid;
@@ -521,30 +500,45 @@
       margin-top: 24px;
     }
     .testimonial-card {
-      background: #111;
+      background: rgba(255,255,255,0.02);
       border-radius: 20px;
       padding: 20px;
-      border: 1px solid #2c2c2c;
+      border: 1px solid rgba(255,255,255,0.06);
     }
     .stars {
-      color: #FFD966;
-      font-size: 1.1rem;
+      color: #ffd966;
+      font-size: 1rem;
       margin-bottom: 12px;
+    }
+    .testimonial-text {
+      font-size: 0.85rem;
+      line-height: 1.5;
+      margin-bottom: 12px;
+      color: #ccc;
+    }
+    .testimonial-author {
+      font-weight: 600;
+      color: white;
     }
 
     /* Email Capture */
     .email-capture {
-      background: linear-gradient(135deg, #111116, #0a0a0a);
+      background: rgba(255,255,255,0.02);
       border-radius: 28px;
       padding: 32px;
       text-align: center;
       margin: 48px 0;
-      border: 1px solid #FFD966;
+      border: 1px solid rgba(255,255,255,0.06);
+    }
+    .email-capture h3 {
+      font-size: 1.3rem;
+      font-weight: 600;
+      margin-bottom: 12px;
     }
     .email-input-group {
       display: flex;
       gap: 12px;
-      max-width: 450px;
+      max-width: 420px;
       margin: 20px auto 0;
       flex-wrap: wrap;
       justify-content: center;
@@ -553,17 +547,18 @@
       flex: 1;
       padding: 12px 20px;
       border-radius: 40px;
-      border: 1px solid #3a3a3a;
-      background: #1a1a1a;
+      border: 1px solid rgba(255,255,255,0.15);
+      background: rgba(0,0,0,0.5);
       color: white;
+      font-size: 0.85rem;
     }
     .email-input-group button {
-      background: #FFD966;
+      background: white;
       color: black;
       border: none;
-      padding: 12px 24px;
+      padding: 12px 28px;
       border-radius: 40px;
-      font-weight: 700;
+      font-weight: 600;
       cursor: pointer;
     }
 
@@ -571,12 +566,16 @@
     .trust-badges {
       display: flex;
       justify-content: center;
-      gap: 24px;
+      gap: 32px;
       flex-wrap: wrap;
       margin: 24px 0;
       padding: 16px;
-      background: #0a0a0a;
+      background: rgba(255,255,255,0.02);
       border-radius: 60px;
+    }
+    .trust-item {
+      font-size: 0.75rem;
+      color: #aaa;
     }
 
     /* Cart Sidebar */
@@ -586,12 +585,12 @@
       right: 0;
       bottom: 0;
       width: 100%;
-      max-width: 420px;
-      background: #0a0a0f;
+      max-width: 400px;
+      background: #0a0a0a;
       z-index: 1000;
       transform: translateX(100%);
-      transition: transform 0.3s;
-      border-left: 2px solid #FFD966;
+      transition: transform 0.3s ease;
+      border-left: 1px solid rgba(255,255,255,0.1);
       display: flex;
       flex-direction: column;
     }
@@ -600,15 +599,14 @@
       display: flex;
       justify-content: space-between;
       padding: 20px;
-      border-bottom: 1px solid #FFD966;
-      color: #FFD966;
-      font-weight: 700;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      font-weight: 600;
     }
     .close-cart {
       background: none;
       border: none;
-      color: #FFD966;
-      font-size: 1.5rem;
+      color: white;
+      font-size: 1.3rem;
       cursor: pointer;
     }
     .cart-items { flex: 1; overflow-y: auto; padding: 16px; }
@@ -617,23 +615,23 @@
       justify-content: space-between;
       margin-bottom: 16px;
       padding-bottom: 12px;
-      border-bottom: 1px solid #2a2a2a;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
     }
     .cart-total {
       padding: 16px;
-      border-top: 1px solid #FFD966;
+      border-top: 1px solid rgba(255,255,255,0.1);
       display: flex;
       justify-content: space-between;
-      font-weight: 800;
+      font-weight: 700;
     }
     .checkout-btn {
-      background: #FFD966;
+      background: white;
       color: black;
       width: calc(100% - 32px);
       margin: 0 16px 20px;
       padding: 14px;
       border-radius: 40px;
-      font-weight: 800;
+      font-weight: 700;
       cursor: pointer;
       border: none;
     }
@@ -644,15 +642,15 @@
       bottom: 24px;
       left: 24px;
       background: #25D366;
-      width: 55px;
-      height: 55px;
+      width: 50px;
+      height: 50px;
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
       cursor: pointer;
       z-index: 100;
-      transition: transform 0.2s;
+      transition: 0.2s;
     }
     .whatsapp-float:hover { transform: scale(1.05); }
 
@@ -662,29 +660,30 @@
       left: 50%;
       transform: translateX(-50%);
       background: #1f1f1f;
-      color: #FFD966;
+      color: white;
       padding: 10px 20px;
       border-radius: 40px;
       z-index: 1100;
       opacity: 0;
       transition: opacity 0.2s;
       pointer-events: none;
+      font-size: 0.8rem;
     }
     footer {
       margin-top: 60px;
       text-align: center;
       padding: 24px 0;
-      border-top: 1px solid #222;
+      border-top: 1px solid rgba(255,255,255,0.06);
       font-size: 0.7rem;
-      color: #8f8f8f;
+      color: #666;
     }
 
     @media (max-width: 768px) {
-      .container { padding: 0 16px; }
-      .hero-text h1 { font-size: 2rem; }
-      .timer-number { font-size: 1.5rem; }
-      .timer-block { padding: 10px 14px; min-width: 65px; }
-      .merch-hero h1 { font-size: 2rem; }
+      .container { padding: 0 20px; }
+      .hero-text h1 { font-size: 2.2rem; }
+      .navbar { flex-direction: column; align-items: stretch; }
+      .nav-links { justify-content: center; }
+      .cart-icon { align-self: flex-end; }
     }
   </style>
 </head>
@@ -705,30 +704,22 @@
       <div class="cart-icon" id="cartIconBtn">CART <span id="cartCountBadge">0</span></div>
     </div>
 
-    <!-- HOME SECTION -->
+    <!-- HOME SECTION - No countdown numbers, just the Money Bag image -->
     <div id="home-section">
-      <div class="countdown-section">
-        <div class="countdown-title">MONEY BAG</div>
+      <div class="money-bag-section">
         <div class="money-bag-preview">
           <a href="https://www.youtube.com/watch?v=Is2A5T_Fcoo&list=RDIs2A5T_Fcoo&start_radio=1" target="_blank" class="money-bag-clickable">
             <img src="https://files.catbox.moe/vzkm0u.png" alt="Money Bag">
           </a>
         </div>
-        <div class="countdown-timer">
-          <div class="timer-block"><div class="timer-number" id="days">00</div><div class="timer-label">DAYS</div></div>
-          <div class="timer-block"><div class="timer-number" id="hours">00</div><div class="timer-label">HOURS</div></div>
-          <div class="timer-block"><div class="timer-number" id="minutes">00</div><div class="timer-label">MINUTES</div></div>
-          <div class="timer-block"><div class="timer-number" id="seconds">00</div><div class="timer-label">SECONDS</div></div>
-        </div>
-        <div id="releaseMessage" class="release-message">🎉 NOW PLAYING — MONEY BAG 🎉</div>
       </div>
+
       <div class="hero">
         <div class="hero-text">
           <h1>ADICT MANLUNG<br><span class="highlight">Rapper on a mission</span></h1>
           <div class="bio-text">
             <p><strong>Karungu, Kenya | Independent Hip-Hop</strong></p>
-            <p>Raw voice from the streets, painting vivid pictures of struggle, ambition, and growth.</p>
-            <p><strong style="color:#FFD966;">"Money Bag" — OUT NOW!</strong></p>
+            <p>Raw voice from the streets, painting vivid pictures of struggle, ambition, and growth. "Money Bag" — OUT NOW.</p>
           </div>
           <button class="btn-primary" id="shopNowBtn">EXPLORE MUSIC →</button>
         </div>
@@ -738,24 +729,23 @@
       </div>
     </div>
 
-    <!-- MUSIC SECTION (EASY TO EDIT) -->
+    <!-- MUSIC SECTION -->
     <div id="music-section" style="display: none;">
-      <h2 class="section-title">🎧 Digital Singles & EPs</h2>
+      <h2 class="section-title">Digital Singles & EPs</h2>
       <div class="product-grid" id="digitalGrid"></div>
     </div>
 
     <!-- CD SECTION -->
     <div id="cds-section" style="display: none;">
-      <h2 class="section-title">💿 Physical CDs & Bundles</h2>
+      <h2 class="section-title">Physical CDs & Bundles</h2>
       <div class="product-grid" id="cdGrid"></div>
     </div>
 
-    <!-- MERCHANDISE SECTION (EASY TO EDIT) -->
+    <!-- MERCHANDISE SECTION -->
     <div id="merch-section" style="display: none;">
       <div class="merch-hero">
-        <h1>👕 OFFICIAL DRIP</h1>
+        <h1>Official Drip</h1>
         <p>Limited edition merchandise • Streetwear • Premium quality</p>
-        <p style="font-size:0.8rem; margin-top:12px;">🔥 New drops coming soon — Be the first to wear the movement</p>
       </div>
       <div class="merch-grid" id="merchGrid"></div>
     </div>
@@ -768,8 +758,8 @@
 
     <!-- Email Capture -->
     <div class="email-capture">
-      <h3>🎧 Get 'Money Bag' First</h3>
-      <p>Subscribe for exclusive merch discounts + early access</p>
+      <h3>Stay updated</h3>
+      <p>Subscribe for exclusive drops & early access</p>
       <div class="email-input-group">
         <input type="email" id="captureEmail" placeholder="Your email address">
         <button id="subscribeEmailBtn">Notify Me</button>
@@ -778,88 +768,71 @@
 
     <!-- Trust Badges -->
     <div class="trust-badges">
-      <div class="trust-item">🔒 Secure Checkout</div>
-      <div class="trust-item">💳 Visa | Mastercard | M-Pesa</div>
-      <div class="trust-item">🚚 Worldwide Shipping</div>
-      <div class="trust-item">⭐ 4.9/5 Fan Rating</div>
+      <div class="trust-item">Secure Checkout</div>
+      <div class="trust-item">Visa • Mastercard • M-Pesa</div>
+      <div class="trust-item">Worldwide Shipping</div>
     </div>
 
     <!-- CONTACT SECTION -->
     <div id="contact-section" style="display: none;">
-      <div style="background:#0c0c0c; border-radius:28px; padding:32px; margin:32px 0; text-align:center;">
-        <h3>📞 Booking & Inquiries</h3>
-        <p><strong style="background:#1a1a1a; display:inline-block; padding:6px 18px; border-radius:40px; color:#FFD966;">adictmanlung@gmail.com</strong></p>
-        <p style="margin-top:16px;">WhatsApp/Call: <strong>+254 724 356 178</strong></p>
+      <div style="background:rgba(255,255,255,0.02); border-radius:28px; padding:32px; margin:32px 0; text-align:center;">
+        <h3>Booking & Inquiries</h3>
+        <p style="margin:16px 0"><strong style="background:rgba(255,255,255,0.05); padding:6px 18px; border-radius:40px;">adictmanlung@gmail.com</strong></p>
+        <p>WhatsApp/Call: <strong>+254 724 356 178</strong></p>
       </div>
     </div>
   </div>
   <footer>
-    <p>© 2026 Adict Manlung — Independent Kenyan Hip-hop. All sales final.</p>
+    <p>© 2026 Adict Manlung — Independent Kenyan Hip-hop</p>
   </footer>
 </div>
 
 <!-- Cart Sidebar -->
 <div id="cartSidebar" class="cart-overlay">
-  <div class="cart-header"><span>YOUR BASKET</span><button class="close-cart" id="closeCartBtn">✕</button></div>
+  <div class="cart-header"><span>Your Basket</span><button class="close-cart" id="closeCartBtn">✕</button></div>
   <div id="cartItemsContainer" class="cart-items">Cart empty.</div>
   <div id="cartFooter" style="display:none;">
-    <div class="cart-total"><span>TOTAL</span><span id="cartTotalPrice">$0.00</span></div>
-    <div class="payment-icons" style="text-align:center; font-size:0.7rem; color:#888; margin:10px 0;">💳 M-Pesa • Visa • Mastercard</div>
-    <button class="checkout-btn" id="checkoutBtn">PROCEED TO PAYMENT</button>
+    <div class="cart-total"><span>Total</span><span id="cartTotalPrice">$0.00</span></div>
+    <button class="checkout-btn" id="checkoutBtn">Proceed to Payment</button>
   </div>
 </div>
 
 <div id="toastMsg" class="toast-msg">Added to cart</div>
 
 <!-- Floating WhatsApp -->
-<a href="https://wa.me/254724356178?text=Hi%20Adict%20Manlung!%20I%20have%20a%20question" target="_blank" class="whatsapp-float">
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="32" height="32" fill="white">
+<a href="https://wa.me/254724356178?text=Hi%20Adict%20Manlung" target="_blank" class="whatsapp-float">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="28" height="28" fill="white">
     <path d="M12.032 2.016c-5.52 0-10 4.48-10 10 0 1.776.464 3.456 1.296 4.944L2 22l5.28-1.44c1.44.84 3.072 1.44 4.752 1.44 5.52 0 10-4.48 10-10s-4.48-10-10-10zm0 18.432c-1.488 0-2.928-.384-4.176-1.104l-.288-.144-3.12.864.864-3.024-.144-.288c-.72-1.248-1.104-2.688-1.104-4.176 0-4.608 3.744-8.352 8.352-8.352 4.608 0 8.352 3.744 8.352 8.352 0 4.608-3.744 8.352-8.352 8.352zm4.464-6.336c-.24-.12-1.44-.72-1.632-.816-.192-.096-.336-.12-.48.12-.144.24-.528.816-.672.984-.144.168-.264.192-.48.072-.864-.432-1.44-.768-2.016-1.344-.504-.48-.84-1.056-.936-1.32-.096-.24-.024-.36.096-.48.12-.12.24-.288.36-.432.12-.144.168-.264.264-.432.096-.168.048-.312-.024-.432-.072-.12-.48-1.152-.672-1.584-.168-.384-.336-.336-.48-.336h-.408c-.144 0-.36.048-.552.264-.192.216-.72.72-.72 1.752 0 1.032.72 2.016.816 2.16.096.144 1.392 2.16 3.36 3.024.48.216.864.336 1.152.432.48.144.912.12 1.248.072.384-.048 1.152-.48 1.296-.96.144-.48.144-.888.096-.984z"/>
   </svg>
 </a>
 
 <script>
   // ============================================
-  // EASY EDIT SECTION - UPDATE PRODUCTS HERE
+  // PRODUCTS WITH YOUR WORKING STRIPE LINKS
   // ============================================
-  
-  // DIGITAL MUSIC PRODUCTS (Add new releases here)
   const digitalProducts = [
-    { id:1, title:"My Gee", price:1.99, imgUrl:"https://files.catbox.moe/ez3isw.png", purchaseUrl:"https://buy.stripe.com/7sI5mC1vU1dOdYc9AA", featured:false, stock:999 },
-    { id:2, title:"Unfinished Business", price:1.99, imgUrl:"https://files.catbox.moe/0snz7n.png", purchaseUrl:"https://buy.stripe.com/7sI5mC1vU1dOdYc9AA", featured:false, stock:999 },
-    { id:3, title:"Black Africa", price:4.99, imgUrl:"https://files.catbox.moe/7wugkl.png", purchaseUrl:"https://buy.stripe.com/7sI5mC1vU1dOdYc9AA", featured:true, stock:999 },
-    { id:4, title:"Still Outside", price:1.99, imgUrl:"https://files.catbox.moe/qu7s1e.png", purchaseUrl:"https://buy.stripe.com/7sI5mC1vU1dOdYc9AA", featured:false, stock:999 }
+    { id:1, title:"My Gee", price:1.99, imgUrl:"https://files.catbox.moe/ez3isw.png", purchaseUrl:"https://buy.stripe.com/test_cNi7sKfrWdBQ65a4TVgfu00", featured:false, stock:999 },
+    { id:2, title:"Unfinished Business", price:1.99, imgUrl:"https://files.catbox.moe/0snz7n.png", purchaseUrl:"https://buy.stripe.com/test_3cI14m2FaeFUalq867gfu01", featured:false, stock:999 },
+    { id:3, title:"Black Africa", price:4.99, imgUrl:"https://files.catbox.moe/7wugkl.png", purchaseUrl:"https://buy.stripe.com/test_fZu00i1B6dBQcty4TVgfu02", featured:true, stock:999 },
+    { id:4, title:"Still Outside", price:1.99, imgUrl:"https://files.catbox.moe/qu7s1e.png", purchaseUrl:"https://buy.stripe.com/test_cNid86Vq41g8di3PRgfu03", featured:false, stock:999 }
   ];
 
-  // PHYSICAL CD PRODUCTS (Update stock and prices here)
   const cdProducts = [
-    { id:5, title:"MANLUNG CD (Signed)", price:14.99, imgUrl:"https://files.catbox.moe/vzkm0u.png", purchaseUrl:"https://buy.stripe.com/7sI5mC1vU1dOdYc9AA", featured:true, stock:47 },
-    { id:6, title:"Money Bag Bundle", price:12.99, imgUrl:"https://files.catbox.moe/vzkm0u.png", purchaseUrl:"https://buy.stripe.com/7sI5mC1vU1dOdYc9AA", featured:true, stock:38 }
+    { id:5, title:"MANLUNG CD (Signed)", price:14.99, imgUrl:"https://files.catbox.moe/vzkm0u.png", purchaseUrl:"https://buy.stripe.com/test_aFa14mdjO8hwfFKfyzgfu04", featured:true, stock:47 },
+    { id:6, title:"Money Bag Bundle", price:12.99, imgUrl:"https://files.catbox.moe/vzkm0u.png", purchaseUrl:"https://buy.stripe.com/test_8x24gy1B61T8eBG4TVgfu05", featured:true, stock:38 }
   ];
 
-  // MERCHANDISE ITEMS (Add new merch here - set comingSoon: false when available)
   const merchItems = [
-    { id:101, title:"Money Bag Hoodie", price:49.99, imgUrl:"https://placehold.co/600x600/1a1a1a/FFD966?text=HOODIE", description:"Premium heavyweight hoodie • Embroidered logo", comingSoon:true },
-    { id:102, title:"Manlung Signature Tee", price:29.99, imgUrl:"https://placehold.co/600x600/1a1a1a/FFD966?text=TEE", description:"100% combed cotton • Screen printed design", comingSoon:true },
-    { id:103, title:"Drip Cap", price:24.99, imgUrl:"https://placehold.co/600x600/1a1a1a/FFD966?text=CAP", description:"Structured snapback • Embroidered logo", comingSoon:true },
-    { id:104, title:"Money Bag Chain", price:39.99, imgUrl:"https://placehold.co/600x600/1a1a1a/FFD966?text=CHAIN", description:"Gold-plated pendant • Money bag design", comingSoon:true }
+    { id:101, title:"Money Bag Hoodie", price:49.99, imgUrl:"https://placehold.co/600x600/1a1a1a/ffffff?text=HOODIE", description:"Premium heavyweight hoodie • Embroidered logo", comingSoon:true },
+    { id:102, title:"Manlung Tee", price:29.99, imgUrl:"https://placehold.co/600x600/1a1a1a/ffffff?text=TEE", description:"100% combed cotton • Screen printed", comingSoon:true },
+    { id:103, title:"Drip Cap", price:24.99, imgUrl:"https://placehold.co/600x600/1a1a1a/ffffff?text=CAP", description:"Structured snapback • Embroidered", comingSoon:true }
   ];
 
-  // TESTIMONIALS (Edit fan reviews here)
   const testimonials = [
     { name:"@nairobigram", text:"Adict Manlung speaks for the streets. Best hip-hop from Kenya right now!", stars:5 },
-    { name:"DJ Rufftone", text:"Raw energy, real lyrics. 'Money Bag' is a certified banger.", stars:5 },
-    { name:"Kenyan Hip Hop Hub", text:"The future of Kenyan hip-hop. Cop the CD while stocks last.", stars:4 }
+    { name:"DJ Rufftone", text:"Raw energy, real lyrics. 'Money Bag' is a certified banger.", stars:5 }
   ];
 
-  // RELEASE DATE (Update for next release - year, month-1, day)
-  const RELEASE_DATE = new Date(2026, 5, 8, 0, 0, 0); // June 8, 2026
-
-  // ============================================
-  // DO NOT EDIT BELOW - Everything works automatically
-  // ============================================
-
-  // Combine products for cart
   const allProducts = [...digitalProducts, ...cdProducts];
 
   // Cart functions
@@ -877,14 +850,14 @@
   }
   
   function directCheckout(product){
-    if(product && product.purchaseUrl){ window.open(product.purchaseUrl, "_blank"); showToast(`Redirecting to secure checkout`); }
+    if(product && product.purchaseUrl){ window.open(product.purchaseUrl, "_blank"); showToast("Redirecting to secure checkout"); }
     else showToast("Payment link unavailable");
   }
   
   function renderCartUI(){
     const cont=document.getElementById("cartItemsContainer");
     const footerDiv=document.getElementById("cartFooter");
-    if(cart.length===0){ cont.innerHTML="<div style='text-align:center; padding:20px;'>Cart empty.</div>"; if(footerDiv)footerDiv.style.display="none"; return; }
+    if(cart.length===0){ cont.innerHTML="<div style='text-align:center; padding:20px;'>Cart empty</div>"; if(footerDiv)footerDiv.style.display="none"; return; }
     let html=""; let total=0;
     cart.forEach(item=>{ const itemTotal=item.price*item.quantity; total+=itemTotal;
       html+=`<div class='cart-item'><div><strong>${item.title}</strong><br>$${item.price} x ${item.quantity}<div><button class='cart-qty-btn' data-id='${item.id}' data-delta='-1'>-</button> <button class='cart-qty-btn' data-id='${item.id}' data-delta='1'>+</button> <button class='remove-item' data-id='${item.id}'>remove</button></div></div><div>$${itemTotal}</div></div>`;
@@ -912,23 +885,9 @@
       const product = allProducts.find(p=>p.id===cart[0].id);
       if(product) directCheckout(product);
     } else {
-      alert(`Multiple Items Order: $${cart.reduce((s,i)=>s+(i.price*i.quantity),0).toFixed(2)}\n\nM-Pesa Till: 123456 | Account: MANLUNG`);
+      alert(`Multiple items: $${cart.reduce((s,i)=>s+(i.price*i.quantity),0).toFixed(2)}\nM-Pesa Till: 123456 | Account: MANLUNG`);
     }
   }
-
-  // Countdown
-  function updateCountdown(){
-    const remaining = Math.max(0, RELEASE_DATE.getTime() - new Date().getTime());
-    if(remaining===0){
-      ["days","hours","minutes","seconds"].forEach(id=>document.getElementById(id).innerText="00");
-      return;
-    }
-    document.getElementById("days").innerText=String(Math.floor(remaining/86400000)).padStart(2,'0');
-    document.getElementById("hours").innerText=String(Math.floor((remaining%86400000)/3600000)).padStart(2,'0');
-    document.getElementById("minutes").innerText=String(Math.floor((remaining%3600000)/60000)).padStart(2,'0');
-    document.getElementById("seconds").innerText=String(Math.floor((remaining%60000)/1000)).padStart(2,'0');
-  }
-  setInterval(updateCountdown,1000); updateCountdown();
 
   // Render Products
   function renderProducts(){
@@ -939,14 +898,14 @@
     digitalProducts.forEach(p=>{
       const card=document.createElement("div"); card.className="product-card";
       card.innerHTML=`
-        ${p.featured ? '<div class="featured-badge">⭐ FEATURED</div>' : ''}
+        ${p.featured ? '<div class="featured-badge">FEATURED</div>' : ''}
         <div class="product-img"><img src="${p.imgUrl}" loading="lazy"></div>
         <div class="product-info">
           <div class="product-type">DIGITAL</div>
           <div class="product-title">${p.title}</div>
           <div class="product-price">$${p.price}</div>
           <button class="btn-add" data-id="${p.id}">ADD TO CART</button>
-          <button class="btn-buy-now buy-now" data-id="${p.id}">BUY NOW →</button>
+          <button class="btn-buy-now buy-now" data-id="${p.id}">BUY NOW</button>
         </div>
       `;
       digitalGrid.appendChild(card);
@@ -955,15 +914,15 @@
     cdProducts.forEach(p=>{
       const card=document.createElement("div"); card.className="product-card";
       card.innerHTML=`
-        ${p.stock<50 ? `<div class="stock-badge">🔥 Only ${p.stock} left</div>` : ''}
-        ${p.featured ? '<div class="featured-badge">⭐ BESTSELLER</div>' : ''}
+        ${p.stock<50 ? `<div class="stock-badge">Only ${p.stock} left</div>` : ''}
+        ${p.featured ? '<div class="featured-badge">BESTSELLER</div>' : ''}
         <div class="product-img"><img src="${p.imgUrl}" loading="lazy"></div>
         <div class="product-info">
           <div class="product-type">PHYSICAL CD</div>
           <div class="product-title">${p.title}</div>
           <div class="product-price">$${p.price}</div>
           <button class="btn-add" data-id="${p.id}">ADD TO CART</button>
-          <button class="btn-buy-now buy-now" data-id="${p.id}">BUY NOW →</button>
+          <button class="btn-buy-now buy-now" data-id="${p.id}">BUY NOW</button>
         </div>
       `;
       cdGrid.appendChild(card);
@@ -973,7 +932,6 @@
     document.querySelectorAll(".buy-now").forEach(btn=>btn.addEventListener("click",(e)=>{ e.stopPropagation(); const prod=allProducts.find(p=>p.id==parseInt(btn.dataset.id)); if(prod) directCheckout(prod); }));
   }
 
-  // Render Merch
   function renderMerch(){
     const grid=document.getElementById("merchGrid");
     if(!grid) return;
@@ -983,7 +941,7 @@
       card.innerHTML=`
         <div class="merch-img">
           <img src="${item.imgUrl}" loading="lazy">
-          <div class="merch-tag">🔥 PREMIUM</div>
+          <div class="merch-tag">PREMIUM</div>
           ${item.comingSoon ? '<div class="coming-soon-overlay"><div class="coming-soon-text">COMING SOON</div></div>' : ''}
         </div>
         <div class="merch-info">
@@ -995,17 +953,15 @@
           </div>
           <div class="merch-price-row">
             <span class="merch-price">$${item.price}</span>
-            <button class="merch-btn" ${item.comingSoon ? 'disabled style="opacity:0.5;"' : ''}>${item.comingSoon ? 'NOTIFY ME' : 'PRE-ORDER'}</button>
+            <button class="merch-btn" ${item.comingSoon ? 'disabled style="opacity:0.5;"' : ''}>NOTIFY ME</button>
           </div>
         </div>
       `;
       grid.appendChild(card);
     });
     document.querySelectorAll(".size-btn").forEach(btn=>btn.addEventListener("click",(e)=>{ e.stopPropagation(); document.querySelectorAll(".size-btn").forEach(b=>b.classList.remove("selected")); btn.classList.add("selected"); showToast(`Size ${btn.innerText} selected`); }));
-    document.querySelectorAll(".merch-btn:not([disabled])").forEach(btn=>btn.addEventListener("click",()=>showToast("Coming soon! Subscribe to get notified.")));
   }
 
-  // Render Testimonials
   function renderTestimonials(){
     const grid=document.getElementById("testimonialsGrid");
     grid.innerHTML=testimonials.map(t=>`
@@ -1017,33 +973,29 @@
     `).join("");
   }
 
-  // Email signup
   document.getElementById("subscribeEmailBtn")?.addEventListener("click",()=>{
     const email=document.getElementById("captureEmail").value;
-    if(email.includes("@")&&email.includes(".")){ showToast("✅ Subscribed!"); document.getElementById("captureEmail").value=""; }
+    if(email.includes("@")&&email.includes(".")){ showToast("Subscribed!"); document.getElementById("captureEmail").value=""; }
     else showToast("Enter valid email");
   });
 
-  // Navigation
   const sections={ home:document.getElementById("home-section"), music:document.getElementById("music-section"), cds:document.getElementById("cds-section"), merch:document.getElementById("merch-section"), contact:document.getElementById("contact-section") };
   function showSection(s){ Object.values(sections).forEach(v=>{ if(v) v.style.display="none"; }); if(sections[s]) sections[s].style.display="block"; }
   document.querySelectorAll(".nav-links a").forEach(a=>a.addEventListener("click",(e)=>showSection(e.target.getAttribute("data-nav"))));
   document.getElementById("shopNowBtn")?.addEventListener("click",()=>showSection("music"));
 
-  // Cart sidebar
   const cartSidebar=document.getElementById("cartSidebar");
   document.getElementById("cartIconBtn")?.addEventListener("click",()=>cartSidebar.classList.add("open"));
   document.getElementById("closeCartBtn")?.addEventListener("click",()=>cartSidebar.classList.remove("open"));
   document.getElementById("checkoutBtn")?.addEventListener("click",processCheckout);
 
-  // Initialize
   renderProducts(); renderMerch(); renderTestimonials(); loadCart();
   showSection("home");
 </script>
 <style>
-  .cart-qty-btn { background:#2c2c3a; border:none; width:26px; border-radius:20px; cursor:pointer; color:#FFD966; margin:0 3px; }
-  .remove-item { background:#2a1a1a; border:none; border-radius:20px; padding:2px 10px; cursor:pointer; color:#ffaaaa; font-size:0.7rem; margin-left:5px; }
-  .size-btn.selected { background: #FFD966; color: black; }
+  .cart-qty-btn { background:rgba(255,255,255,0.1); border:none; width:26px; border-radius:20px; cursor:pointer; color:white; margin:0 3px; }
+  .remove-item { background:rgba(255,80,80,0.15); border:none; border-radius:20px; padding:2px 10px; cursor:pointer; color:#ffaaaa; font-size:0.7rem; margin-left:5px; }
+  .size-btn.selected { background: white; color: black; }
   img { loading: lazy; }
 </style>
 </body>
