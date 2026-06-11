@@ -520,6 +520,45 @@
       font-size: 0.85rem;
     }
 
+    /* Tour Section Styles */
+    .tour-embed-section {
+      margin: 48px 0 40px;
+      background: rgba(0,0,0,0.3);
+      border-radius: 32px;
+      overflow: hidden;
+      border: 1px solid rgba(255,215,0,0.2);
+    }
+    .tour-header {
+      background: linear-gradient(90deg, #1a1a2e, #0a0a1a);
+      padding: 16px 24px;
+      text-align: center;
+      border-bottom: 1px solid rgba(255,215,0,0.3);
+    }
+    .tour-header h2 {
+      font-size: 1.8rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, #FFD966, #FFA500);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      letter-spacing: -0.5px;
+    }
+    .tour-header p {
+      color: #aaa;
+      font-size: 0.85rem;
+      margin-top: 6px;
+    }
+    .tour-frame-container {
+      width: 100%;
+      height: 700px;
+      background: #050505;
+    }
+    .tour-frame-container iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
     /* Testimonials */
     .testimonials-section {
       margin: 48px 0;
@@ -719,6 +758,7 @@
       .nav-links { justify-content: center; }
       .cart-icon { align-self: flex-end; }
       .merch-grid { grid-template-columns: 1fr; }
+      .tour-frame-container { height: 550px; }
     }
   </style>
 </head>
@@ -734,6 +774,7 @@
         <a data-nav="music">MUSIC</a>
         <a data-nav="cds">CDs</a>
         <a data-nav="merch">MERCHANDISE</a>
+        <a data-nav="tour">TOUR</a>
         <a data-nav="contact">CONTACT</a>
       </div>
       <div class="cart-icon" id="cartIconBtn">CART <span id="cartCountBadge">0</span></div>
@@ -782,6 +823,19 @@
         <p>Limited edition merchandise • Streetwear • Premium quality</p>
       </div>
       <div class="merch-grid" id="merchGrid"></div>
+    </div>
+
+    <!-- TOUR SECTION - Embedded Ticket Page -->
+    <div id="tour-section" style="display: none;">
+      <div class="tour-embed-section">
+        <div class="tour-header">
+          <h2>✦ ADICT MANLUNG TOUR ✦</h2>
+          <p>MOMBASA · LOVE SHOW · JULY 25TH-26TH | Secure payment • Instant ticket generation</p>
+        </div>
+        <div class="tour-frame-container">
+          <iframe src="https://tickets-ruddy-ten.vercel.app/" title="Adict Manlung Official Tickets" loading="lazy" allow="payment; clipboard-write"></iframe>
+        </div>
+      </div>
     </div>
 
     <!-- Testimonials -->
@@ -1103,7 +1157,8 @@
     else showToast("Enter valid email");
   });
 
-  const sections={ home:document.getElementById("home-section"), music:document.getElementById("music-section"), cds:document.getElementById("cds-section"), merch:document.getElementById("merch-section"), contact:document.getElementById("contact-section") };
+  // Added 'tour' to sections object
+  const sections={ home:document.getElementById("home-section"), music:document.getElementById("music-section"), cds:document.getElementById("cds-section"), merch:document.getElementById("merch-section"), tour:document.getElementById("tour-section"), contact:document.getElementById("contact-section") };
   function showSection(s){ Object.values(sections).forEach(v=>{ if(v) v.style.display="none"; }); if(sections[s]) sections[s].style.display="block"; }
   document.querySelectorAll(".nav-links a").forEach(a=>a.addEventListener("click",(e)=>showSection(e.target.getAttribute("data-nav"))));
   document.getElementById("shopNowBtn")?.addEventListener("click",()=>showSection("music"));
