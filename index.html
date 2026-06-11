@@ -520,43 +520,195 @@
       font-size: 0.85rem;
     }
 
-    /* Tour Section Styles */
-    .tour-embed-section {
-      margin: 48px 0 40px;
-      background: rgba(0,0,0,0.3);
-      border-radius: 32px;
-      overflow: hidden;
-      border: 1px solid rgba(255,215,0,0.2);
-    }
-    .tour-header {
-      background: linear-gradient(90deg, #1a1a2e, #0a0a1a);
-      padding: 16px 24px;
+    /* TOUR SECTION - Ticket System Styles */
+    .tour-hero {
       text-align: center;
-      border-bottom: 1px solid rgba(255,215,0,0.3);
+      margin-bottom: 3rem;
     }
-    .tour-header h2 {
-      font-size: 1.8rem;
-      font-weight: 700;
-      background: linear-gradient(135deg, #FFD966, #FFA500);
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-      letter-spacing: -0.5px;
-    }
-    .tour-header p {
-      color: #aaa;
+    .glow-badge {
+      background: linear-gradient(135deg, #FFD966, #FFA447);
+      display: inline-block;
+      padding: 0.5rem 2rem;
+      border-radius: 60px;
       font-size: 0.85rem;
-      margin-top: 6px;
+      font-weight: bold;
+      color: #1f1a0c;
+      margin-bottom: 1.2rem;
+      letter-spacing: 2px;
+      box-shadow: 0 4px 15px rgba(255,180,60,0.3);
     }
-    .tour-frame-container {
-      width: 100%;
-      height: 700px;
-      background: #050505;
+    .tour-tagline {
+      color: #FFE0A3;
+      font-size: 1.1rem;
+      margin-top: 0.6rem;
     }
-    .tour-frame-container iframe {
-      width: 100%;
-      height: 100%;
+    .tour-welcome {
+      background: rgba(255, 200, 100, 0.12);
+      border-radius: 40px;
+      padding: 0.6rem 1.8rem;
+      display: inline-block;
+      margin-top: 1rem;
+      font-size: 0.9rem;
+      color: #FFDFA5;
+      backdrop-filter: blur(4px);
+    }
+    .ticket-grid {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 2rem;
+      margin: 2.5rem 0 2rem;
+    }
+    .ticket-card {
+      background: rgba(10, 15, 28, 0.7);
+      backdrop-filter: blur(12px);
+      border-radius: 40px;
+      padding: 2rem 1.5rem;
+      width: 280px;
+      text-align: center;
+      transition: all 0.35s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+      cursor: pointer;
+      border: 1px solid rgba(255, 200, 100, 0.3);
+      box-shadow: 0 20px 35px -12px rgba(0,0,0,0.5);
+    }
+    .ticket-card[data-type="REGULAR"]:hover { border-color: #3b82f6; box-shadow: 0 25px 40px -12px #3b82f640; transform: translateY(-8px); }
+    .ticket-card[data-type="VIP"]:hover { border-color: #22c55e; box-shadow: 0 25px 40px -12px #22c55e40; transform: translateY(-8px); }
+    .ticket-card[data-type="VVIP"]:hover { border-color: #ef4444; box-shadow: 0 25px 40px -12px #ef444440; transform: translateY(-8px); }
+    .card-icon {
+      font-size: 4rem;
+      margin-bottom: 0.8rem;
+    }
+    .ticket-card h3 {
+      font-size: 2rem;
+      font-weight: 800;
+      margin: 0.5rem 0;
+    }
+    .ticket-card[data-type="REGULAR"] h3 { background: linear-gradient(135deg, #60a5fa, #3b82f6); -webkit-background-clip: text; background-clip: text; color: transparent; }
+    .ticket-card[data-type="VIP"] h3 { background: linear-gradient(135deg, #4ade80, #16a34a); -webkit-background-clip: text; background-clip: text; color: transparent; }
+    .ticket-card[data-type="VVIP"] h3 { background: linear-gradient(135deg, #f97316, #ef4444); -webkit-background-clip: text; background-clip: text; color: transparent; }
+    .price {
+      font-size: 2rem;
+      font-weight: bold;
+      margin: 0.8rem 0;
+    }
+    .ticket-card[data-type="REGULAR"] .price { color: #93c5fd; }
+    .ticket-card[data-type="VIP"] .price { color: #86efac; }
+    .ticket-card[data-type="VVIP"] .price { color: #facc15; }
+    .pay-btn {
+      background: linear-gradient(95deg, #FFA62E, #FF8C2E);
       border: none;
+      padding: 0.8rem 1.2rem;
+      border-radius: 60px;
+      font-weight: bold;
+      width: 100%;
+      margin-top: 1rem;
+      cursor: pointer;
+      transition: 0.2s;
+      color: #1e1a0c;
+      font-size: 1rem;
+      font-weight: 700;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    }
+    .pay-btn:hover {
+      transform: scale(1.02);
+      background: linear-gradient(95deg, #FFB347, #FF9F2E);
+    }
+    .details-panel {
+      background: rgba(12, 20, 30, 0.95);
+      backdrop-filter: blur(16px);
+      border-radius: 48px;
+      padding: 2rem;
+      margin: 2rem 0 1.5rem;
+      border: 2px solid #ffb347;
+      display: none;
+      animation: fadeSlideUp 0.6s ease;
+      box-shadow: 0 20px 35px -10px rgba(0,0,0,0.5);
+    }
+    @keyframes fadeSlideUp {
+      from { opacity: 0; transform: translateY(30px);}
+      to { opacity: 1; transform: translateY(0);}
+    }
+    .details-panel h3 {
+      color: #FFD966;
+      font-size: 1.8rem;
+      margin-bottom: 1.5rem;
+      text-align: center;
+      font-weight: 700;
+    }
+    .form-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.2rem;
+      justify-content: center;
+      margin-bottom: 1.8rem;
+    }
+    .form-row input {
+      padding: 14px 24px;
+      border-radius: 60px;
+      border: none;
+      background: #fef9ef;
+      font-size: 1rem;
+      width: 280px;
+      outline: none;
+      transition: 0.2s;
+      font-weight: 500;
+    }
+    .form-row input:focus {
+      transform: scale(1.02);
+      box-shadow: 0 0 0 3px #ffb347;
+    }
+    .generate-ticket-btn {
+      background: #2ecc71;
+      border: none;
+      padding: 14px 38px;
+      border-radius: 60px;
+      font-weight: bold;
+      font-size: 1.1rem;
+      color: white;
+      cursor: pointer;
+      display: block;
+      margin: 0 auto;
+      transition: 0.2s;
+    }
+    .generate-ticket-btn:hover:not(:disabled) {
+      background: #27ae60;
+      transform: scale(1.02);
+    }
+    .generate-ticket-btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+    .ticket-output {
+      margin-top: 2.5rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    canvas {
+      border-radius: 28px;
+      box-shadow: 0 25px 40px -12px black;
+      border: 3px solid #FFD966;
+      background: white;
+      display: none;
+      max-width: 100%;
+      height: auto;
+    }
+    .download-single-btn {
+      background: #2c6e2f;
+      border: none;
+      padding: 12px 36px;
+      border-radius: 60px;
+      font-weight: bold;
+      font-size: 1.1rem;
+      color: white;
+      margin-top: 1.2rem;
+      cursor: pointer;
+      display: none;
+      transition: 0.2s;
+    }
+    .download-single-btn:hover {
+      background: #3e9f42;
+      transform: scale(1.02);
     }
 
     /* Testimonials */
@@ -758,7 +910,7 @@
       .nav-links { justify-content: center; }
       .cart-icon { align-self: flex-end; }
       .merch-grid { grid-template-columns: 1fr; }
-      .tour-frame-container { height: 550px; }
+      .ticket-card { width: 260px; padding: 1.2rem; }
     }
   </style>
 </head>
@@ -816,7 +968,7 @@
       <div class="product-grid" id="cdGrid"></div>
     </div>
 
-    <!-- MERCHANDISE SECTION with UPDATED HOODIE -->
+    <!-- MERCHANDISE SECTION -->
     <div id="merch-section" style="display: none;">
       <div class="merch-hero">
         <h1>Official Drip</h1>
@@ -825,17 +977,52 @@
       <div class="merch-grid" id="merchGrid"></div>
     </div>
 
-    <!-- TOUR SECTION - Embedded Ticket Page -->
+    <!-- TOUR SECTION -->
     <div id="tour-section" style="display: none;">
-      <div class="tour-embed-section">
-        <div class="tour-header">
-          <h2>✦ ADICT MANLUNG TOUR ✦</h2>
-          <p>MOMBASA · LOVE SHOW · JULY 25TH-26TH | Secure payment • Instant ticket generation</p>
+      <div class="tour-hero">
+        <div class="glow-badge">🔥 OFFICIAL TICKET SHOP 🔥</div>
+        <h1 style="font-size: 2.5rem;">✦ ADICT MANLUNG TOUR ✦</h1>
+        <div class="tour-tagline">MOMBASA · LOVE SHOW · JULY 25TH-26TH</div>
+        <div class="tour-welcome">✨ Pay online → Auto-return to fill details → Generate ticket → Download once ✨</div>
+      </div>
+
+      <div class="ticket-grid">
+        <div class="ticket-card" data-type="REGULAR">
+          <div class="card-icon">🎟️</div>
+          <h3>REGULAR</h3>
+          <div class="price">KSh 500</div>
+          <button class="pay-btn" data-ticket="REGULAR" data-price="500" data-link="https://pay.makamesco-tech.co.ke/pay/pIGGYtMgJN">💳 Pay & Get Ticket</button>
         </div>
-        <div class="tour-frame-container">
-          <iframe src="https://tickets-ruddy-ten.vercel.app/" title="Adict Manlung Official Tickets" loading="lazy" allow="payment; clipboard-write"></iframe>
+        <div class="ticket-card" data-type="VIP">
+          <div class="card-icon">💎</div>
+          <h3>VIP</h3>
+          <div class="price">KSh 1,500</div>
+          <button class="pay-btn" data-ticket="VIP" data-price="1500" data-link="https://pay.makamesco-tech.co.ke/pay/5dVfIuSfPK">💳 Pay & Get Ticket</button>
+        </div>
+        <div class="ticket-card" data-type="VVIP">
+          <div class="card-icon">👑</div>
+          <h3>VVIP</h3>
+          <div class="price">KSh 3,000</div>
+          <button class="pay-btn" data-ticket="VVIP" data-price="3000" data-link="https://pay.makamesco-tech.co.ke/pay/d-KRWyjXxq">💳 Pay & Get Ticket</button>
         </div>
       </div>
+
+      <div id="detailsForm" class="details-panel">
+        <h3>🎫 Complete your booking</h3>
+        <div class="form-row">
+          <input type="text" id="fullName" placeholder="Full Name (as per ID)">
+          <input type="text" id="idNumber" placeholder="ID / Passport Number">
+          <input type="tel" id="phoneNumber" placeholder="M-Pesa Phone Number">
+        </div>
+        <button id="generateTicketBtn" class="generate-ticket-btn">✨ Generate My Ticket ✨</button>
+        <p style="text-align:center; font-size:12px; margin-top:15px;">✅ After successful payment, fill details and generate your landscape ticket.</p>
+      </div>
+
+      <div class="ticket-output">
+        <canvas id="ticketCanvas" width="850" height="420"></canvas>
+        <button id="downloadFinalBtn" class="download-single-btn">📸 Download Ticket (PNG)</button>
+      </div>
+      <div class="info-message" style="text-align:center; margin-top:1rem; font-size:0.8rem; color:#aaa;">✦ Secure payment via Makamesco Nexus Pay • Auto-return after transaction ✦</div>
     </div>
 
     <!-- Testimonials -->
@@ -902,7 +1089,6 @@
     { id:1, title:"My Gee", price:1.99, imgUrl:"https://files.catbox.moe/ez3isw.png", purchaseUrl:"https://buy.stripe.com/test_cNi7sKfrWdBQ65a4TVgfu00", featured:false, stock:999 },
     { id:2, title:"Unfinished Business", price:1.99, imgUrl:"https://files.catbox.moe/0snz7n.png", purchaseUrl:"https://buy.stripe.com/test_3cI14m2FaeFUalq867gfu01", featured:false, stock:999 },
     { id:3, title:"Black Africa", price:4.99, imgUrl:"https://files.catbox.moe/7wugkl.png", purchaseUrl:"https://buy.stripe.com/test_fZu00i1B6dBQcty4TVgfu02", featured:true, stock:999 },
-    // UPDATED: Still Outside payment link
     { id:4, title:"Still Outside", price:1.99, imgUrl:"https://files.catbox.moe/qu7s1e.png", purchaseUrl:"https://buy.stripe.com/test_cNidR86Vq41g8di3PRgfu03", featured:false, stock:999 }
   ];
 
@@ -911,7 +1097,6 @@
     { id:6, title:"Money Bag Bundle", price:12.99, imgUrl:"https://files.catbox.moe/vzkm0u.png", purchaseUrl:"https://buy.stripe.com/test_8x24gy1B61T8eBG4TVgfu05", featured:true, stock:38 }
   ];
 
-  // ENHANCED MERCH: Hoodie with color options and direct payment
   const merchItems = [
     { 
       id:101, 
@@ -940,7 +1125,7 @@
 
   const allProducts = [...digitalProducts, ...cdProducts];
 
-  // Cart functions (same as before)
+  // Cart functions
   let cart = [];
   function saveCart(){ localStorage.setItem("manlungCart",JSON.stringify(cart)); updateBadge(); renderCartUI(); }
   function loadCart(){ const s=localStorage.getItem("manlungCart"); cart=s?JSON.parse(s):[]; updateBadge(); renderCartUI(); }
@@ -1037,7 +1222,6 @@
     document.querySelectorAll(".buy-now").forEach(btn=>btn.addEventListener("click",(e)=>{ e.stopPropagation(); const prod=allProducts.find(p=>p.id==parseInt(btn.dataset.id)); if(prod) directCheckout(prod); }));
   }
 
-  // RENDER ENHANCED MERCHANDISE with Hoodie color selector
   function renderMerch(){
     const grid=document.getElementById("merchGrid");
     if(!grid) return;
@@ -1068,9 +1252,7 @@
           </div>
         `;
       } else {
-        // Hoodie with color options
         let colorHtml = `<div class="color-swatches" id="colors-${item.id}">`;
-        let selectedColor = item.colors[0].name;
         item.colors.forEach((color, idx) => {
           const isSelected = idx === 0 ? 'selected' : '';
           colorHtml += `<div class="color-option ${isSelected}" style="background-color: ${color.code}; border: ${color.border || 'none'};" data-color="${color.name}" data-id="${item.id}"></div>`;
@@ -1103,7 +1285,6 @@
       grid.appendChild(card);
     });
     
-    // Attach color selector events for hoodie
     const hoodieItem = merchItems.find(i => i.id === 101);
     if(hoodieItem && !hoodieItem.comingSoon) {
       const colorOptions = document.querySelectorAll(`.color-option[data-id="101"]`);
@@ -1128,7 +1309,6 @@
       });
     }
     
-    // For coming soon items, add size selection feedback
     document.querySelectorAll(".merch-card:not(.coming-soon-overlay) .size-btn").forEach(btn => {
       btn.addEventListener("click", (e) => {
         e.stopPropagation();
@@ -1151,13 +1331,293 @@
     `).join("");
   }
 
+  // ============================================
+  // TOUR SECTION TICKET SYSTEM
+  // ============================================
+  let currentTicketType = "";
+  let currentPrice = 0;
+  let paymentCompleted = false;
+  let ticketGenerated = false;
+  let ticketDownloaded = false;
+  let userDetails = { name: "", id: "", phone: "" };
+  
+  const detailsPanel = document.getElementById("detailsForm");
+  const generateBtn = document.getElementById("generateTicketBtn");
+  const downloadBtn = document.getElementById("downloadFinalBtn");
+  const canvas = document.getElementById("ticketCanvas");
+  
+  const LOGO_URL = "https://files.catbox.moe/s3ysnn.jpg";
+  let logoImage = new Image();
+  logoImage.crossOrigin = "Anonymous";
+  let logoLoaded = false;
+  logoImage.onload = () => { logoLoaded = true; };
+  logoImage.onerror = () => { logoLoaded = false; };
+  logoImage.src = LOGO_URL;
+  
+  const colorSchemes = {
+    REGULAR: {
+      mainGrad: ["#0b2b44", "#123d66"],
+      accent: "#3b82f6",
+      typeColor: "#a5d8ff",
+      priceColor: "#facc15",
+      borderColor: "#3b82f6",
+      textAccent: "#b3e0ff"
+    },
+    VIP: {
+      mainGrad: ["#0a3a2a", "#0e5e3e"],
+      accent: "#22c55e",
+      typeColor: "#bbf7d0",
+      priceColor: "#fde047",
+      borderColor: "#4ade80",
+      textAccent: "#bbf0aa"
+    },
+    VVIP: {
+      mainGrad: ["#4a0e0e", "#7a2020"],
+      accent: "#ef4444",
+      typeColor: "#fecaca",
+      priceColor: "#ffb347",
+      borderColor: "#f97316",
+      textAccent: "#ffcf9a"
+    }
+  };
+  
+  function showToastMessage(message) {
+    const toast = document.getElementById("toastMsg");
+    toast.innerText = message;
+    toast.style.opacity = "1";
+    setTimeout(() => toast.style.opacity = "0", 3000);
+  }
+  
+  function showDetailsPanelAutomatically(ticketType, price) {
+    detailsPanel.style.display = "block";
+    paymentCompleted = true;
+    currentTicketType = ticketType;
+    currentPrice = price;
+    document.getElementById("fullName").value = "";
+    document.getElementById("idNumber").value = "";
+    document.getElementById("phoneNumber").value = "";
+    generateBtn.disabled = false;
+    generateBtn.innerText = "✨ Generate My Ticket ✨";
+    detailsPanel.scrollIntoView({ behavior: "smooth", block: "center" });
+  }
+  
+  document.querySelectorAll(".pay-btn").forEach(btn => {
+    btn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      if (ticketGenerated && !ticketDownloaded) {
+        showToastMessage("⚠️ You already have an active ticket. Please download it first.");
+        return;
+      }
+      if (ticketDownloaded) {
+        ticketGenerated = false;
+        ticketDownloaded = false;
+        canvas.style.display = "none";
+        downloadBtn.style.display = "none";
+      }
+      const type = btn.getAttribute("data-ticket");
+      const price = parseInt(btn.getAttribute("data-price"));
+      const link = btn.getAttribute("data-link");
+      
+      sessionStorage.setItem("pendingTicketType", type);
+      sessionStorage.setItem("pendingTicketPrice", price);
+      sessionStorage.setItem("paymentInitiated", "true");
+      
+      window.location.href = link;
+    });
+  });
+  
+  function checkPaymentReturn() {
+    const paymentInitiated = sessionStorage.getItem("paymentInitiated");
+    const pendingType = sessionStorage.getItem("pendingTicketType");
+    const pendingPrice = sessionStorage.getItem("pendingTicketPrice");
+    
+    if (paymentInitiated === "true" && pendingType && pendingPrice) {
+      sessionStorage.removeItem("paymentInitiated");
+      sessionStorage.removeItem("pendingTicketType");
+      sessionStorage.removeItem("pendingTicketPrice");
+      showDetailsPanelAutomatically(pendingType, parseInt(pendingPrice));
+      currentTicketType = pendingType;
+      currentPrice = parseInt(pendingPrice);
+    } else {
+      detailsPanel.style.display = "none";
+    }
+  }
+  
+  generateBtn.addEventListener("click", () => {
+    const name = document.getElementById("fullName").value.trim();
+    const idVal = document.getElementById("idNumber").value.trim();
+    const phoneVal = document.getElementById("phoneNumber").value.trim();
+    
+    if (!currentTicketType || !paymentCompleted) {
+      showToastMessage("Please complete payment first (click Pay & Get Ticket).");
+      return;
+    }
+    if (!name || !idVal || !phoneVal) {
+      showToastMessage("Please fill in all details: Full Name, ID Number, and Phone Number.");
+      return;
+    }
+    if (ticketGenerated) {
+      showToastMessage("Ticket already generated! Please download it.");
+      return;
+    }
+    if (ticketDownloaded) {
+      showToastMessage("This ticket was already downloaded. Please select a new ticket type.");
+      return;
+    }
+    
+    userDetails = { name: name.toUpperCase(), id: idVal, phone: phoneVal };
+    generateLandscapeTicket();
+  });
+  
+  function generateLandscapeTicket() {
+    canvas.width = 850;
+    canvas.height = 420;
+    const ctx = canvas.getContext("2d");
+    const scheme = colorSchemes[currentTicketType];
+    
+    const grad = ctx.createLinearGradient(0, 0, canvas.width, 0);
+    grad.addColorStop(0, scheme.mainGrad[0]);
+    grad.addColorStop(1, scheme.mainGrad[1]);
+    ctx.fillStyle = grad;
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    
+    ctx.strokeStyle = scheme.borderColor;
+    ctx.lineWidth = 4;
+    ctx.strokeRect(15, 15, canvas.width - 30, canvas.height - 30);
+    ctx.strokeStyle = "#FFD966";
+    ctx.lineWidth = 2;
+    ctx.strokeRect(21, 21, canvas.width - 42, canvas.height - 42);
+    
+    if (logoLoaded && logoImage.complete && logoImage.naturalWidth > 0) {
+      try { ctx.drawImage(logoImage, 25, 25, 80, 80); } catch(e) {}
+    } else {
+      ctx.font = "bold 16px monospace"; ctx.fillStyle = "#FFD966"; ctx.fillText("ADICT", 30, 60);
+    }
+    
+    ctx.font = "bold 30px 'Poppins', 'Arial Black'";
+    ctx.fillStyle = "#FFF2D0";
+    ctx.shadowBlur = 3;
+    ctx.fillText("ADICT MANLUNG TOUR", canvas.width/2 - 145, 70);
+    ctx.font = "18px 'Segoe UI'";
+    ctx.fillStyle = "#F5D742";
+    ctx.fillText("MOMBASA · LOVE SHOW", canvas.width/2 - 110, 108);
+    
+    ctx.font = "bold 42px 'Arial Black'";
+    ctx.fillStyle = scheme.typeColor;
+    ctx.fillText(currentTicketType, 170, 190);
+    ctx.font = "bold 34px monospace";
+    ctx.fillStyle = scheme.priceColor;
+    ctx.fillText(`KSh ${currentPrice.toLocaleString()}`, canvas.width - 250, 190);
+    
+    ctx.beginPath();
+    ctx.moveTo(155, 210);
+    ctx.lineTo(canvas.width - 170, 210);
+    ctx.strokeStyle = "#FFC857";
+    ctx.lineWidth = 2.5;
+    ctx.stroke();
+    
+    ctx.font = "bold 16px 'Segoe UI'";
+    ctx.fillStyle = "#DDDDDD";
+    ctx.fillText("🎟️ TICKET HOLDER", 50, 265);
+    ctx.font = "bold 22px monospace";
+    ctx.fillStyle = "#FFFFFF";
+    ctx.fillText(userDetails.name.slice(0, 32), 50, 300);
+    
+    ctx.font = "14px 'Segoe UI'";
+    ctx.fillStyle = "#CCCCCC";
+    ctx.fillText("ID NUMBER", 50, 345);
+    ctx.font = "bold 18px monospace";
+    ctx.fillStyle = scheme.textAccent;
+    ctx.fillText(userDetails.id.slice(0, 26), 50, 378);
+    
+    ctx.fillStyle = "#CCCCCC";
+    ctx.fillText("📞 PHONE", 50, 420);
+    ctx.fillStyle = scheme.textAccent;
+    ctx.fillText(userDetails.phone.slice(0, 20), 50, 452);
+    
+    const ticketRef = "ML" + Math.floor(Math.random() * 100000000).toString().slice(0, 7);
+    ctx.font = "bold 13px 'Courier New'";
+    ctx.fillStyle = "#FFD966";
+    ctx.fillText("✓ TRANSACTION VERIFIED", canvas.width - 210, 265);
+    ctx.font = "bold 18px monospace";
+    ctx.fillStyle = "#FDEA9F";
+    ctx.fillText(ticketRef, canvas.width - 210, 300);
+    ctx.font = "12px monospace";
+    ctx.fillStyle = "#CCCCCC";
+    ctx.fillText("PayBill: 522522", canvas.width - 210, 345);
+    ctx.fillStyle = "#4ADE80";
+    ctx.fillText("✓ PAID", canvas.width - 210, 378);
+    ctx.fillStyle = "#FFB347";
+    ctx.font = "11px monospace";
+    ctx.fillText("Acc: 1336980125", canvas.width - 210, 412);
+    
+    ctx.font = "bold 12px 'Segoe UI'";
+    ctx.fillStyle = "#FACC15";
+    ctx.fillText("📍 TWINE CIETU MOMBASA • FREE PARKING", 130, 480);
+    ctx.font = "11px monospace";
+    ctx.fillStyle = "#FFE484";
+    ctx.fillText("HOSTED: MALILA • TRAVIS HEAD • ROBBY DISOO", 150, 505);
+    
+    ctx.fillStyle = "#FFF2D7";
+    ctx.fillRect(canvas.width - 120, 440, 58, 58);
+    ctx.fillStyle = "#1F1A0C";
+    for(let s=0; s<3; s++) {
+      ctx.fillRect(canvas.width - 112 + s*15, 449, 7, 7);
+      ctx.fillRect(canvas.width - 112 + s*15, 473, 7, 7);
+      ctx.fillRect(canvas.width - 112, 462 + s*8, 7, 7);
+      ctx.fillRect(canvas.width - 92, 462 + s*8, 7, 7);
+    }
+    ctx.fillStyle = "#D4AF37";
+    ctx.font = "10px monospace";
+    ctx.fillText("SCAN", canvas.width-98, 515);
+    
+    ctx.globalAlpha = 0.12;
+    ctx.font = "bold 38px 'Arial'";
+    ctx.fillStyle = "#FFFFFF";
+    ctx.fillText("MANLUNG", canvas.width/2 - 85, 310);
+    ctx.globalAlpha = 1;
+    ctx.shadowBlur = 0;
+    
+    canvas.style.display = "block";
+    downloadBtn.style.display = "inline-block";
+    ticketGenerated = true;
+    generateBtn.disabled = true;
+    generateBtn.innerText = "✓ Ticket Created";
+    
+    canvas.scrollIntoView({ behavior: "smooth", block: "center" });
+  }
+  
+  downloadBtn.addEventListener("click", () => {
+    if (!ticketGenerated) {
+      showToastMessage("No ticket available. Please complete payment and generate ticket.");
+      return;
+    }
+    if (ticketDownloaded) {
+      showToastMessage("This ticket has already been downloaded. Please select a new ticket type.");
+      return;
+    }
+    try {
+      const link = document.createElement('a');
+      link.download = `adict_${currentTicketType.toLowerCase()}_landscape.png`;
+      link.href = canvas.toDataURL("image/png");
+      link.click();
+      ticketDownloaded = true;
+      ticketGenerated = false;
+      canvas.style.display = "none";
+      downloadBtn.style.display = "none";
+      showToastMessage("✅ Ticket downloaded! You can now buy another ticket.");
+    } catch(e) {
+      showToastMessage("Right-click on the ticket image and select 'Save image as...'");
+    }
+  });
+
+  // Email subscription
   document.getElementById("subscribeEmailBtn")?.addEventListener("click",()=>{
     const email=document.getElementById("captureEmail").value;
     if(email.includes("@")&&email.includes(".")){ showToast("Subscribed!"); document.getElementById("captureEmail").value=""; }
     else showToast("Enter valid email");
   });
 
-  // Added 'tour' to sections object
   const sections={ home:document.getElementById("home-section"), music:document.getElementById("music-section"), cds:document.getElementById("cds-section"), merch:document.getElementById("merch-section"), tour:document.getElementById("tour-section"), contact:document.getElementById("contact-section") };
   function showSection(s){ Object.values(sections).forEach(v=>{ if(v) v.style.display="none"; }); if(sections[s]) sections[s].style.display="block"; }
   document.querySelectorAll(".nav-links a").forEach(a=>a.addEventListener("click",(e)=>showSection(e.target.getAttribute("data-nav"))));
@@ -1169,6 +1629,7 @@
   document.getElementById("checkoutBtn")?.addEventListener("click",processCheckout);
 
   renderProducts(); renderMerch(); renderTestimonials(); loadCart();
+  checkPaymentReturn();
   showSection("home");
 </script>
 <style>
