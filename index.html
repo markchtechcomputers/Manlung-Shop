@@ -3,207 +3,261 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>Adict Manlung | Money Bag — Official Store</title>
+  <title>Adict Manlung | Music Store</title>
   <link rel="stylesheet" href="css/styles.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@600;700;800&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
   <link rel="icon" href="https://files.catbox.moe/s3ysnn.jpg" type="image/jpeg">
 </head>
 <body>
 <div class="main-content">
-  <div class="container">
-    <!-- Header -->
-    <div class="navbar">
-      <div class="logo">Adict <span>Manlung</span></div>
+  <!-- STICKY NAVBAR -->
+  <nav class="navbar sticky-top">
+    <div class="container navbar-container">
+      <div class="logo-section">
+        <div class="logo">🎵 Adict <span>Manlung</span></div>
+      </div>
+      
       <div class="nav-links">
-        <a data-nav="home">HOME</a>
-        <a data-nav="music">MUSIC</a>
-        <a data-nav="cds">CDs</a>
-        <a data-nav="merch">MERCHANDISE</a>
-        <a data-nav="tour">TOUR</a>
-        <a data-nav="contact">CONTACT</a>
+        <a data-nav="home" class="nav-link active">HOME</a>
+        <a data-nav="music" class="nav-link">MUSIC</a>
+        <a data-nav="cds" class="nav-link">CDs</a>
+        <a data-nav="merch" class="nav-link">MERCH</a>
+        <a data-nav="tour" class="nav-link">TOUR</a>
+        <a data-nav="contact" class="nav-link">CONTACT</a>
       </div>
-      <div class="cart-icon" id="cartIconBtn">CART <span id="cartCountBadge">0</span></div>
+      
+      <div class="nav-actions">
+        <div class="search-bar">
+          <input type="text" placeholder="Search..." id="searchInput">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.35-4.35"></path></svg>
+        </div>
+        <div class="cart-icon" id="cartIconBtn">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+          <span id="cartCountBadge" class="cart-badge">0</span>
+        </div>
+      </div>
     </div>
+  </nav>
 
+  <div class="container">
     <!-- HOME SECTION -->
-    <div id="home-section">
-      <div class="money-bag-section">
-        <div class="money-bag-preview">
-          <a href="https://www.youtube.com/watch?v=Is2A5T_Fcoo" target="_blank" class="money-bag-clickable">
-            <img src="https://files.catbox.moe/vzkm0u.png" alt="Money Bag">
-          </a>
+    <div id="home-section" class="section">
+      <!-- HERO BANNER -->
+      <section class="hero-banner">
+        <div class="hero-content">
+          <div class="hero-text">
+            <span class="hero-label">🎤 WELCOME TO</span>
+            <h1>ADICT <span class="gradient-text">MANLUNG</span></h1>
+            <p class="hero-subtitle">Independent Hip-Hop from Karungu, Kenya</p>
+            <p class="hero-desc">Experience raw lyrics, authentic beats, and stories from the streets. Every track tells a journey.</p>
+            <div class="hero-buttons">
+              <button class="btn btn-primary" id="shopNowBtn">EXPLORE MUSIC →</button>
+              <button class="btn btn-secondary">▶ WATCH VIDEO</button>
+            </div>
+          </div>
+          <div class="hero-img">
+            <img src="https://files.catbox.moe/19z48q.png" alt="Adict Manlung">
+          </div>
         </div>
-      </div>
-      <div class="hero">
-        <div class="hero-text">
-          <h1>ADICT MANLUNG<br><span class="highlight">Rapper on a mission</span></h1>
-          <div class="bio-text"><p><strong>Karungu, Kenya | Independent Hip-Hop</strong></p><p>Raw voice from the streets, painting vivid pictures of struggle, ambition, and growth. "Money Bag" — OUT NOW.</p></div>
-          <button class="btn-primary" id="shopNowBtn">EXPLORE MUSIC →</button>
+      </section>
+
+      <!-- FEATURED PRODUCTS SHOWCASE -->
+      <section class="featured-showcase">
+        <div class="section-header">
+          <h2>🔥 FEATURED RELEASES</h2>
+          <p>Latest drops from the studio</p>
         </div>
-        <div class="hero-img"><img src="https://files.catbox.moe/19z48q.png" alt="Adict Manlung"></div>
-      </div>
+        <div class="featured-items" id="featuredShowcase"></div>
+      </section>
+
+      <!-- STATS SECTION -->
+      <section class="stats-section">
+        <div class="stat-card">
+          <h3>100K+</h3>
+          <p>Streams</p>
+        </div>
+        <div class="stat-card">
+          <h3>50K+</h3>
+          <p>Fans</p>
+        </div>
+        <div class="stat-card">
+          <h3>20+</h3>
+          <p>Tracks</p>
+        </div>
+        <div class="stat-card">
+          <h3>🌍</h3>
+          <p>Global</p>
+        </div>
+      </section>
     </div>
 
     <!-- MUSIC SECTION -->
-    <div id="music-section" style="display: none;">
-      <h2 class="section-title">Digital Singles</h2>
+    <div id="music-section" class="section" style="display: none;">
+      <div class="section-header">
+        <h2>🎵 DIGITAL SINGLES</h2>
+        <p>Buy your favorite tracks</p>
+      </div>
       <div class="product-grid" id="digitalGrid"></div>
     </div>
 
     <!-- CDS SECTION -->
-    <div id="cds-section" style="display: none;">
-      <h2 class="section-title">Physical CDs</h2>
+    <div id="cds-section" class="section" style="display: none;">
+      <div class="section-header">
+        <h2>💿 PHYSICAL CDs</h2>
+        <p>Limited edition collectibles</p>
+      </div>
       <div class="product-grid" id="cdGrid"></div>
     </div>
 
     <!-- MERCHANDISE SECTION -->
-    <div id="merch-section" style="display: none;">
+    <div id="merch-section" class="section" style="display: none;">
       <div class="merch-hero">
-        <h1>Official Drip</h1>
-        <p>Limited edition merchandise</p>
+        <h1>👕 OFFICIAL MERCH</h1>
+        <p>Limited Edition Drops</p>
       </div>
       <div class="merch-grid" id="merchGrid"></div>
     </div>
 
     <!-- TOUR SECTION -->
-    <div id="tour-section" style="display: none; position: relative;">
-      <!-- Background Slideshow Container with scenic images -->
-      <div class="tour-bg-slideshow" id="tourBgSlideshow">
-        <div class="bg-slide active" style="background-image: url('https://images.pexels.com/photos/1365425/pexels-photo-1365425.jpeg?auto=compress&cs=tinysrgb&w=1200');"></div>
-        <div class="bg-slide" style="background-image: url('https://images.pexels.com/photos/2387873/pexels-photo-2387873.jpeg?auto=compress&cs=tinysrgb&w=1200');"></div>
-        <div class="bg-slide" style="background-image: url('https://images.pexels.com/photos/1032650/pexels-photo-1032650.jpeg?auto=compress&cs=tinysrgb&w=1200');"></div>
-        <div class="bg-slide" style="background-image: url('https://images.pexels.com/photos/257360/pexels-photo-257360.jpeg?auto=compress&cs=tinysrgb&w=1200');"></div>
-        <div class="bg-slide" style="background-image: url('https://images.pexels.com/photos/912110/pexels-photo-912110.jpeg?auto=compress&cs=tinysrgb&w=1200');"></div>
-        <div class="bg-slide" style="background-image: url('https://images.pexels.com/photos/120049/pexels-photo-120049.jpeg?auto=compress&cs=tinysrgb&w=1200');"></div>
-      </div>
-      <div class="tour-bg-overlay"></div>
-      
-      <div class="tour-content">
-        <div class="tour-hero">
-          <div class="glow-badge"> ADICT MANLUNG LIVE TOUR </div>
-          <h1 style="font-size: 2.5rem;">✦ MOMBASA · LOVE SHOW ✦</h1>
-          <div class="tour-tagline">JULY 25TH - 26TH, 2026 | BEACH FRONT ARENA</div>
+    <div id="tour-section" class="section" style="display: none;">
+      <div class="tour-container">
+        <div class="tour-header">
+          <h2>🎪 LIVE TOUR 2026</h2>
+          <p>Experience the energy live</p>
         </div>
-
-        <!-- Ticket Cards -->
         <div class="ticket-grid">
           <div class="ticket-card" data-type="REGULAR">
-            <div class="card-icon">🎟️</div>
+            <div class="ticket-icon">🎟️</div>
             <h3>REGULAR</h3>
             <div class="price">KSh 500</div>
-            <button class="pay-btn" data-ticket="REGULAR" data-price="500" data-link="https://pay.makamesco-tech.co.ke/pay/pIGGYtMgJN">💳 Pay & Get Ticket</button>
+            <button class="btn btn-primary" data-ticket="REGULAR">GET TICKET</button>
           </div>
-          <div class="ticket-card" data-type="VIP">
-            <div class="card-icon">💎</div>
+          <div class="ticket-card featured" data-type="VIP">
+            <div class="ticket-badge">POPULAR</div>
+            <div class="ticket-icon">💎</div>
             <h3>VIP</h3>
             <div class="price">KSh 1,500</div>
-            <button class="pay-btn" data-ticket="VIP" data-price="1500" data-link="https://pay.makamesco-tech.co.ke/pay/5dVfIuSfPK">💳 Pay & Get Ticket</button>
+            <button class="btn btn-primary" data-ticket="VIP">GET TICKET</button>
           </div>
           <div class="ticket-card" data-type="VVIP">
-            <div class="card-icon">👑</div>
+            <div class="ticket-icon">👑</div>
             <h3>VVIP</h3>
             <div class="price">KSh 3,000</div>
-            <button class="pay-btn" data-ticket="VVIP" data-price="3000" data-link="https://pay.makamesco-tech.co.ke/pay/d-KRWyjXxq">💳 Pay & Get Ticket</button>
+            <button class="btn btn-primary" data-ticket="VVIP">GET TICKET</button>
           </div>
-        </div>
-
-        <!-- Extra Features -->
-        <div class="tour-features">
-          <div class="feature-item"><div class="feature-icon">🏔️</div><h4>Mountain Stage</h4><p>Epic views</p></div>
-          <div class="feature-item"><div class="feature-icon">🌊</div><h4>Ocean Front</h4><p>Sunset vibes</p></div>
-          <div class="feature-item"><div class="feature-icon">🏖️</div><h4>Beach Party</h4><p>Dance on sand</p></div>
-          <div class="feature-item"><div class="feature-icon">⛰️</div><h4>Highland Breeze</h4><p>Fresh air</p></div>
-          <div class="feature-item"><div class="feature-icon">☁️</div><h4>Sky Lounge</h4><p>VIP experience</p></div>
-          <div class="feature-item"><div class="feature-icon">🏎️</div><h4>Luxury Fleet</h4><p>Arrive in style</p></div>
-        </div>
-
-        <div id="detailsForm" class="details-panel">
-          <h3>🎫 Complete your booking</h3>
-          <div class="form-row">
-            <input type="text" id="fullName" placeholder="Full Name">
-            <input type="text" id="idNumber" placeholder="ID Number">
-            <input type="tel" id="phoneNumber" placeholder="Phone Number">
-          </div>
-          <button id="generateTicketBtn" class="generate-ticket-btn"> Generate My Ticket </button>
-        </div>
-
-        <div class="ticket-output">
-          <canvas id="ticketCanvas" width="850" height="530"></canvas>
-          <button id="downloadFinalBtn" class="download-single-btn">📸 Download Ticket (PNG)</button>
         </div>
       </div>
     </div>
 
-    <!-- Testimonials -->
+    <!-- TESTIMONIALS -->
     <div class="testimonials-section">
-      <h2 class="section-title">Fan Love</h2>
+      <div class="section-header">
+        <h2>❤️ FAN LOVE</h2>
+        <p>What people are saying</p>
+      </div>
       <div class="testimonials-grid" id="testimonialsGrid"></div>
     </div>
 
-    <!-- Email Capture -->
-    <div class="email-capture">
-      <h3>Stay updated</h3>
-      <div class="email-input-group">
-        <input type="email" id="captureEmail" placeholder="Your email">
-        <button id="subscribeEmailBtn">Notify Me</button>
+    <!-- NEWSLETTER -->
+    <section class="newsletter-section">
+      <div class="newsletter-content">
+        <h2>📬 STAY IN THE LOOP</h2>
+        <p>Get exclusive drops, tour dates & behind-the-scenes content</p>
+        <div class="newsletter-form">
+          <input type="email" id="captureEmail" placeholder="Enter your email">
+          <button id="subscribeEmailBtn" class="btn btn-primary">SUBSCRIBE</button>
+        </div>
       </div>
-    </div>
-
-    <!-- Trust Badges -->
-    <div class="trust-badges">
-      <div class="trust-item">Secure Checkout</div>
-      <div class="trust-item">Visa • Mastercard • M-Pesa</div>
-      <div class="trust-item">Worldwide Shipping</div>
-    </div>
+    </section>
 
     <!-- CONTACT SECTION -->
-    <div id="contact-section" style="display: none;">
-      <div style="background:rgba(255,255,255,0.02); border-radius:28px; padding:32px; text-align:center;">
-        <h3>Booking & Inquiries</h3>
-        <p><strong>adictmanlung@gmail.com</strong><br>WhatsApp: +254 724 356 178</p>
+    <div id="contact-section" class="section" style="display: none;">
+      <div class="contact-container">
+        <h2>📞 GET IN TOUCH</h2>
+        <div class="contact-info">
+          <div class="contact-card">
+            <h3>EMAIL</h3>
+            <p>adictmanlung@gmail.com</p>
+          </div>
+          <div class="contact-card">
+            <h3>WHATSAPP</h3>
+            <p>+254 724 356 178</p>
+          </div>
+          <div class="contact-card">
+            <h3>LOCATION</h3>
+            <p>Karungu, Kenya 🇰🇪</p>
+          </div>
+        </div>
       </div>
     </div>
   </div>
-  
-  <footer>
-    <p>© 2026 Adict Manlung — Independent Kenyan Hip-hop</p>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-section">
+          <h4>ADICT MANLUNG</h4>
+          <p>Independent Hip-Hop Artist from Kenya</p>
+        </div>
+        <div class="footer-section">
+          <h4>QUICK LINKS</h4>
+          <ul>
+            <li><a href="#">Home</a></li>
+            <li><a href="#">Music</a></li>
+            <li><a href="#">Merch</a></li>
+            <li><a href="#">Tour</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h4>FOLLOW</h4>
+          <div class="social-links">
+            <a href="#">Twitter</a>
+            <a href="#">Instagram</a>
+            <a href="#">TikTok</a>
+            <a href="#">YouTube</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2026 Adict Manlung. All rights reserved. | Independent Hip-Hop</p>
+      </div>
+    </div>
   </footer>
 </div>
 
-<!-- Cart Sidebar -->
-<div id="cartSidebar" class="cart-overlay">
+<!-- CART SIDEBAR -->
+<div id="cartSidebar" class="cart-sidebar">
   <div class="cart-header">
-    <span>Your Basket</span>
-    <button class="close-cart" id="closeCartBtn">✕</button>
+    <h3>🛒 YOUR CART</h3>
+    <button class="close-btn" id="closeCartBtn">✕</button>
   </div>
-  <div id="cartItemsContainer" class="cart-items">Cart empty.</div>
-  <div id="cartFooter" style="display:none;">
+  <div id="cartItemsContainer" class="cart-items"></div>
+  <div id="cartFooter" class="cart-footer" style="display:none;">
     <div class="cart-total">
-      <span>Total</span>
-      <span id="cartTotalPrice">$0.00</span>
+      <span>TOTAL:</span>
+      <span id="cartTotalPrice" class="total-amount">$0.00</span>
     </div>
-    <button class="checkout-btn" id="checkoutBtn">Proceed to Payment</button>
+    <button class="btn btn-primary" id="checkoutBtn">PROCEED TO PAYMENT</button>
   </div>
 </div>
 
-<!-- Toast Message -->
-<div id="toastMsg" class="toast-msg"></div>
+<!-- TOAST NOTIFICATION -->
+<div id="toastMsg" class="toast-notification"></div>
 
-<!-- WhatsApp Float -->
-<a href="https://wa.me/254724356178" target="_blank" class="whatsapp-float">
-  <svg width="28" height="28" viewBox="0 0 24 24" fill="white">
-    <path d="M12.032 2.016c-5.52 0-10 4.48-10 10 0 1.776.464 3.456 1.296 4.944L2 22l5.28-1.44c1.44.84 3.072 1.44 4.752 1.44 5.52 0 10-4.48 10-10s-4.48-10-10-10z"/>
+<!-- WHATSAPP FLOAT -->
+<a href="https://wa.me/254724356178" target="_blank" class="whatsapp-float" title="Chat on WhatsApp">
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.67-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.076 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421-7.403h-.004a9.87 9.87 0 00-4.782 1.14l-.46.264-3.822-.982.998 3.368-.216.338a9.879 9.879 0 001.516 5.82c2.487 3.305 6.344 5.208 10.322 5.208 2.765 0 5.462-.822 7.753-2.41l.454-.294 3.672 1.123-.935-3.374.274-.44a9.896 9.896 0 001.203-5.785c0-5.468-4.26-9.884-9.53-9.884z"/>
   </svg>
 </a>
 
-<!-- JavaScript Files -->
+<!-- SCRIPTS -->
 <script src="data/products.js"></script>
 <script src="js/cart.js"></script>
 <script src="js/render.js"></script>
-<script src="js/tour.js"></script>
 <script src="js/app.js"></script>
-
 </body>
 </html>
