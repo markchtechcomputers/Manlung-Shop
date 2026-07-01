@@ -3,7 +3,8 @@ const digitalProducts = [
   { id:1, title:"My Gee", price:1.99, imgUrl:"https://files.catbox.moe/ez3isw.png", purchaseUrl:"https://buy.stripe.com/test_cNi7sKfrWdBQ65a4TVgfu00", featured:false, stock:999 },
   { id:2, title:"Unfinished Business", price:1.99, imgUrl:"https://files.catbox.moe/0snz7n.png", purchaseUrl:"https://buy.stripe.com/test_3cI14m2FaeFUalq867gfu01", featured:false, stock:999 },
   { id:3, title:"Black Africa", price:4.99, imgUrl:"https://files.catbox.moe/7wugkl.png", purchaseUrl:"https://buy.stripe.com/test_fZu00i1B6dBQcty4TVgfu02", featured:true, stock:999 },
-  { id:4, title:"Still Outside", price:1.99, imgUrl:"https://files.catbox.moe/qu7s1e.png", purchaseUrl:"https://buy.stripe.com/test_cNidR86Vq41g8di3PRgfu03", featured:false, stock:999 }
+  { id:4, title:"Still Outside", price:1.99, imgUrl:"https://files.catbox.moe/qu7s1e.png", purchaseUrl:"https://buy.stripe.com/test_cNidR86Vq41g8di3PRgfu03", featured:false, stock:999 },
+  { id:5, title:"Cold (Adict Manlung x Trecky)", price:1.99, imgUrl:"https://i.postimg.cc/6pZcW0kw/White-Modern-Minimal-Album-Cover-Mockup-Square-(11)-Made-with-Poster-My-Wall-(1).png", purchaseUrl:"https://buy.stripe.com/test_fZu4gyenS55keBG2LNgfu07", featured:false, stock:999 }
 ];
 
 const cdProducts = [
