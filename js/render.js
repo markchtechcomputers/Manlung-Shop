@@ -13,7 +13,7 @@ function renderProducts() {
     const card = document.createElement("div");
     card.className = "product-card";
     card.innerHTML = `
-      ${p.featured ? '<div class="featured-badge">FEATURED</div>' : ''}
+      ${p.featured ? '<div class="featured-badge">🔥 FEATURED</div>' : ''}
       <div class="product-img"><img src="${p.imgUrl}" loading="lazy" alt="${p.title}"></div>
       <div class="product-info">
         <div class="product-type">DIGITAL</div>

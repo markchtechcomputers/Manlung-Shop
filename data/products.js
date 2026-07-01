@@ -4,12 +4,13 @@ const digitalProducts = [
   { id:2, title:"Unfinished Business", price:1.99, imgUrl:"https://files.catbox.moe/0snz7n.png", purchaseUrl:"https://buy.stripe.com/test_3cI14m2FaeFUalq867gfu01", featured:false, stock:999 },
   { id:3, title:"Black Africa", price:4.99, imgUrl:"https://files.catbox.moe/7wugkl.png", purchaseUrl:"https://buy.stripe.com/test_fZu00i1B6dBQcty4TVgfu02", featured:true, stock:999 },
   { id:4, title:"Still Outside", price:1.99, imgUrl:"https://files.catbox.moe/qu7s1e.png", purchaseUrl:"https://buy.stripe.com/test_cNidR86Vq41g8di3PRgfu03", featured:false, stock:999 },
-  { id:5, title:"Cold (Adict Manlung x Trecky)", price:1.99, imgUrl:"https://i.postimg.cc/6pZcW0kw/White-Modern-Minimal-Album-Cover-Mockup-Square-(11)-Made-with-Poster-My-Wall-(1).png", purchaseUrl:"https://buy.stripe.com/test_fZu4gyenS55keBG2LNgfu07", featured:false, stock:999 }
+  { id:5, title:"Cold (Adict Manlung x Trecky)", price:2.99, imgUrl:"https://i.postimg.cc/6pZcW0kw/White-Modern-Minimal-Album-Cover-Mockup-Square-(11)-Made-with-Poster-My-Wall-(1).png", purchaseUrl:"https://buy.stripe.com/test_fZu4gyenS55keBG2LNgfu07", featured:true, stock:999 },
+  { id:6, title:"Money Bag", price:1.99, imgUrl:"https://i.postimg.cc/652gZCkc/Black-White-Bold-Minimalist-Music-Album-Cover-(1).png", purchaseUrl:"https://buy.stripe.com/test_00wbJ0a7C69o8di5XZgfu08", featured:false, stock:999 }
 ];
 
 const cdProducts = [
-  { id:5, title:"MANLUNG CD (Signed)", price:14.99, imgUrl:"https://files.catbox.moe/vzkm0u.png", purchaseUrl:"https://buy.stripe.com/test_aFa14mdjO8hwfFKfyzgfu04", featured:true, stock:47 },
-  { id:6, title:"Money Bag Bundle", price:12.99, imgUrl:"https://files.catbox.moe/vzkm0u.png", purchaseUrl:"https://buy.stripe.com/test_8x24gy1B61T8eBG4TVgfu05", featured:true, stock:38 }
+  { id:7, title:"MANLUNG CD (Signed)", price:14.99, imgUrl:"https://files.catbox.moe/vzkm0u.png", purchaseUrl:"https://buy.stripe.com/test_aFa14mdjO8hwfFKfyzgfu04", featured:true, stock:47 },
+  { id:8, title:"Money Bag Bundle", price:12.99, imgUrl:"https://files.catbox.moe/vzkm0u.png", purchaseUrl:"https://buy.stripe.com/test_8x24gy1B61T8eBG4TVgfu05", featured:true, stock:38 }
 ];
 
 const merchItems = [
