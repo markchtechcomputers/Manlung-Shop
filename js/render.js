@@ -59,41 +59,6 @@ function renderProducts() {
   }));
 }
 
-function renderFeatured() {
-  const grid = document.getElementById("featuredGrid");
-  if (!grid) return;
-  
-  grid.innerHTML = "";
-  
-  // Get featured products
-  const featured = window.productData.digitalProducts.filter(p => p.featured).slice(0, 3);
-  
-  featured.forEach(p => {
-    const card = document.createElement("div");
-    card.className = "featured-card";
-    card.innerHTML = `
-      <div class="featured-card-img">
-        <img src="${p.imgUrl}" loading="lazy" alt="${p.title}">
-        <div class="featured-overlay-card"></div>
-      </div>
-      <div class="featured-card-info">
-        <h3 class="featured-card-title">${p.title}</h3>
-        <p class="featured-card-price">$${p.price}</p>
-        <button class="btn-buy-featured" data-id="${p.id}">GET NOW →</button>
-      </div>
-    `;
-    grid.appendChild(card);
-  });
-  
-  document.querySelectorAll(".btn-buy-featured").forEach(btn => {
-    btn.addEventListener("click", (e) => {
-      e.stopPropagation();
-      const prod = window.productData.digitalProducts.find(p => p.id == parseInt(btn.dataset.id));
-      if (prod) window.cartFunctions.directCheckout(prod);
-    });
-  });
-}
-
 function renderMerch() {
   const grid = document.getElementById("merchGrid");
   if (!grid) return;
@@ -154,6 +119,7 @@ function renderMerch() {
     grid.appendChild(card);
   });
   
+  // Add color and size selection for hoodie
   const hoodieItem = window.productData.merchItems.find(i => i.id === 101);
   if (hoodieItem && !hoodieItem.comingSoon) {
     const colorOptions = document.querySelectorAll(`.color-option[data-id="101"]`);
@@ -195,7 +161,6 @@ function renderTestimonials() {
 // Export rendering functions
 window.renderFunctions = {
   renderProducts,
-  renderFeatured,
   renderMerch,
   renderTestimonials
 };
