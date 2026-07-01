@@ -7,12 +7,32 @@ function initEmailSubscription() {
   subscribeBtn.addEventListener("click", () => {
     const email = document.getElementById("captureEmail").value;
     if (email.includes("@") && email.includes(".")) { 
-      window.cartFunctions.showToast("Subscribed!"); 
+      window.cartFunctions.showToast("✓ Subscribed! Check your email"); 
       document.getElementById("captureEmail").value = ""; 
     } else {
       window.cartFunctions.showToast("Enter valid email");
     }
   });
+}
+
+function initFeaturedButtons() {
+  const preOrderBtn = document.getElementById("preOrderBtn");
+  const notifyBtn = document.getElementById("notifyBtn");
+  
+  if (preOrderBtn) {
+    preOrderBtn.addEventListener("click", () => {
+      const coldSong = window.productData.digitalProducts.find(p => p.id === 5);
+      if (coldSong) {
+        window.cartFunctions.directCheckout(coldSong);
+      }
+    });
+  }
+  
+  if (notifyBtn) {
+    notifyBtn.addEventListener("click", () => {
+      window.cartFunctions.showToast("🔔 You'll be notified on July 7, 2026!");
+    });
+  }
 }
 
 function initNavigation() {
@@ -33,7 +53,6 @@ function initNavigation() {
   document.querySelectorAll(".nav-links a").forEach(a => a.addEventListener("click", (e) => showSection(e.target.getAttribute("data-nav"))));
   document.getElementById("shopNowBtn")?.addEventListener("click", () => showSection("music"));
   
-  // Show home by default
   showSection("home");
 }
 
@@ -46,29 +65,26 @@ function initCartSidebar() {
   document.getElementById("checkoutBtn")?.addEventListener("click", window.cartFunctions.processCheckout);
 }
 
-// Main initialization function
 function initApp() {
-  // Load product data first
-  console.log("Initializing Adict Manlung Store...");
+  console.log("🎵 Initializing Adict Manlung Store...");
   
-  // Initialize all modules
   window.cartFunctions.loadCart();
   window.renderFunctions.renderProducts();
+  window.renderFunctions.renderFeatured();
   window.renderFunctions.renderMerch();
   window.renderFunctions.renderTestimonials();
   window.tourSystem.setupTourEvents();
   window.tourSystem.initTourSlideshow();
   window.tourSystem.checkPaymentReturn();
   
-  // Initialize core functionality
   initEmailSubscription();
+  initFeaturedButtons();
   initNavigation();
   initCartSidebar();
   
-  console.log("Store initialized successfully!");
+  console.log("✓ Store initialized successfully!");
 }
 
-// Run when DOM is ready
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', initApp);
 } else {
