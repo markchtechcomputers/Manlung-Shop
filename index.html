@@ -1,209 +1,294 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>Adict Manlung | Money Bag — Official Store</title>
-  <link rel="stylesheet" href="css/styles.css">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@700;800&display=swap" rel="stylesheet">
-  <link rel="icon" href="https://files.catbox.moe/s3ysnn.jpg" type="image/jpeg">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Manlung Shop — Adict Manlung</title>
+  <style>
+    :root{
+      --bg:#000;
+      --fg:#fff;
+      --muted:#cfcfcf;
+      --accent:#e6b31e;
+      --card:#0b0b0b;
+    }
+    html,body{height:100%;}
+    body{
+      margin:0;
+      background:var(--bg);
+      color:var(--fg);
+      font-family:Inter, Roboto, Arial, sans-serif;
+      -webkit-font-smoothing:antialiased;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:32px;
+      box-sizing:border-box;
+    }
+    .container{
+      max-width:980px;
+      width:100%;
+      text-align:center;
+      display:grid;
+      grid-template-columns: 1fr;
+      gap:28px;
+      align-items:start;
+    }
+
+    header.hero{
+      padding:48px 36px;
+      border-radius:12px;
+      background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      box-shadow: 0 6px 30px rgba(0,0,0,0.6);
+    }
+    h1{
+      margin:0 0 12px 0;
+      font-size:clamp(28px,4.8vw,48px);
+      letter-spacing:0.6px;
+    }
+    p.lead{
+      margin:0;
+      color:var(--muted);
+      font-size:1rem;
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px,1fr));
+      gap:18px;
+      align-items:start;
+    }
+
+    .card{
+      background:var(--card);
+      border-radius:10px;
+      padding:18px;
+      text-align:left;
+      box-shadow: 0 4px 18px rgba(0,0,0,0.6);
+    }
+    .card h3{margin:0 0 8px;}
+    .badge{
+      display:inline-block;
+      padding:6px 10px;
+      border-radius:999px;
+      background:var(--accent);
+      color:#000;
+      font-weight:700;
+      font-size:0.85rem;
+    }
+    .price{
+      font-size:1.6rem;
+      font-weight:700;
+      margin-top:6px;
+    }
+    .btn{
+      display:inline-block;
+      margin-top:12px;
+      padding:10px 16px;
+      border-radius:8px;
+      background:var(--accent);
+      color:#000;
+      text-decoration:none;
+      font-weight:700;
+      cursor:pointer;
+      border:none;
+    }
+    .muted{color:var(--muted); font-size:0.95rem;}
+
+    .profile{
+      line-height:1.45;
+    }
+    ul.releases{padding-left:1.1rem; margin:6px 0 0;}
+
+    footer{
+      margin-top:8px;
+      color:var(--muted);
+      text-align:center;
+      font-size:0.85rem;
+    }
+
+    /* modal */
+    .modal{
+      position:fixed;
+      inset:0;
+      display:none;
+      align-items:center;
+      justify-content:center;
+      background:rgba(0,0,0,0.65);
+      z-index:1200;
+    }
+    .modal.show{display:flex;}
+    .modal .dialog{
+      background:#090909;
+      padding:20px;
+      border-radius:10px;
+      min-width:320px;
+      max-width:90%;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.8);
+      color:var(--fg);
+    }
+    .close{
+      display:inline-block;
+      margin-top:12px;
+      color:var(--muted);
+      background:none;
+      border:1px solid rgba(255,255,255,0.04);
+      padding:8px 10px;
+      border-radius:8px;
+      cursor:pointer;
+    }
+
+    /* Balanced spacing on small screens */
+    @media (max-width:520px){
+      body{padding:18px;}
+      .card{padding:14px;}
+    }
+  </style>
 </head>
 <body>
-<div class="main-content">
-  <div class="container">
-    <!-- Header -->
-    <div class="navbar">
-      <div class="logo">Adict <span>Manlung</span></div>
-      <div class="nav-links">
-        <a data-nav="home">HOME</a>
-        <a data-nav="music">MUSIC</a>
-        <a data-nav="cds">CDs</a>
-        <a data-nav="merch">MERCHANDISE</a>
-        <a data-nav="tour">TOUR</a>
-        <a data-nav="contact">CONTACT</a>
-      </div>
-      <div class="cart-icon" id="cartIconBtn">CART <span id="cartCountBadge">0</span></div>
-    </div>
+  <div class="container" id="page-root" tabindex="0">
+    <header class="hero" role="banner">
+      <h1>Welcome to Manlung Shop</h1>
+      <p class="lead">Official page for Adict Manlung — music, merch, and support. Click anywhere to hear a welcome message.</p>
+    </header>
 
-    <!-- HOME SECTION -->
-    <div id="home-section">
-      <div class="money-bag-section">
-        <div class="money-bag-preview">
-          <a href="https://www.youtube.com/watch?v=Is2A5T_Fcoo" target="_blank" class="money-bag-clickable">
-            <img src="https://files.catbox.moe/vzkm0u.png" alt="Money Bag">
-          </a>
+    <section class="grid">
+      <div class="card" id="vvip-card">
+        <div style="display:flex;justify-content:space-between;align-items:center;">
+          <h3>VVIP Membership</h3>
+          <span class="badge">ACTIVE</span>
+        </div>
+        <div class="price">KSh 3,000</div>
+        <p class="muted">Get priority content, exclusive drops, and early access.</p>
+        <button class="btn" id="pay-btn">Pay / Show Paybill</button>
+        <div style="margin-top:10px;color:var(--muted);font-size:0.9rem;">
+          Note: Contacts and WhatsApp buttons are removed as requested.
         </div>
       </div>
-      <div class="hero">
-        <div class="hero-text">
-          <h1>ADICT MANLUNG<br><span class="highlight">Rapper on a mission</span></h1>
-          <div class="bio-text"><p><strong>Karungu, Kenya | Independent Hip-Hop</strong></p><p>Raw voice from the streets, painting vivid pictures of struggle, ambition, and growth. "Money Bag" — OUT NOW.</p></div>
-          <button class="btn-primary" id="shopNowBtn">EXPLORE MUSIC →</button>
-        </div>
-        <div class="hero-img"><img src="https://files.catbox.moe/19z48q.png" alt="Adict Manlung"></div>
+
+      <div class="card profile">
+        <h3>Artist Profile — Adict Manlung</h3>
+        <p><strong>Real Name:</strong> Mark Ochieng Okelo<br>
+           <strong>Stage Name:</strong> Adict Manlung<br>
+           <strong>Nationality:</strong> Kenyan<br>
+           <strong>Genre:</strong> Hip-hop / Drill / Rap<br>
+           <strong>Base:</strong> Kenya</p>
+
+        <h4>About</h4>
+        <p>Adict Manlung is a Kenyan rapper and songwriter known for blending authentic storytelling with hard-hitting rap and drill music. His music reflects personal experiences, street life, ambition, resilience, and the realities faced by young people striving for success. Through vivid lyrics and confident delivery, he aims to inspire listeners while staying true to his journey.</p>
+
+        <h4>Musical Style & Themes</h4>
+        <p class="muted">Drill · Hip-hop · Trap · Storytelling rap · Motivational rap</p>
+        <ul class="muted">
+          <li>Street life</li>
+          <li>Hustle and ambition</li>
+          <li>Betrayal</li>
+          <li>Poverty</li>
+          <li>Personal growth</li>
+          <li>Success</li>
+          <li>Loyalty</li>
+          <li>Faith and perseverance</li>
+        </ul>
+
+        <h4>Releases</h4>
+        <ul class="releases">
+          <li>My Gee</li>
+          <li>Black African</li>
+          <li>Money Bag</li>
+          <li>Cold</li>
+          <li>Street Prayers</li>
+          <li>New Lead</li>
+          <li>Unfinished Business</li>
+        </ul>
+
+        <h4>Distribution</h4>
+        <p class="muted">Distributed via ONErpm / Offstep to Spotify, Apple Music, YouTube Music, Amazon Music, Boomplay, Audiomack (where applicable).</p>
       </div>
-    </div>
+    </section>
 
-    <!-- MUSIC SECTION -->
-    <div id="music-section" style="display: none;">
-      <h2 class="section-title">Digital Singles</h2>
-      <div class="product-grid" id="digitalGrid"></div>
-    </div>
+    <section class="card" aria-labelledby="balance-title">
+      <h3 id="balance-title">Payment / Account</h3>
+      <p class="muted">Use the following to support Adict Manlung. Shown in the exact order requested:</p>
+      <ol>
+        <li><strong>Name:</strong> Adict Manlung</li>
+        <li><strong>Paybill:</strong> 22211</li>
+        <li><strong>Account:</strong> 08500113030</li>
+        <li><strong>Ref/No:</strong> no12345......</li>
+      </ol>
+      <p class="muted">After payment, keep a receipt for confirmation.</p>
+    </section>
 
-    <!-- CDS SECTION -->
-    <div id="cds-section" style="display: none;">
-      <h2 class="section-title">Physical CDs</h2>
-      <div class="product-grid" id="cdGrid"></div>
-    </div>
+    <footer>
+      © Adict Manlung — Manlung Shop
+    </footer>
+  </div>
 
-    <!-- MERCHANDISE SECTION -->
-    <div id="merch-section" style="display: none;">
-      <div class="merch-hero">
-        <h1>Official Drip</h1>
-        <p>Limited edition merchandise</p>
-      </div>
-      <div class="merch-grid" id="merchGrid"></div>
-    </div>
-
-    <!-- TOUR SECTION -->
-    <div id="tour-section" style="display: none; position: relative;">
-      <!-- Background Slideshow Container with scenic images -->
-      <div class="tour-bg-slideshow" id="tourBgSlideshow">
-        <div class="bg-slide active" style="background-image: url('https://images.pexels.com/photos/1365425/pexels-photo-1365425.jpeg?auto=compress&cs=tinysrgb&w=1200');"></div>
-        <div class="bg-slide" style="background-image: url('https://images.pexels.com/photos/2387873/pexels-photo-2387873.jpeg?auto=compress&cs=tinysrgb&w=1200');"></div>
-        <div class="bg-slide" style="background-image: url('https://images.pexels.com/photos/1032650/pexels-photo-1032650.jpeg?auto=compress&cs=tinysrgb&w=1200');"></div>
-        <div class="bg-slide" style="background-image: url('https://images.pexels.com/photos/257360/pexels-photo-257360.jpeg?auto=compress&cs=tinysrgb&w=1200');"></div>
-        <div class="bg-slide" style="background-image: url('https://images.pexels.com/photos/912110/pexels-photo-912110.jpeg?auto=compress&cs=tinysrgb&w=1200');"></div>
-        <div class="bg-slide" style="background-image: url('https://images.pexels.com/photos/120049/pexels-photo-120049.jpeg?auto=compress&cs=tinysrgb&w=1200');"></div>
-      </div>
-      <div class="tour-bg-overlay"></div>
-      
-      <div class="tour-content">
-        <div class="tour-hero">
-          <div class="glow-badge"> ADICT MANLUNG LIVE TOUR </div>
-          <h1 style="font-size: 2.5rem;">✦ MOMBASA · LOVE SHOW ✦</h1>
-          <div class="tour-tagline">JULY 25TH - 26TH, 2026 | BEACH FRONT ARENA</div>
-        </div>
-
-        <!-- Ticket Cards -->
-        <div class="ticket-grid">
-          <div class="ticket-card" data-type="REGULAR">
-            <div class="card-icon">🎟️</div>
-            <h3>REGULAR</h3>
-            <div class="price">KSh 500</div>
-            <button class="pay-btn" data-ticket="REGULAR" data-price="500" data-link="https://makamescopay.com/pay/pIGGYtMgJN">💳 Pay & Get Ticket</button>
-          </div>
-          <div class="ticket-card" data-type="VIP">
-            <div class="card-icon">💎</div>
-            <h3>VIP</h3>
-            <div class="price">KSh 1,500</div>
-            <button class="pay-btn" data-ticket="VIP" data-price="1500" data-link="https://makamescopay.com/pay/5dVfIuSfPK">💳 Pay & Get Ticket</button>
-          </div>
-          <div class="ticket-card" data-type="VVIP">
-            <div class="card-icon">👑</div>
-            <h3>VVIP</h3>
-            <div class="price">KSh 3,000</div>
-            <button class="pay-btn" data-ticket="https://makamescopay.com/pay/d-KRWyjXxq">💳 Pay & Get Ticket</button>
-          </div>
-        </div>
-
-        <!-- Extra Features -->
-        <div class="tour-features">
-          <div class="feature-item"><div class="feature-icon">🏔️</div><h4>Mountain Stage</h4><p>Epic views</p></div>
-          <div class="feature-item"><div class="feature-icon">🌊</div><h4>Ocean Front</h4><p>Sunset vibes</p></div>
-          <div class="feature-item"><div class="feature-icon">🏖️</div><h4>Beach Party</h4><p>Dance on sand</p></div>
-          <div class="feature-item"><div class="feature-icon">⛰️</div><h4>Highland Breeze</h4><p>Fresh air</p></div>
-          <div class="feature-item"><div class="feature-icon">☁️</div><h4>Sky Lounge</h4><p>VIP experience</p></div>
-          <div class="feature-item"><div class="feature-icon">🏎️</div><h4>Luxury Fleet</h4><p>Arrive in style</p></div>
-        </div>
-
-        <div id="detailsForm" class="details-panel">
-          <h3>🎫 Complete your booking</h3>
-          <div class="form-row">
-            <input type="text" id="fullName" placeholder="Full Name">
-            <input type="text" id="idNumber" placeholder="ID Number">
-            <input type="tel" id="phoneNumber" placeholder="Phone Number">
-          </div>
-          <button id="generateTicketBtn" class="generate-ticket-btn"> Generate My Ticket </button>
-        </div>
-
-        <div class="ticket-output">
-          <canvas id="ticketCanvas" width="850" height="530"></canvas>
-          <button id="downloadFinalBtn" class="download-single-btn">📸 Download Ticket (PNG)</button>
-        </div>
-      </div>
-    </div>
-
-    <!-- Testimonials -->
-    <div class="testimonials-section">
-      <h2 class="section-title">Fan Love</h2>
-      <div class="testimonials-grid" id="testimonialsGrid"></div>
-    </div>
-
-    <!-- Email Capture -->
-    <div class="email-capture">
-      <h3>Stay updated</h3>
-      <div class="email-input-group">
-        <input type="email" id="captureEmail" placeholder="Your email">
-        <button id="subscribeEmailBtn">Notify Me</button>
-      </div>
-    </div>
-
-    <!-- Trust Badges -->
-    <div class="trust-badges">
-      <div class="trust-item">Secure Checkout</div>
-      <div class="trust-item">Visa • Mastercard • M-Pesa</div>
-      <div class="trust-item">Worldwide Shipping</div>
-    </div>
-
-    <!-- CONTACT SECTION -->
-    <div id="contact-section" style="display: none;">
-      <div style="background:rgba(255,255,255,0.02); border-radius:28px; padding:32px; text-align:center;">
-        <h3>Booking & Inquiries</h3>
-        <p><strong>adictmanlung@gmail.com</strong><br>WhatsApp: +254 724 356 178</p>
-      </div>
+  <div class="modal" id="modal">
+    <div class="dialog" role="dialog" aria-modal="true">
+      <h3>Payment Details</h3>
+      <p><strong>Paybill:</strong> 22211<br>
+         <strong>Account:</strong> 08500113030<br>
+         <strong>Ref:</strong> no12345......</p>
+      <button class="close" id="close-modal">Close</button>
     </div>
   </div>
-  
-  <footer>
-    <p>© 2026 Adict Manlung — Independent Kenyan Hip-hop</p>
-  </footer>
-</div>
 
-<!-- Cart Sidebar -->
-<div id="cartSidebar" class="cart-overlay">
-  <div class="cart-header">
-    <span>Your Basket</span>
-    <button class="close-cart" id="closeCartBtn">✕</button>
-  </div>
-  <div id="cartItemsContainer" class="cart-items">Cart empty.</div>
-  <div id="cartFooter" style="display:none;">
-    <div class="cart-total">
-      <span>Total</span>
-      <span id="cartTotalPrice">$0.00</span>
-    </div>
-    <button class="checkout-btn" id="checkoutBtn">Proceed to Payment</button>
-  </div>
-</div>
+  <script>
+    // Speak "Welcome to Manlung shop" on first click (accessible & lightweight)
+    (function() {
+      let spoken = false;
+      const speakText = "Welcome to Manlung shop";
+      function speakWithWebAPI(text){
+        if (!('speechSynthesis' in window)) return;
+        const ut = new SpeechSynthesisUtterance(text);
+        ut.lang = 'en-GB';
+        ut.rate = 1;
+        ut.pitch = 1;
+        window.speechSynthesis.cancel(); // stop any ongoing
+        window.speechSynthesis.speak(ut);
+      }
 
-<!-- Toast Message -->
-<div id="toastMsg" class="toast-msg"></div>
+      document.documentElement.addEventListener('click', function handler() {
+        if (spoken) return;
+        spoken = true;
+        try { speakWithWebAPI(speakText); } catch(e){ /* ignore */ }
+        // remove listener so it does not re-trigger
+        document.documentElement.removeEventListener('click', handler);
+      }, { once: true, passive: true });
+    })();
 
-<!-- WhatsApp Float -->
-<a href="https://wa.me/254724356178" target="_blank" class="whatsapp-float">
-  <svg width="28" height="28" viewBox="0 0 24 24" fill="white">
-    <path d="M12.032 2.016c-5.52 0-10 4.48-10 10 0 1.776.464 3.456 1.296 4.944L2 22l5.28-1.44c1.44.84 3.072 1.44 4.752 1.44 5.52 0 10-4.48 10-10s-4.48-10-10-10z"/>
-  </svg>
-</a>
+    // Pay modal behavior
+    const modal = document.getElementById('modal');
+    document.getElementById('pay-btn').addEventListener('click', function(){
+      modal.classList.add('show');
+      // Optionally: focus for accessibility
+      modal.querySelector('.dialog').focus();
+    });
+    document.getElementById('close-modal').addEventListener('click', function(){
+      modal.classList.remove('show');
+    });
+    // close on overlay click
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) modal.classList.remove('show');
+    });
 
-<!-- JavaScript Files -->
-<script src="data/products.js"></script>
-<script src="js/cart.js"></script>
-<script src="js/render.js"></script>
-<script src="js/tour.js"></script>
-<script src="js/app.js"></script>
+    // OPTIONAL: ElevenLabs integration (server-side recommended)
+    // If you want higher-quality TTS from ElevenLabs, do NOT put your API key in client-side JS.
+    // Instead create a small server endpoint that proxies requests to ElevenLabs with your server-side API key.
+    // Example (server) request format:
+    //
+    // fetch("/api/tts", { method: "POST", headers: {"Content-Type":"application/json"}, body: JSON.stringify({text:"Welcome to Manlung shop"}) })
+    //
+    // Server should call ElevenLabs and return audio blob or URL. Then you can play that audio on the client.
+    //
+    // Example ElevenLabs curl (server-side):
+    // curl -X POST "https://api.elevenlabs.io/v1/text-to-speech/{VOICE_ID}" \
+    //   -H "xi-api-key: $ELEVENLABS_API_KEY" \
+    //   -H "Content-Type: application/json" \
+    //   -d '{"text":"Welcome to Manlung shop","model_id":"eleven_flash_v2_5"}' --output welcome.mp3
+    //
+    // If you want, tell me and I can provide a small Node/Express server snippet to proxy ElevenLabs safely.
 
+  </script>
 </body>
 </html>
