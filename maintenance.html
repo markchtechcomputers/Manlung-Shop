@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Manlung.co.ke | Under Maintenance</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial,Helvetica,sans-serif;
+}
+
+body{
+    background:#050505;
+    color:#fff;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    min-height:100vh;
+    overflow:hidden;
+    text-align:center;
+}
+
+/* Background Glow */
+body::before{
+    content:"";
+    position:fixed;
+    inset:0;
+    background:
+        radial-gradient(circle at left,rgba(255,0,0,.08),transparent 40%),
+        radial-gradient(circle at right,rgba(0,120,255,.08),transparent 40%);
+    z-index:-2;
+}
+
+/* Emergency Lights */
+.light{
+    position:fixed;
+    top:30px;
+    width:110px;
+    height:110px;
+    border-radius:50%;
+    filter:blur(2px);
+    z-index:20;
+}
+
+.red{
+    left:35px;
+    background:#ff0000;
+    box-shadow:
+        0 0 40px red,
+        0 0 90px red,
+        0 0 180px red;
+    animation:redFlash .45s infinite;
+}
+
+.blue{
+    right:35px;
+    background:#008cff;
+    box-shadow:
+        0 0 40px #008cff,
+        0 0 90px #008cff,
+        0 0 180px #008cff;
+    animation:blueFlash .45s infinite;
+}
+
+@keyframes redFlash{
+    0%,50%{opacity:1;}
+    51%,100%{opacity:.15;}
+}
+
+@keyframes blueFlash{
+    0%,50%{opacity:.15;}
+    51%,100%{opacity:1;}
+}
+
+/* Police Tape */
+
+.tape{
+    position:fixed;
+    left:-20%;
+    width:140%;
+    height:48px;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    background:repeating-linear-gradient(
+        -45deg,
+        #FFD400 0px,
+        #FFD400 35px,
+        #000 35px,
+        #000 70px
+    );
+
+    color:#000;
+    font-size:18px;
+    font-weight:900;
+    letter-spacing:2px;
+    text-transform:uppercase;
+
+    box-shadow:0 0 20px rgba(255,215,0,.5);
+
+    z-index:15;
+}
+
+.top{
+    top:110px;
+    transform:rotate(-8deg);
+}
+
+.bottom{
+    bottom:110px;
+    transform:rotate(8deg);
+}
+
+/* Content */
+
+.container{
+    z-index:10;
+    padding:20px;
+}
+
+.icon{
+    font-size:180px;
+    animation:pulse 1s infinite;
+    filter:drop-shadow(0 0 25px gold);
+}
+
+@keyframes pulse{
+    50%{
+        transform:scale(1.1);
+    }
+}
+
+.site{
+    margin-top:15px;
+    font-size:65px;
+    font-weight:bold;
+    text-decoration:line-through;
+    text-decoration-color:#ff0000;
+    text-decoration-thickness:8px;
+    text-shadow:
+        0 0 15px red,
+        0 0 30px red;
+}
+
+.status{
+    margin-top:20px;
+    font-size:40px;
+    font-weight:bold;
+    color:#ff4040;
+    letter-spacing:3px;
+    animation:blink 1s infinite;
+}
+
+@keyframes blink{
+    50%{
+        opacity:.25;
+    }
+}
+
+.contact{
+    margin-top:45px;
+    font-size:24px;
+    line-height:1.8;
+}
+
+.contact b{
+    color:#FFD700;
+}
+
+/* Mobile */
+
+@media(max-width:768px){
+
+.light{
+    width:70px;
+    height:70px;
+}
+
+.icon{
+    font-size:120px;
+}
+
+.site{
+    font-size:34px;
+}
+
+.status{
+    font-size:22px;
+}
+
+.contact{
+    font-size:18px;
+}
+
+.tape{
+    height:34px;
+    font-size:11px;
+    left:-35%;
+    width:170%;
+}
+
+.top{
+    top:90px;
+}
+
+.bottom{
+    bottom:90px;
+}
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="light red"></div>
+<div class="light blue"></div>
+
+<div class="tape top">
+🚧 UNDER MAINTENANCE • DO NOT CROSS • UNDER MAINTENANCE • DO NOT CROSS • 🚧
+</div>
+
+<div class="tape bottom">
+🚧 UNDER MAINTENANCE • DO NOT CROSS • UNDER MAINTENANCE • DO NOT CROSS • 🚧
+</div>
+
+<div class="container">
+
+<div class="icon">🚧</div>
+
+<div class="site">
+Manlung.co.ke
+</div>
+
+<div class="status">
+UNDER MAINTENANCE
+</div>
+
+<div class="contact">
+
+<b>Contact</b><br><br>
+
+Adict Manlung<br>
+
+📞 +254 724 356 178
+
+</div>
+
+</div>
+
+</body>
+</html>
