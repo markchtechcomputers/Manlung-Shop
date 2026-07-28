@@ -79,13 +79,7 @@ function initMenuPanel() {
 
   // Newsletter (menu version)
   document.getElementById("menuNewsletterBtn")?.addEventListener("click", () => {
-    const input = document.getElementById("menuNewsletterEmail");
-    if (input.value.includes("@") && input.value.includes(".")) {
-      window.cartFunctions.showToast("Subscribed!");
-      input.value = "";
-    } else {
-      window.cartFunctions.showToast("Enter a valid email");
-    }
+    window.utils.handleNewsletterSubmit(document.getElementById("menuNewsletterEmail"));
   });
 }
 
@@ -152,7 +146,7 @@ function initLocalAccountSystem(loginBtn, createBtn, logoutBtn, errorBox) {
     const email = document.getElementById("accountEmail").value.trim().toLowerCase();
     const password = document.getElementById("accountPassword").value;
 
-    if (!email || !email.includes("@") || !email.includes(".")) {
+    if (!window.utils.isValidEmail(email)) {
       errorBox.textContent = "Enter a valid email first";
       return;
     }

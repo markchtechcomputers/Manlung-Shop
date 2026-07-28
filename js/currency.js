@@ -54,6 +54,22 @@ function updateCurrencyBadge() {
   if (select) select.value = window.currencyState.code;
 }
 
+// Shared currency switch: KES needs no conversion; anything else fetches
+// the live KES→code rate. On failure, optionally reports via onError and
+// falls back to KES. Used by the selector, modal, country search, and
+// IP-based detection so the fetch/fallback logic lives in one place.
+async function applyCurrencyByCode(code, { onError } = {}) {
+  if (code === "KES") { setCurrency("KES", 1); return; }
+  try {
+    const rateRes = await fetch("https://open.er-api.com/v6/latest/KES");
+    const rateData = await rateRes.json();
+    setCurrency(code, rateData?.rates?.[code] || 1);
+  } catch (e) {
+    if (onError) onError(e);
+    setCurrency("KES", 1);
+  }
+}
+
 async function detectAndApplyCurrency() {
   // 1. Use a cached choice from this session if present (manual pick or prior detection)
   const cached = sessionStorage.getItem("manlungCurrency");
@@ -67,26 +83,10 @@ async function detectAndApplyCurrency() {
   }
 
   try {
-    // 2. Detect visitor's country/currency
+    // 2. Detect visitor's country/currency, then apply it (rate lookup + fallback shared)
     const geoRes = await fetch("https://ipapi.co/json/");
     const geo = await geoRes.json();
-    const detectedCode = geo.currency || "KES";
-
-    if (detectedCode === "KES") {
-      setCurrency("KES", 1);
-      return;
-    }
-
-    // 3. Get conversion rate from KES to the detected currency
-    const rateRes = await fetch("https://open.er-api.com/v6/latest/KES");
-    const rateData = await rateRes.json();
-    const rate = rateData?.rates?.[detectedCode];
-
-    if (rate) {
-      setCurrency(detectedCode, rate);
-    } else {
-      setCurrency("KES", 1);
-    }
+    await applyCurrencyByCode(geo.currency || "KES");
   } catch (err) {
     // Offline, blocked, or rate-limited — just stick with KES
     setCurrency("KES", 1);
@@ -123,17 +123,7 @@ function initCountrySearch() {
     results.querySelectorAll(".country-result").forEach(el => {
       el.addEventListener("click", async () => {
         const code = el.dataset.code;
-        if (code === "KES") {
-          setCurrency("KES", 1);
-        } else {
-          try {
-            const rateRes = await fetch("https://open.er-api.com/v6/latest/KES");
-            const rateData = await rateRes.json();
-            setCurrency(code, rateData?.rates?.[code] || 1);
-          } catch (e) {
-            setCurrency("KES", 1);
-          }
-        }
+        await applyCurrencyByCode(code);
         window.cartFunctions?.showToast(`Currency set to ${code}`);
       });
     });
@@ -147,19 +137,10 @@ function initCurrencySelector() {
   const select = document.getElementById("currencySelector");
   if (!select) return;
 
-  select.addEventListener("change", async () => {
-    const code = select.value;
-    if (code === "KES") { setCurrency("KES", 1); return; }
-
-    try {
-      const rateRes = await fetch("https://open.er-api.com/v6/latest/KES");
-      const rateData = await rateRes.json();
-      const rate = rateData?.rates?.[code];
-      setCurrency(code, rate || 1);
-    } catch (e) {
-      window.cartFunctions?.showToast("Couldn't fetch exchange rate, showing KES");
-      setCurrency("KES", 1);
-    }
+  select.addEventListener("change", () => {
+    applyCurrencyByCode(select.value, {
+      onError: () => window.cartFunctions?.showToast("Couldn't fetch exchange rate, showing KES")
+    });
   });
 }
 
@@ -187,21 +168,7 @@ function initCurrencyModal() {
 
   btn.addEventListener("click", async () => {
     clearInterval(checkInterval);
-    const choice = select.value;
-
-    if (choice === "KES") {
-      setCurrency("KES", 1);
-    } else {
-      try {
-        const rateRes = await fetch("https://open.er-api.com/v6/latest/KES");
-        const rateData = await rateRes.json();
-        const rate = rateData?.rates?.[choice];
-        setCurrency(choice, rate || 1);
-      } catch (e) {
-        setCurrency("KES", 1);
-      }
-    }
-
+    await applyCurrencyByCode(select.value);
     modal.style.display = "none";
   });
 }

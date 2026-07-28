@@ -238,12 +238,7 @@ function initRateCardDownload() {
       if (!res.ok) throw new Error("fetch failed");
       const blob = await res.blob();
       const blobUrl = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = blobUrl;
-      a.download = "Adict-Manlung-Rate-Card.jpg";
-      document.body.appendChild(a);
-      a.click();
-      a.remove();
+      window.utils.downloadFromUrl(blobUrl, "Adict-Manlung-Rate-Card.jpg");
       URL.revokeObjectURL(blobUrl);
     } catch (e) {
       // Cross-origin fetch blocked by the image host — fall back to opening it,
@@ -315,8 +310,7 @@ function setupTourEvents() {
       window.cartFunctions.showToast("Please fill in all details: Full Name, ID Number, and Phone Number.");
       return;
     }
-    const cleanedPhone = phoneVal.replace(/[\s\-()]/g, "");
-    if (!/^\+?\d{9,15}$/.test(cleanedPhone)) {
+    if (!window.utils.isValidPhone(phoneVal)) {
       window.cartFunctions.showToast("Please enter a valid phone number (9-15 digits, optional +).");
       return;
     }
@@ -344,10 +338,7 @@ function setupTourEvents() {
       return;
     }
     try {
-      const link = document.createElement('a');
-      link.download = `adict_${currentTicketType.toLowerCase()}_landscape.png`;
-      link.href = canvas.toDataURL("image/png");
-      link.click();
+      window.utils.downloadFromUrl(canvas.toDataURL("image/png"), `adict_${currentTicketType.toLowerCase()}_landscape.png`);
       ticketDownloaded = true;
       ticketGenerated = false;
       canvas.style.display = "none";

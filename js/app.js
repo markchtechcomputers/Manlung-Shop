@@ -23,13 +23,7 @@ function initEmailSubscription() {
   if (!subscribeBtn) return;
   
   subscribeBtn.addEventListener("click", () => {
-    const email = document.getElementById("captureEmail").value;
-    if (email.includes("@") && email.includes(".")) { 
-      window.cartFunctions.showToast("Subscribed!"); 
-      document.getElementById("captureEmail").value = ""; 
-    } else {
-      window.cartFunctions.showToast("Enter valid email");
-    }
+    window.utils.handleNewsletterSubmit(document.getElementById("captureEmail"), { invalid: "Enter valid email" });
   });
 }
 
@@ -38,14 +32,9 @@ function initTourNotify() {
   if (!btn) return;
 
   btn.addEventListener("click", () => {
-    const input = document.getElementById("tourNotifyEmail");
-    const email = input.value;
-    if (email.includes("@") && email.includes(".")) {
-      window.cartFunctions.showToast("You'll be notified when a show is announced!");
-      input.value = "";
-    } else {
-      window.cartFunctions.showToast("Enter a valid email");
-    }
+    window.utils.handleNewsletterSubmit(document.getElementById("tourNotifyEmail"), {
+      success: "You'll be notified when a show is announced!"
+    });
   });
 }
 

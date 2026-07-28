@@ -39,7 +39,7 @@
     if (!saved) return;
     try {
       const parsed = JSON.parse(saved);
-      parsed.allProducts = [...(parsed.digitalProducts || []), ...(parsed.cdProducts || [])];
+      parsed.allProducts = window.utils.combineProducts(parsed.digitalProducts, parsed.cdProducts);
       window.productData = parsed;
     } catch (e) {
       console.warn("Could not parse saved local data, using defaults.", e);
@@ -47,10 +47,10 @@
   }
 
   function saveToLocalStorage() {
-    window.productData.allProducts = [
-      ...window.productData.digitalProducts,
-      ...window.productData.cdProducts
-    ];
+    window.productData.allProducts = window.utils.combineProducts(
+      window.productData.digitalProducts,
+      window.productData.cdProducts
+    );
     localStorage.setItem(STORAGE_KEY, JSON.stringify(window.productData));
   }
 
@@ -73,7 +73,7 @@
         .then(({ data, error }) => {
           if (!error && data && data.data) {
             const parsed = data.data;
-            parsed.allProducts = [...(parsed.digitalProducts || []), ...(parsed.cdProducts || [])];
+            parsed.allProducts = window.utils.combineProducts(parsed.digitalProducts, parsed.cdProducts);
             window.productData = parsed;
           }
           rerenderEverything();
@@ -85,7 +85,7 @@
         .on("postgres_changes", { event: "*", schema: "public", table: TABLE, filter: `id=eq.${ROW_ID}` }, payload => {
           const newData = payload.new?.data;
           if (!newData) return;
-          newData.allProducts = [...(newData.digitalProducts || []), ...(newData.cdProducts || [])];
+          newData.allProducts = window.utils.combineProducts(newData.digitalProducts, newData.cdProducts);
           window.productData = newData;
           rerenderEverything();
         })
@@ -95,10 +95,10 @@
 
   // Called whenever the admin saves changes
   function saveToStorage() {
-    window.productData.allProducts = [
-      ...window.productData.digitalProducts,
-      ...window.productData.cdProducts
-    ];
+    window.productData.allProducts = window.utils.combineProducts(
+      window.productData.digitalProducts,
+      window.productData.cdProducts
+    );
     saveToLocalStorage();
 
     if (cloudReady) {

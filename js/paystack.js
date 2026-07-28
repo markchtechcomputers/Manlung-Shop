@@ -54,17 +54,12 @@ function getStoredEmail() {
 
 function askForEmail() {
   let email = window.prompt("Enter your email to receive your receipt:", getStoredEmail());
-  if (!email || !email.includes("@") || !email.includes(".")) {
+  if (!window.utils.isValidEmail(email)) {
     window.cartFunctions?.showToast("A valid email is needed to checkout");
     return null;
   }
   sessionStorage.setItem("manlungCustomerEmail", email);
   return email;
-}
-
-function isValidPhone(phone) {
-  const cleaned = phone.replace(/[\s\-()]/g, "");
-  return /^\+?\d{9,15}$/.test(cleaned);
 }
 
 function askForShipping() {
@@ -74,7 +69,7 @@ function askForShipping() {
 
   let phone = window.prompt("Phone number (e.g. 0712345678 or +254712345678):", cached.phone || "");
   if (!phone) { window.cartFunctions?.showToast("A phone number is needed to ship your order"); return null; }
-  while (!isValidPhone(phone)) {
+  while (!window.utils.isValidPhone(phone)) {
     phone = window.prompt("That doesn't look like a valid phone number. Please re-enter (digits only, 9-15 digits, optional +):", phone);
     if (!phone) { window.cartFunctions?.showToast("A valid phone number is needed to ship your order"); return null; }
   }
@@ -87,23 +82,13 @@ function askForShipping() {
   return info;
 }
 
-function triggerDownload(url, filename) {
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = filename || "";
-  a.target = "_blank";
-  document.body.appendChild(a);
-  a.click();
-  a.remove();
-}
-
 // Browsers block rapid-fire automatic downloads (usually after ~5-6 in one go),
 // so for an album's worth of tracks we stagger them AND keep a clickable panel
 // on screen as a guaranteed fallback for anything the browser blocked.
 function autoDownloadAll(items, onAllStarted) {
   const valid = (items || []).filter(i => i.downloadUrl);
   valid.forEach((item, idx) => {
-    setTimeout(() => triggerDownload(item.downloadUrl, item.title), idx * 600);
+    setTimeout(() => window.utils.downloadFromUrl(item.downloadUrl, item.title, { newTab: true }), idx * 600);
   });
   if (valid.length) {
     setTimeout(() => onAllStarted?.(), valid.length * 600 + 400);

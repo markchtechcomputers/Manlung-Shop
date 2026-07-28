@@ -251,10 +251,7 @@ window.productData = {
 
   const blob = new Blob([code], { type: "text/javascript" });
   const url = URL.createObjectURL(blob);
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = "products.js";
-  a.click();
+  window.utils.downloadFromUrl(url, "products.js");
   URL.revokeObjectURL(url);
   toast("⬇ products.js downloaded");
 }
