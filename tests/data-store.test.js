@@ -259,11 +259,14 @@ describe("cloud mode (Supabase configured)", () => {
     const sb = fakeSupabase({ upsertResult: { error: { message: "row level security" } } });
     await loadScript("js/data-store.js");
 
+    expect(window.dataStore.isCloudConnected()).toBe(true);
+
     window.dataStore.saveToStorage();
     await sb.settled();
 
-    expect(warn).toHaveBeenCalled();
-    expect(cartFunctions.showToast).toHaveBeenCalledWith(expect.stringContaining("Couldn't sync to cloud"));
+    expect(sb.calls.upserts).toHaveLength(1);
+    expect(warn).toHaveBeenCalledWith(expect.stringContaining("Supabase write failed"), { message: "row level security" });
+    expect(window.cartFunctions.showToast).toHaveBeenCalledWith(expect.stringContaining("Couldn't sync to cloud"));
     expect(localStorage.getItem(STORAGE_KEY)).not.toBeNull();
   });
 
