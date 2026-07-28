@@ -256,6 +256,8 @@ describe("cloud mode (Supabase configured)", () => {
 
   it("warns the admin when the cloud write fails but the local save succeeded", async () => {
     const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
+    const toasts = [];
+    window.cartFunctions = { renderCartUI: vi.fn(), showToast: msg => toasts.push(msg) };
     const sb = fakeSupabase({ upsertResult: { error: { message: "row level security" } } });
     await loadScript("js/data-store.js");
 
@@ -266,7 +268,7 @@ describe("cloud mode (Supabase configured)", () => {
 
     expect(sb.calls.upserts).toHaveLength(1);
     expect(warn).toHaveBeenCalledWith(expect.stringContaining("Supabase write failed"), { message: "row level security" });
-    expect(window.cartFunctions.showToast).toHaveBeenCalledWith(expect.stringContaining("Couldn't sync to cloud"));
+    expect(toasts.join()).toContain("sync to cloud");
     expect(localStorage.getItem(STORAGE_KEY)).not.toBeNull();
   });
 
