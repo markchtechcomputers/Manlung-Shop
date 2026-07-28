@@ -13,9 +13,14 @@ import { vi } from "vitest";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../..");
 
+let loadCount = 0;
+
 export async function loadScript(relPath) {
   vi.resetModules();
-  await import(/* @vite-ignore */ pathToFileURL(path.join(ROOT, relPath)).href);
+  // The cache-busting query guarantees a fresh execution even if the module
+  // graph is still cached, so no test can inherit another test's closure state.
+  const url = `${pathToFileURL(path.join(ROOT, relPath)).href}?load=${++loadCount}`;
+  await import(/* @vite-ignore */ url);
 }
 
 export function resetStorage() {
