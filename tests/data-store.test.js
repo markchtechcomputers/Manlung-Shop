@@ -10,19 +10,25 @@ let cartFunctions;
 // Minimal stand-in for the supabase-js client, recording what the store asks of it.
 function fakeSupabase({ selectResult = { data: null, error: null }, upsertResult = { error: null }, throwOnCreate = false } = {}) {
   const calls = { upserts: [], deletes: [], channels: [] };
+  const pending = [];
   let changeHandler = null;
+
+  function track(promise) {
+    pending.push(promise);
+    return promise;
+  }
 
   const client = {
     from: vi.fn(() => ({
-      select: () => ({ eq: () => ({ single: () => Promise.resolve(selectResult) }) }),
+      select: () => ({ eq: () => ({ single: () => track(Promise.resolve(selectResult)) }) }),
       upsert: row => {
         calls.upserts.push(row);
-        return Promise.resolve(upsertResult);
+        return track(Promise.resolve(upsertResult));
       },
       delete: () => ({
         eq: (col, val) => {
           calls.deletes.push({ [col]: val });
-          return Promise.resolve({ error: null });
+          return track(Promise.resolve({ error: null }));
         }
       })
     })),
@@ -44,7 +50,16 @@ function fakeSupabase({ selectResult = { data: null, error: null }, upsertResult
     })
   };
 
-  return { calls, emitChange: payload => changeHandler?.(payload) };
+  return {
+    calls,
+    emitChange: payload => changeHandler?.(payload),
+    // Settles every request the store has made, so assertions never race the
+    // store's own .then() handlers.
+    settled: async () => {
+      await Promise.allSettled(pending);
+      await Promise.resolve();
+    }
+  };
 }
 
 beforeEach(async () => {
@@ -163,7 +178,7 @@ describe("cloud mode (Supabase configured)", () => {
   });
 
   it("connects, adopts the shared catalog and re-renders the page", async () => {
-    fakeSupabase({
+    const sb = fakeSupabase({
       selectResult: {
         data: {
           data: {
@@ -180,25 +195,26 @@ describe("cloud mode (Supabase configured)", () => {
     await loadScript("js/data-store.js");
 
     expect(window.dataStore.isCloudConnected()).toBe(true);
-    await vi.waitFor(() => expect(renderFunctions.renderProducts).toHaveBeenCalled());
+    await sb.settled();
+    expect(renderFunctions.renderProducts).toHaveBeenCalled();
     expect(window.productData.digitalProducts[0].title).toBe("Cloud Single");
     expect(window.productData.allProducts.map(p => p.id)).toEqual([11, 12]);
     expect(window.onProductDataUpdated).toHaveBeenCalled();
   });
 
   it("keeps local data when the cloud read errors", async () => {
-    fakeSupabase({ selectResult: { data: null, error: { message: "no row" } } });
-
+    const sb = fakeSupabase({ selectResult: { data: null, error: { message: "no row" } } });
     await loadScript("js/data-store.js");
-    await vi.waitFor(() => expect(renderFunctions.renderProducts).toHaveBeenCalled());
+    await sb.settled();
 
+    expect(renderFunctions.renderProducts).toHaveBeenCalled();
     expect(window.productData.digitalProducts[0].title).toBe("My Gee");
   });
 
   it("applies live catalog changes pushed from other sessions", async () => {
     const sb = fakeSupabase();
     await loadScript("js/data-store.js");
-    await vi.waitFor(() => expect(renderFunctions.renderProducts).toHaveBeenCalled());
+    await sb.settled();
 
     sb.emitChange({
       new: {
@@ -229,8 +245,9 @@ describe("cloud mode (Supabase configured)", () => {
     await loadScript("js/data-store.js");
 
     window.dataStore.saveToStorage();
+    await sb.settled();
 
-    await vi.waitFor(() => expect(sb.calls.upserts).toHaveLength(1));
+    expect(sb.calls.upserts).toHaveLength(1);
     expect(sb.calls.upserts[0].id).toBe(1);
     expect(sb.calls.upserts[0].data.allProducts).toHaveLength(3);
     // Always saved locally too, so a failed sync never loses the edit
@@ -238,13 +255,15 @@ describe("cloud mode (Supabase configured)", () => {
   });
 
   it("warns the admin when the cloud write fails but the local save succeeded", async () => {
-    vi.spyOn(console, "warn").mockImplementation(() => {});
-    fakeSupabase({ upsertResult: { error: { message: "row level security" } } });
+    const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
+    const sb = fakeSupabase({ upsertResult: { error: { message: "row level security" } } });
     await loadScript("js/data-store.js");
 
     window.dataStore.saveToStorage();
+    await sb.settled();
 
-    await vi.waitFor(() => expect(cartFunctions.showToast).toHaveBeenCalledWith(expect.stringContaining("Couldn't sync to cloud")));
+    expect(warn).toHaveBeenCalled();
+    expect(cartFunctions.showToast).toHaveBeenCalledWith(expect.stringContaining("Couldn't sync to cloud"));
     expect(localStorage.getItem(STORAGE_KEY)).not.toBeNull();
   });
 
