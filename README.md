@@ -47,6 +47,23 @@ Open `js/config.js` and fill in:
 
 No build step — it's plain HTML/CSS/JS. Just open `shop.html` (or `admin.html`) directly in a browser, or serve the folder with any static file server.
 
+## Running the tests
+
+The storefront still needs no build step; the tests are the only thing that uses npm.
+
+```bash
+npm install        # one time
+npm test           # run every unit test
+npm run test:watch # re-run tests as you edit
+npm run test:coverage
+```
+
+The tests run in [Vitest](https://vitest.dev/) with a jsdom browser stand-in. Each
+file in `js/` is loaded exactly the way the browser loads it and then driven
+through the `window.*` API it publishes (`window.cartFunctions`,
+`window.currencyFunctions`, ...), so tests need no changes to the site's code.
+Shared setup lives in `tests/helpers/harness.js`.
+
 ## Managing products
 
 You almost never need to hand-edit `data/products.js` anymore — use the **Admin Portal** (`admin.html`) instead:

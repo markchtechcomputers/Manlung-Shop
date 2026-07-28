@@ -1,0 +1,20 @@
+{
+  "name": "manlung-shop",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Official online store for Kenyan independent hip-hop artist Adict Manlung — digital singles, physical CDs, merchandise, and tour tickets. The storefront itself needs no build step; this package only holds the unit test setup.",
+  "type": "module",
+  "scripts": {
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@vitest/coverage-v8": "^4.1.10",
+    "jsdom": "^26.1.0",
+    "vitest": "^4.1.10"
+  }
+}
