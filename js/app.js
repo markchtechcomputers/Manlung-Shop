@@ -10,6 +10,39 @@ function initScrollTopButton() {
   btn.addEventListener("click", () => window.scrollTo({ top: 0, behavior: "smooth" }));
 }
 
+function initSearchAndFilters() {
+  const musicSearch = document.getElementById("musicSearch");
+  musicSearch?.addEventListener("input", () => {
+    const q = musicSearch.value.trim().toLowerCase();
+    document.querySelectorAll("#digitalGrid .product-card").forEach(card => {
+      card.style.display = card.dataset.title.includes(q) ? "" : "none";
+    });
+  });
+
+  const merchSearch = document.getElementById("merchSearch");
+  let activeCategory = "all";
+
+  function applyMerchFilters() {
+    const q = (merchSearch?.value || "").trim().toLowerCase();
+    document.querySelectorAll("#merchGrid .merch-card").forEach(card => {
+      const matchesSearch = card.dataset.title.includes(q);
+      const matchesCategory = activeCategory === "all" || card.dataset.category === activeCategory;
+      card.style.display = (matchesSearch && matchesCategory) ? "" : "none";
+    });
+  }
+
+  merchSearch?.addEventListener("input", applyMerchFilters);
+
+  document.querySelectorAll(".merch-cat-tab").forEach(tab => {
+    tab.addEventListener("click", () => {
+      document.querySelectorAll(".merch-cat-tab").forEach(t => t.classList.remove("active"));
+      tab.classList.add("active");
+      activeCategory = tab.dataset.cat;
+      applyMerchFilters();
+    });
+  });
+}
+
 function showWelcomeMessage() {
   if (sessionStorage.getItem("manlungWelcomeShown")) return;
   sessionStorage.setItem("manlungWelcomeShown", "true");
@@ -91,6 +124,7 @@ function initApp() {
   window.paystackCheckoutFunctions.checkGatewayReturn();
   window.brandsCarouselFunctions.initBrandsCarousel();
   initScrollTopButton();
+  initSearchAndFilters();
   showWelcomeMessage();
   
   // Initialize core functionality
