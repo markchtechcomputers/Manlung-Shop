@@ -5,7 +5,7 @@
 window.SITE_CONFIG = {
   // Paste your Paystack PUBLIC key here (starts with pk_live_ or pk_test_)
   // Get it from: Paystack Dashboard → Settings → API Keys & Webhooks
-  PAYSTACK_PUBLIC_KEY: "pk_test_REPLACE_WITH_YOUR_PAYSTACK_PUBLIC_KEY",
+  PAYSTACK_PUBLIC_KEY: "pk_live_6fac23c23b199c93126e8b106cb191de266e26bc",
 
   // Your deployed Manlung Gateway (the secure Node backend project) — once
   // this is set to your real Render/Railway URL, checkout redirects there
