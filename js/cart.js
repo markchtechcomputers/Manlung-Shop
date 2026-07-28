@@ -1,28 +1,60 @@
 // Cart Management System
+const CART_STORAGE_KEY = "manlungCart";
 let cart = [];
 
-function saveCart() { 
-  localStorage.setItem("manlungCart", JSON.stringify(cart)); 
-  updateBadge(); 
-  renderCartUI(); 
+function saveCart() {
+  const saved = window.appErrors.local.setJson(CART_STORAGE_KEY, cart);
+  if (!saved) showToast("⚠️ Your cart won't be remembered — browser storage is blocked or full");
+  updateBadge();
+  renderCartUI();
 }
 
-function loadCart() { 
-  const s = localStorage.getItem("manlungCart"); 
-  cart = s ? JSON.parse(s) : []; 
-  updateBadge(); 
-  renderCartUI(); 
+// A stored cart line is only trustworthy if it can be priced and totalled.
+function isValidCartItem(item) {
+  return !!item
+    && typeof item === "object"
+    && typeof item.price === "number"
+    && Number.isFinite(item.price)
+    && Number.isFinite(Number(item.quantity))
+    && Number(item.quantity) > 0;
 }
 
-function updateBadge() { 
-  document.getElementById("cartCountBadge").innerText = cart.reduce((s, i) => s + i.quantity, 0); 
+function loadCart() {
+  const stored = window.appErrors.local.getJson(CART_STORAGE_KEY, []);
+  const items = Array.isArray(stored) ? stored : [];
+  cart = items.filter(isValidCartItem).map(i => ({ ...i, quantity: Number(i.quantity) }));
+
+  if (cart.length !== items.length) {
+    window.appErrors.report(
+      "cart:load",
+      new Error(`Dropped ${items.length - cart.length} unreadable cart item(s) from storage`),
+      "Some saved cart items couldn't be restored — please add them again"
+    );
+    window.appErrors.local.setJson(CART_STORAGE_KEY, cart);
+  }
+
+  updateBadge();
+  renderCartUI();
 }
 
-function showToast(m) { 
-  const t = document.getElementById("toastMsg"); 
-  t.innerText = m; 
-  t.style.opacity = "1"; 
-  setTimeout(() => t.style.opacity = "0", 1600); 
+function updateBadge() {
+  const badge = document.getElementById("cartCountBadge");
+  if (!badge) return;
+  badge.innerText = cart.reduce((s, i) => s + i.quantity, 0);
+}
+
+// The whole app reports problems through this toast, so it must never throw:
+// a missing toast element would otherwise turn every handled error into an
+// unhandled one.
+function showToast(m) {
+  const t = document.getElementById("toastMsg");
+  if (!t) {
+    console.warn("[notice]", m);
+    return;
+  }
+  t.innerText = m;
+  t.style.opacity = "1";
+  setTimeout(() => t.style.opacity = "0", 1600);
 }
 
 function addToCart(product, qty) {
@@ -38,12 +70,16 @@ function addToCart(product, qty) {
   saveCart();
 }
 
+function cdCatalog() {
+  return Array.isArray(window.productData?.cdProducts) ? window.productData.cdProducts : [];
+}
+
 function isPhysicalItem(id) {
-  return window.productData.cdProducts.some(p => p.id === id);
+  return cdCatalog().some(p => p.id === id);
 }
 
 function getDownloadItems(product) {
-  const cd = window.productData.cdProducts.find(p => p.id === product.id);
+  const cd = cdCatalog().find(p => p.id === product.id);
   if (cd) {
     // A CD's downloadable content is its full tracklist (set in Admin Portal)
     return (cd.tracks || []).map(t => ({ title: t.title, downloadUrl: t.url }));
@@ -80,7 +116,8 @@ function directCheckout(product, qty) {
 function renderCartUI() {
   const cont = document.getElementById("cartItemsContainer");
   const footerDiv = document.getElementById("cartFooter");
-  
+  if (!cont) return;
+
   if (cart.length === 0) { 
     cont.innerHTML = "<div style='text-align:center; padding:48px 20px; color:#7d8bab;'><div style='font-size:2.5rem; margin-bottom:12px;'>🛒</div><div style='font-weight:600; color:#16213e; margin-bottom:4px;'>Your cart is empty</div><div style='font-size:0.85rem;'>Browse Music, CDs, or Merch to add something.</div></div>"; 
     if (footerDiv) footerDiv.style.display = "none"; 
@@ -111,7 +148,8 @@ function renderCartUI() {
   
   cont.innerHTML = html;
   if (footerDiv) footerDiv.style.display = "block";
-  document.getElementById("cartTotalPrice").innerText = window.currencyFunctions.formatPrice(total);
+  const totalEl = document.getElementById("cartTotalPrice");
+  if (totalEl) totalEl.innerText = window.currencyFunctions.formatPrice(total);
   
   document.querySelectorAll(".cart-qty-btn").forEach(btn => btn.addEventListener("click", () => updateQty(parseInt(btn.dataset.id), parseInt(btn.dataset.delta))));
   document.querySelectorAll(".remove-item").forEach(btn => btn.addEventListener("click", () => removeItem(parseInt(btn.dataset.id))));

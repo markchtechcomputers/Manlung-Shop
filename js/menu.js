@@ -39,10 +39,18 @@ const POLICY_CONTENT = {
 
 function openPolicyModal(key) {
   const data = POLICY_CONTENT[key];
-  if (!data) return;
-  document.getElementById("policyModalTitle").textContent = data.title;
-  document.getElementById("policyModalBody").innerHTML = data.body;
-  document.getElementById("policyModal").classList.add("open");
+  if (!data) {
+    window.appErrors.report("menu:policy", new Error(`No policy content defined for "${key}"`));
+    return;
+  }
+  const title = window.appErrors.requireElement("policyModalTitle", "menu:policy");
+  const body = window.appErrors.requireElement("policyModalBody", "menu:policy");
+  const modal = window.appErrors.requireElement("policyModal", "menu:policy");
+  if (!title || !body || !modal) return;
+
+  title.textContent = data.title;
+  body.innerHTML = data.body;
+  modal.classList.add("open");
 }
 
 function initMenuPanel() {
@@ -52,7 +60,8 @@ function initMenuPanel() {
   if (!overlay || !openBtn) return;
 
   openBtn.addEventListener("click", () => overlay.classList.add("open"));
-  closeBtn.addEventListener("click", () => overlay.classList.remove("open"));
+  if (closeBtn) closeBtn.addEventListener("click", () => overlay.classList.remove("open"));
+  else window.appErrors.report("menu:panel", new Error("Expected element #closeMenuBtn in the page"));
 
   // Policy + Contact links inside the menu
   document.querySelectorAll("[data-policy]").forEach(el => {
@@ -79,7 +88,11 @@ function initMenuPanel() {
 
   // Newsletter (menu version)
   document.getElementById("menuNewsletterBtn")?.addEventListener("click", () => {
-    const input = document.getElementById("menuNewsletterEmail");
+    const input = window.appErrors.requireElement("menuNewsletterEmail", "menu:newsletter");
+    if (!input) {
+      window.cartFunctions.showToast("Newsletter signup is unavailable right now");
+      return;
+    }
     if (input.value.includes("@") && input.value.includes(".")) {
       window.cartFunctions.showToast("Subscribed!");
       input.value = "";
@@ -97,14 +110,19 @@ function supabaseAuthConfigured() {
 }
 
 function showAccountLoggedIn(email) {
-  document.getElementById("accountLoggedOut").style.display = "none";
-  document.getElementById("accountLoggedIn").style.display = "block";
-  document.getElementById("accountEmailDisplay").textContent = email;
+  const loggedOut = window.appErrors.requireElement("accountLoggedOut", "menu:account");
+  const loggedIn = window.appErrors.requireElement("accountLoggedIn", "menu:account");
+  const emailDisplay = window.appErrors.requireElement("accountEmailDisplay", "menu:account");
+  if (loggedOut) loggedOut.style.display = "none";
+  if (loggedIn) loggedIn.style.display = "block";
+  if (emailDisplay) emailDisplay.textContent = email;
 }
 
 function showAccountLoggedOut() {
-  document.getElementById("accountLoggedOut").style.display = "block";
-  document.getElementById("accountLoggedIn").style.display = "none";
+  const loggedOut = window.appErrors.requireElement("accountLoggedOut", "menu:account");
+  const loggedIn = window.appErrors.requireElement("accountLoggedIn", "menu:account");
+  if (loggedOut) loggedOut.style.display = "block";
+  if (loggedIn) loggedIn.style.display = "none";
 }
 
 // ---- Local fallback account store (this browser only) ----
@@ -112,15 +130,15 @@ const LOCAL_ACCOUNTS_KEY = "manlungAccounts";
 const LOCAL_SESSION_KEY = "manlungLoggedInEmail";
 
 function getLocalAccounts() {
-  try { return JSON.parse(localStorage.getItem(LOCAL_ACCOUNTS_KEY) || "{}"); }
-  catch (e) { return {}; }
+  const accounts = window.appErrors.local.getJson(LOCAL_ACCOUNTS_KEY, {});
+  return accounts && typeof accounts === "object" ? accounts : {};
 }
 function saveLocalAccounts(accounts) {
-  localStorage.setItem(LOCAL_ACCOUNTS_KEY, JSON.stringify(accounts));
+  return window.appErrors.local.setJson(LOCAL_ACCOUNTS_KEY, accounts);
 }
 
 function initLocalAccountSystem(loginBtn, createBtn, logoutBtn, errorBox) {
-  const existingSession = sessionStorage.getItem(LOCAL_SESSION_KEY);
+  const existingSession = window.appErrors.session.get(LOCAL_SESSION_KEY);
   if (existingSession) showAccountLoggedIn(existingSession);
 
   loginBtn.addEventListener("click", () => {
@@ -141,7 +159,7 @@ function initLocalAccountSystem(loginBtn, createBtn, logoutBtn, errorBox) {
       errorBox.textContent = "Incorrect password";
       return;
     }
-    sessionStorage.setItem(LOCAL_SESSION_KEY, email);
+    window.appErrors.session.set(LOCAL_SESSION_KEY, email);
     showAccountLoggedIn(email);
     window.cartFunctions.showToast("Logged in!");
   });
@@ -166,14 +184,19 @@ function initLocalAccountSystem(loginBtn, createBtn, logoutBtn, errorBox) {
       return;
     }
     accounts[email] = password;
-    saveLocalAccounts(accounts);
-    sessionStorage.setItem(LOCAL_SESSION_KEY, email);
+    // Without storage there is no account to log back into, so don't claim one
+    // was created.
+    if (!saveLocalAccounts(accounts)) {
+      errorBox.textContent = "Couldn't save your account — your browser is blocking storage (private mode?)";
+      return;
+    }
+    window.appErrors.session.set(LOCAL_SESSION_KEY, email);
     showAccountLoggedIn(email);
     window.cartFunctions.showToast("Account created!");
   });
 
   logoutBtn.addEventListener("click", () => {
-    sessionStorage.removeItem(LOCAL_SESSION_KEY);
+    window.appErrors.session.remove(LOCAL_SESSION_KEY);
     showAccountLoggedOut();
     window.cartFunctions.showToast("Logged out");
   });
@@ -181,10 +204,12 @@ function initLocalAccountSystem(loginBtn, createBtn, logoutBtn, errorBox) {
 
 function initAccountSystem() {
   const loginBtn = document.getElementById("accountLoginBtn");
-  const createBtn = document.getElementById("accountCreateBtn");
-  const logoutBtn = document.getElementById("accountLogoutBtn");
-  const errorBox = document.getElementById("accountError");
   if (!loginBtn) return;
+
+  const createBtn = window.appErrors.requireElement("accountCreateBtn", "menu:account");
+  const logoutBtn = window.appErrors.requireElement("accountLogoutBtn", "menu:account");
+  const errorBox = window.appErrors.requireElement("accountError", "menu:account");
+  if (!createBtn || !logoutBtn || !errorBox) return;
 
   if (!supabaseAuthConfigured()) {
     // Works right away on this device/browser. Set up Supabase in js/config.js
@@ -195,10 +220,15 @@ function initAccountSystem() {
 
   const sb = window.dataStore.getClient();
 
-  sb.auth.getSession().then(({ data: { session } }) => {
-    if (session?.user) showAccountLoggedIn(session.user.email);
-    else showAccountLoggedOut();
-  });
+  sb.auth.getSession()
+    .then(({ data: { session } }) => {
+      if (session?.user) showAccountLoggedIn(session.user.email);
+      else showAccountLoggedOut();
+    })
+    .catch(e => {
+      window.appErrors.report("menu:get-session", e);
+      showAccountLoggedOut();
+    });
   sb.auth.onAuthStateChange((_event, session) => {
     if (session?.user) showAccountLoggedIn(session.user.email);
     else showAccountLoggedOut();
@@ -208,11 +238,13 @@ function initAccountSystem() {
     errorBox.textContent = "";
     const email = document.getElementById("accountEmail").value;
     const password = document.getElementById("accountPassword").value;
-    const { error } = await sb.auth.signInWithPassword({ email, password });
-    if (error) {
-      errorBox.textContent = error.message;
-    } else {
+    try {
+      const { error } = await sb.auth.signInWithPassword({ email, password });
+      if (error) throw error;
       window.cartFunctions.showToast("Logged in!");
+    } catch (e) {
+      window.appErrors.report("menu:sign-in", e);
+      errorBox.textContent = e.message || "Couldn't sign in — please try again";
     }
   });
 
@@ -225,17 +257,25 @@ function initAccountSystem() {
       errorBox.textContent = "Enter an email and password first, then click Create Account";
       return;
     }
-    const { error } = await sb.auth.signUp({ email, password });
-    if (error) {
-      errorBox.textContent = error.message;
-    } else {
+    try {
+      const { error } = await sb.auth.signUp({ email, password });
+      if (error) throw error;
       window.cartFunctions.showToast("Account created! Check your email to confirm, then log in.");
+    } catch (e) {
+      window.appErrors.report("menu:sign-up", e);
+      errorBox.textContent = e.message || "Couldn't create the account — please try again";
     }
   });
 
   logoutBtn.addEventListener("click", async () => {
-    await sb.auth.signOut();
-    window.cartFunctions.showToast("Logged out");
+    try {
+      const { error } = await sb.auth.signOut();
+      if (error) throw error;
+      window.cartFunctions.showToast("Logged out");
+    } catch (e) {
+      // Still signed in server-side — saying "Logged out" here would be a lie.
+      window.appErrors.report("menu:sign-out", e, "Couldn't log you out — please try again");
+    }
   });
 }
 

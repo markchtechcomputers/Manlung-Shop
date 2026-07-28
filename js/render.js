@@ -1,5 +1,15 @@
 // UI Rendering Functions
 
+// Product data can come from the cloud or from an admin export, so a missing or
+// malformed list must degrade to "nothing to show here" instead of throwing
+// mid-render and leaving a half-drawn page with no explanation.
+function catalogList(key) {
+  const list = window.productData?.[key];
+  if (Array.isArray(list)) return list;
+  window.appErrors.report("render:catalog", new Error(`productData.${key} is missing or not an array — rendering it as empty`));
+  return [];
+}
+
 function featureTagsHtml(features) {
   if (!features || !features.length) return "";
   return `<div class="feature-tags">${features.map(f => `<span class="feature-tag">${f}</span>`).join("")}</div>`;
@@ -15,7 +25,7 @@ function renderProducts() {
   cdGrid.innerHTML = "";
   
   // Render digital products
-  window.productData.digitalProducts.forEach(p => {
+  catalogList("digitalProducts").forEach(p => {
     const card = document.createElement("div");
     card.className = "product-card";
     const soldOut = p.soldOut || p.stock === 0;
@@ -45,7 +55,7 @@ function renderProducts() {
   });
   
   // Render CD products
-  window.productData.cdProducts.forEach(p => {
+  catalogList("cdProducts").forEach(p => {
     const card = document.createElement("div");
     card.className = "product-card";
     const soldOut = p.soldOut || p.stock === 0;
@@ -78,12 +88,18 @@ function renderProducts() {
   // Quantity steppers
   document.querySelectorAll(".qty-stepper").forEach(stepper => {
     const display = stepper.querySelector(".qty-display");
-    stepper.querySelector(".qty-dec").addEventListener("click", (e) => {
+    const dec = stepper.querySelector(".qty-dec");
+    const inc = stepper.querySelector(".qty-inc");
+    if (!display || !dec || !inc) {
+      window.appErrors.report("render:qty-stepper", new Error(`Quantity stepper for product ${stepper.dataset.id} is missing its controls`));
+      return;
+    }
+    dec.addEventListener("click", (e) => {
       e.stopPropagation();
       const val = Math.max(1, parseInt(display.textContent) - 1);
       display.textContent = val;
     });
-    stepper.querySelector(".qty-inc").addEventListener("click", (e) => {
+    inc.addEventListener("click", (e) => {
       e.stopPropagation();
       const val = parseInt(display.textContent) + 1;
       display.textContent = val;
@@ -96,15 +112,28 @@ function renderProducts() {
   }
 
   // Add event listeners
+  function findProduct(btn) {
+    const id = parseInt(btn.dataset.id);
+    const prod = catalogList("allProducts").find(p => p.id === id);
+    if (!prod) {
+      window.appErrors.report(
+        "render:missing-product",
+        new Error(`Product ${btn.dataset.id} is on the page but not in the catalog`),
+        "That item is no longer available — please refresh the page"
+      );
+    }
+    return prod;
+  }
+
   document.querySelectorAll(".btn-add").forEach(btn => btn.addEventListener("click", (e) => {
     e.stopPropagation();
-    const prod = window.productData.allProducts.find(p => p.id == parseInt(btn.dataset.id));
+    const prod = findProduct(btn);
     if (prod) window.cartFunctions.addToCart(prod, getSelectedQty(prod.id));
   }));
   
   document.querySelectorAll(".buy-now").forEach(btn => btn.addEventListener("click", (e) => {
     e.stopPropagation();
-    const prod = window.productData.allProducts.find(p => p.id == parseInt(btn.dataset.id));
+    const prod = findProduct(btn);
     if (prod) window.cartFunctions.directCheckout(prod, getSelectedQty(prod.id));
   }));
 }
@@ -115,7 +144,7 @@ function renderMerch() {
   
   grid.innerHTML = "";
   
-  window.productData.merchItems.forEach(item => {
+  catalogList("merchItems").forEach(item => {
     const card = document.createElement("div");
     card.className = "merch-card";
     const soldOut = item.soldOut && !item.comingSoon;
@@ -203,7 +232,7 @@ function renderMerch() {
   
   // Wire up color + size selection for every merch item that has them
   // (generic — works for any item added via the Admin Portal, not just one hardcoded product)
-  window.productData.merchItems.forEach(item => {
+  catalogList("merchItems").forEach(item => {
     if (item.comingSoon || (item.soldOut && !item.comingSoon)) return;
 
     if (Array.isArray(item.colors) && item.colors.length) {
@@ -212,7 +241,7 @@ function renderMerch() {
         opt.addEventListener('click', (e) => {
           e.stopPropagation();
           const container = document.getElementById(`colors-${item.id}`);
-          container.querySelectorAll('.color-option').forEach(c => c.classList.remove('selected'));
+          if (container) container.querySelectorAll('.color-option').forEach(c => c.classList.remove('selected'));
           opt.classList.add('selected');
           window.cartFunctions.showToast(`Color: ${opt.dataset.color} selected`);
         });
@@ -236,8 +265,15 @@ function renderMerch() {
   document.querySelectorAll(".merch-pay-btn").forEach(btn => {
     btn.addEventListener("click", (e) => {
       e.stopPropagation();
-      const item = window.productData.merchItems.find(i => i.id == parseInt(btn.dataset.id));
-      if (!item) return;
+      const item = catalogList("merchItems").find(i => i.id === parseInt(btn.dataset.id));
+      if (!item) {
+        window.appErrors.report(
+          "render:missing-product",
+          new Error(`Merch item ${btn.dataset.id} is on the page but not in the catalog`),
+          "That item is no longer available — please refresh the page"
+        );
+        return;
+      }
 
       const selectedColorEl = document.querySelector(`#colors-${item.id} .color-option.selected`);
       const selectedSizeEl = document.querySelector(`#sizes-${item.id} .size-btn.selected`);
@@ -270,7 +306,7 @@ function renderTestimonials() {
   const grid = document.getElementById("testimonialsGrid");
   if (!grid) return;
   
-  grid.innerHTML = window.productData.testimonials.map(t => `
+  grid.innerHTML = catalogList("testimonials").map(t => `
     <div class="testimonial-card">
       <div class="stars">${"★".repeat(t.stars)}${"☆".repeat(5 - t.stars)}</div>
       <div class="testimonial-text">"${t.text}"</div>

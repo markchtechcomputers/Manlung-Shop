@@ -38,37 +38,58 @@ let logoImage = new Image();
 logoImage.crossOrigin = "Anonymous";
 let logoLoaded = false;
 logoImage.onload = () => { logoLoaded = true; };
-logoImage.onerror = () => { logoLoaded = false; };
+logoImage.onerror = () => {
+  logoLoaded = false;
+  window.appErrors.report("tour:logo-load", new Error(`Ticket logo failed to load from ${LOGO_URL} — tickets will use the text fallback`));
+};
 logoImage.src = LOGO_URL;
 
 function showDetailsPanelAutomatically(ticketType, price) {
   const detailsPanel = document.getElementById("detailsForm");
   if (!detailsPanel) return;
-  
+
+  if (!colorSchemes[ticketType]) {
+    window.appErrors.report(
+      "tour:unknown-ticket-type",
+      new Error(`No ticket design exists for type "${ticketType}"`),
+      "We couldn't match your ticket type — contact us and we'll issue your ticket manually"
+    );
+    return;
+  }
+
   detailsPanel.style.display = "block";
   paymentCompleted = true;
   currentTicketType = ticketType;
-  currentPrice = price;
-  document.getElementById("fullName").value = "";
-  document.getElementById("idNumber").value = "";
-  document.getElementById("phoneNumber").value = "";
-  document.getElementById("generateTicketBtn").disabled = false;
-  document.getElementById("generateTicketBtn").innerText = "✨ Generate My Ticket ✨";
+  currentPrice = Number(price) || 0;
+  const fields = ["fullName", "idNumber", "phoneNumber"];
+  fields.forEach(id => {
+    const el = window.appErrors.requireElement(id, "tour:details-form");
+    if (el) el.value = "";
+  });
+  const generateBtn = window.appErrors.requireElement("generateTicketBtn", "tour:details-form");
+  if (generateBtn) {
+    generateBtn.disabled = false;
+    generateBtn.innerText = "✨ Generate My Ticket ✨";
+  }
   detailsPanel.scrollIntoView({ behavior: "smooth", block: "center" });
 }
 
 function checkPaymentReturn() {
-  const paymentInitiated = sessionStorage.getItem("paymentInitiated");
-  const pendingType = sessionStorage.getItem("pendingTicketType");
-  const pendingPrice = sessionStorage.getItem("pendingTicketPrice");
-  
+  const paymentInitiated = window.appErrors.session.get("paymentInitiated");
+  const pendingType = window.appErrors.session.get("pendingTicketType");
+  const pendingPrice = window.appErrors.session.get("pendingTicketPrice");
+
   if (paymentInitiated === "true" && pendingType && pendingPrice) {
-    sessionStorage.removeItem("paymentInitiated");
-    sessionStorage.removeItem("pendingTicketType");
-    sessionStorage.removeItem("pendingTicketPrice");
-    showDetailsPanelAutomatically(pendingType, parseInt(pendingPrice));
+    window.appErrors.session.remove("paymentInitiated");
+    window.appErrors.session.remove("pendingTicketType");
+    window.appErrors.session.remove("pendingTicketPrice");
+    const price = parseInt(pendingPrice, 10);
+    if (Number.isNaN(price)) {
+      window.appErrors.report("tour:pending-price", new Error(`Stored ticket price "${pendingPrice}" is not a number`));
+    }
+    showDetailsPanelAutomatically(pendingType, Number.isNaN(price) ? 0 : price);
     currentTicketType = pendingType;
-    currentPrice = parseInt(pendingPrice);
+    currentPrice = Number.isNaN(price) ? 0 : price;
   } else {
     const detailsPanel = document.getElementById("detailsForm");
     if (detailsPanel) detailsPanel.style.display = "none";
@@ -80,11 +101,28 @@ function generateLandscapeTicket() {
   const generateBtn = document.getElementById("generateTicketBtn");
   
   if (!canvas || !generateBtn) return;
-  
+
+  const scheme = colorSchemes[currentTicketType];
+  if (!scheme) {
+    window.appErrors.report(
+      "tour:unknown-ticket-type",
+      new Error(`No ticket design exists for type "${currentTicketType}"`),
+      "We couldn't match your ticket type — contact us and we'll issue your ticket manually"
+    );
+    return;
+  }
+
   canvas.width = 850;
   canvas.height = 530;
   const ctx = canvas.getContext("2d");
-  const scheme = colorSchemes[currentTicketType];
+  if (!ctx) {
+    window.appErrors.report(
+      "tour:canvas-context",
+      new Error("Browser did not provide a 2d canvas context"),
+      "Your browser can't draw the ticket — try another browser and contact us if it keeps failing"
+    );
+    return;
+  }
   
   // Create gradient background
   const grad = ctx.createLinearGradient(0, 0, canvas.width, 0);
@@ -103,7 +141,15 @@ function generateLandscapeTicket() {
   
   // Draw logo or text
   if (logoLoaded && logoImage.complete && logoImage.naturalWidth > 0) {
-    try { ctx.drawImage(logoImage, 25, 25, 80, 80); } catch(e) {}
+    try {
+      ctx.drawImage(logoImage, 25, 25, 80, 80);
+    } catch (e) {
+      // Tainted/cross-origin image: keep the ticket, lose the logo.
+      window.appErrors.report("tour:logo-draw", e);
+      ctx.font = "bold 16px monospace";
+      ctx.fillStyle = "#FFD966";
+      ctx.fillText("ADICT", 30, 60);
+    }
   } else {
     ctx.font = "bold 16px monospace"; 
     ctx.fillStyle = "#FFD966"; 
@@ -204,7 +250,8 @@ function generateLandscapeTicket() {
   
   // Show canvas and download button
   canvas.style.display = "block";
-  document.getElementById("downloadFinalBtn").style.display = "inline-block";
+  const downloadBtn = window.appErrors.requireElement("downloadFinalBtn", "tour:ticket-canvas");
+  if (downloadBtn) downloadBtn.style.display = "inline-block";
   ticketGenerated = true;
   generateBtn.disabled = true;
   generateBtn.innerText = "✓ Ticket Created";
@@ -235,7 +282,7 @@ function initRateCardDownload() {
     window.cartFunctions?.showToast("Downloading rate card...");
     try {
       const res = await fetch(url);
-      if (!res.ok) throw new Error("fetch failed");
+      if (!res.ok) throw new Error(`HTTP ${res.status} ${res.statusText} for ${url}`);
       const blob = await res.blob();
       const blobUrl = URL.createObjectURL(blob);
       const a = document.createElement("a");
@@ -248,7 +295,11 @@ function initRateCardDownload() {
     } catch (e) {
       // Cross-origin fetch blocked by the image host — fall back to opening it,
       // where the visitor can right-click/long-press -> Save Image.
-      window.cartFunctions?.showToast("Couldn't auto-download (host blocked it) — opening image, use Save Image instead");
+      window.appErrors.report(
+        "tour:rate-card-download",
+        e,
+        "Couldn't auto-download (host blocked it) — opening image, use Save Image instead"
+      );
       window.open(url, "_blank");
     }
   });
@@ -353,8 +404,14 @@ function setupTourEvents() {
       canvas.style.display = "none";
       downloadBtn.style.display = "none";
       window.cartFunctions.showToast("✅ Ticket downloaded! You can now buy another ticket.");
-    } catch(e) {
-      window.cartFunctions.showToast("Right-click on the ticket image and select 'Save image as...'");
+    } catch (e) {
+      // toDataURL throws on a tainted canvas; the ticket is still on screen, so
+      // the visitor can save it by hand. Keep the state as "not downloaded".
+      window.appErrors.report(
+        "tour:ticket-download",
+        e,
+        "Right-click on the ticket image and select 'Save image as...'"
+      );
     }
   });
 }

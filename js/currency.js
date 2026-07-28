@@ -30,13 +30,65 @@ function formatPrice(kshAmount) {
   return `${symbol} ${formatted}`;
 }
 
+const CURRENCY_STORAGE_KEY = "manlungCurrency";
+const RATE_API_URL = "https://open.er-api.com/v6/latest/KES";
+
 function setCurrency(code, rate) {
   window.currencyState.code = code;
   window.currencyState.symbol = CURRENCY_SYMBOLS[code] || code;
   window.currencyState.rate = rate;
   window.currencyState.ready = true;
-  sessionStorage.setItem("manlungCurrency", JSON.stringify(window.currencyState));
+  // Failing to remember the choice is not worth interrupting the visitor over
+  // (it's re-detected next load), but it must not stop the prices updating.
+  window.appErrors.session.setJson(CURRENCY_STORAGE_KEY, window.currencyState);
   refreshDisplayedPrices();
+}
+
+// A cached state with a non-numeric rate would silently render every price as
+// NaN, so treat it as absent.
+function readCachedCurrency() {
+  const cached = window.appErrors.session.getJson(CURRENCY_STORAGE_KEY, null);
+  if (!cached || typeof cached.code !== "string" || !Number.isFinite(cached.rate) || cached.rate <= 0) {
+    if (cached) {
+      window.appErrors.report("currency:cache", new Error(`Ignoring unusable cached currency: ${JSON.stringify(cached)}`));
+      window.appErrors.session.remove(CURRENCY_STORAGE_KEY);
+    }
+    return null;
+  }
+  return cached;
+}
+
+// Single place the KES conversion rate is fetched. Returns null on any failure
+// (network, HTTP error, unknown currency) after reporting why — callers decide
+// what to tell the visitor.
+async function fetchRateForCurrency(code) {
+  try {
+    const rateData = await window.appErrors.fetchJson(RATE_API_URL);
+    const rate = rateData?.rates?.[code];
+    if (!Number.isFinite(rate) || rate <= 0) {
+      throw new Error(`Exchange rate API returned no usable rate for ${code}`);
+    }
+    return rate;
+  } catch (e) {
+    window.appErrors.report(`currency:rate:${code}`, e);
+    return null;
+  }
+}
+
+// Applies the requested currency, or falls back to KES and says so.
+async function applyCurrency(code) {
+  if (code === "KES") {
+    setCurrency("KES", 1);
+    return true;
+  }
+  const rate = await fetchRateForCurrency(code);
+  if (rate === null) {
+    window.appErrors.notify(`Couldn't get the ${code} exchange rate — showing prices in KES`);
+    setCurrency("KES", 1);
+    return false;
+  }
+  setCurrency(code, rate);
+  return true;
 }
 
 function refreshDisplayedPrices() {
@@ -56,41 +108,34 @@ function updateCurrencyBadge() {
 
 async function detectAndApplyCurrency() {
   // 1. Use a cached choice from this session if present (manual pick or prior detection)
-  const cached = sessionStorage.getItem("manlungCurrency");
+  const cached = readCachedCurrency();
   if (cached) {
-    try {
-      const parsed = JSON.parse(cached);
-      window.currencyState = parsed;
-      refreshDisplayedPrices();
-      return;
-    } catch (e) { /* fall through to re-detect */ }
+    window.currencyState = cached;
+    refreshDisplayedPrices();
+    return;
   }
 
+  // 2. Detect visitor's country/currency. Detection is a convenience, so a
+  // failure here stays in the console rather than nagging the visitor — but it
+  // is no longer indistinguishable from "this visitor is in Kenya".
+  let detectedCode = "KES";
   try {
-    // 2. Detect visitor's country/currency
-    const geoRes = await fetch("https://ipapi.co/json/");
-    const geo = await geoRes.json();
-    const detectedCode = geo.currency || "KES";
-
-    if (detectedCode === "KES") {
-      setCurrency("KES", 1);
-      return;
-    }
-
-    // 3. Get conversion rate from KES to the detected currency
-    const rateRes = await fetch("https://open.er-api.com/v6/latest/KES");
-    const rateData = await rateRes.json();
-    const rate = rateData?.rates?.[detectedCode];
-
-    if (rate) {
-      setCurrency(detectedCode, rate);
-    } else {
-      setCurrency("KES", 1);
-    }
-  } catch (err) {
-    // Offline, blocked, or rate-limited — just stick with KES
+    const geo = await window.appErrors.fetchJson("https://ipapi.co/json/");
+    detectedCode = geo.currency || "KES";
+  } catch (e) {
+    window.appErrors.report("currency:geo-detect", e);
     setCurrency("KES", 1);
+    return;
   }
+
+  // 3. Convert to the detected currency, falling back to KES if the rate
+  // lookup fails (reported inside fetchRateForCurrency).
+  if (detectedCode === "KES") {
+    setCurrency("KES", 1);
+    return;
+  }
+  const rate = await fetchRateForCurrency(detectedCode);
+  setCurrency(rate === null ? "KES" : detectedCode, rate === null ? 1 : rate);
 }
 
 function populateCurrencyDropdowns() {
@@ -123,18 +168,9 @@ function initCountrySearch() {
     results.querySelectorAll(".country-result").forEach(el => {
       el.addEventListener("click", async () => {
         const code = el.dataset.code;
-        if (code === "KES") {
-          setCurrency("KES", 1);
-        } else {
-          try {
-            const rateRes = await fetch("https://open.er-api.com/v6/latest/KES");
-            const rateData = await rateRes.json();
-            setCurrency(code, rateData?.rates?.[code] || 1);
-          } catch (e) {
-            setCurrency("KES", 1);
-          }
-        }
-        window.cartFunctions?.showToast(`Currency set to ${code}`);
+        const applied = await applyCurrency(code);
+        // Only claim the currency changed when it really did.
+        if (applied) window.cartFunctions?.showToast(`Currency set to ${code}`);
       });
     });
   }
@@ -147,19 +183,8 @@ function initCurrencySelector() {
   const select = document.getElementById("currencySelector");
   if (!select) return;
 
-  select.addEventListener("change", async () => {
-    const code = select.value;
-    if (code === "KES") { setCurrency("KES", 1); return; }
-
-    try {
-      const rateRes = await fetch("https://open.er-api.com/v6/latest/KES");
-      const rateData = await rateRes.json();
-      const rate = rateData?.rates?.[code];
-      setCurrency(code, rate || 1);
-    } catch (e) {
-      window.cartFunctions?.showToast("Couldn't fetch exchange rate, showing KES");
-      setCurrency("KES", 1);
-    }
+  select.addEventListener("change", () => {
+    applyCurrency(select.value);
   });
 }
 
@@ -168,16 +193,19 @@ function initCurrencyModal() {
   if (!modal) return;
 
   // Already chosen this session? Skip the modal entirely.
-  if (sessionStorage.getItem("manlungCurrency")) {
+  if (readCachedCurrency()) {
     modal.style.display = "none";
     return;
   }
 
-  const select = document.getElementById("currencyModalSelect");
-  const btn = document.getElementById("currencyModalContinue");
+  const select = window.appErrors.requireElement("currencyModalSelect", "currency:modal");
+  const btn = window.appErrors.requireElement("currencyModalContinue", "currency:modal");
+  if (!select || !btn) {
+    modal.style.display = "none";
+    return;
+  }
 
   // If IP-based detection finishes while the modal is still open, reflect it
-  const originalSetCurrency = setCurrency;
   const syncSelectIfOpen = () => {
     if (modal.style.display !== "none" && CURRENCY_SYMBOLS[window.currencyState.code]) {
       select.value = window.currencyState.code;
@@ -187,21 +215,7 @@ function initCurrencyModal() {
 
   btn.addEventListener("click", async () => {
     clearInterval(checkInterval);
-    const choice = select.value;
-
-    if (choice === "KES") {
-      setCurrency("KES", 1);
-    } else {
-      try {
-        const rateRes = await fetch("https://open.er-api.com/v6/latest/KES");
-        const rateData = await rateRes.json();
-        const rate = rateData?.rates?.[choice];
-        setCurrency(choice, rate || 1);
-      } catch (e) {
-        setCurrency("KES", 1);
-      }
-    }
-
+    await applyCurrency(select.value);
     modal.style.display = "none";
   });
 }
@@ -209,6 +223,7 @@ function initCurrencyModal() {
 window.currencyFunctions = {
   formatPrice,
   setCurrency,
+  applyCurrency,
   refreshDisplayedPrices,
   detectAndApplyCurrency,
   initCurrencySelector,

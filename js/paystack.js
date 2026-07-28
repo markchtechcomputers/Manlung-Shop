@@ -29,27 +29,30 @@ function paystackCheckout({ amount, email, label, metadata, onSuccess, onClose }
     return;
   }
 
-  const handler = PaystackPop.setup({
-    key: key,
-    email: email,
-    amount: Math.round(amount * 100), // Paystack expects the amount in the smallest currency unit
-    currency: window.SITE_CONFIG?.CURRENCY || "KES",
-    label: label || "Adict Manlung Store",
-    channels: ["card", "mobile_money", "bank_transfer"],
-    metadata: metadata || {},
-    callback: function (response) {
-      if (typeof onSuccess === "function") onSuccess(response);
-    },
-    onClose: function () {
-      if (typeof onClose === "function") onClose();
-    }
-  });
-
-  handler.openIframe();
+  try {
+    const handler = PaystackPop.setup({
+      key: key,
+      email: email,
+      amount: Math.round(amount * 100), // Paystack expects the amount in the smallest currency unit
+      currency: window.SITE_CONFIG?.CURRENCY || "KES",
+      label: label || "Adict Manlung Store",
+      channels: ["card", "mobile_money", "bank_transfer"],
+      metadata: metadata || {},
+      callback: function (response) {
+        if (typeof onSuccess === "function") onSuccess(response);
+      },
+      onClose: function () {
+        if (typeof onClose === "function") onClose();
+      }
+    });
+    handler.openIframe();
+  } catch (e) {
+    window.appErrors.report("paystack:popup", e, "Couldn't open the payment window — please try again");
+  }
 }
 
 function getStoredEmail() {
-  return sessionStorage.getItem("manlungCustomerEmail") || "";
+  return window.appErrors.session.get("manlungCustomerEmail") || "";
 }
 
 function askForEmail() {
@@ -58,7 +61,7 @@ function askForEmail() {
     window.cartFunctions?.showToast("A valid email is needed to checkout");
     return null;
   }
-  sessionStorage.setItem("manlungCustomerEmail", email);
+  window.appErrors.session.set("manlungCustomerEmail", email);
   return email;
 }
 
@@ -68,7 +71,7 @@ function isValidPhone(phone) {
 }
 
 function askForShipping() {
-  const cached = JSON.parse(sessionStorage.getItem("manlungShippingInfo") || "null") || {};
+  const cached = window.appErrors.session.getJson("manlungShippingInfo", {}) || {};
   const name = window.prompt("Full name for delivery:", cached.name || "");
   if (!name) { window.cartFunctions?.showToast("A name is needed to ship your order"); return null; }
 
@@ -83,7 +86,7 @@ function askForShipping() {
   if (!address) { window.cartFunctions?.showToast("A delivery address is needed to ship your order"); return null; }
 
   const info = { name, phone, address };
-  sessionStorage.setItem("manlungShippingInfo", JSON.stringify(info));
+  window.appErrors.session.setJson("manlungShippingInfo", info);
   return info;
 }
 
@@ -142,14 +145,13 @@ function showDownloadPanel(items, isPhysical, shippingAddress) {
 // Saves everything needed to resume after we come back from the gateway
 // (page navigates away entirely, so we can't just keep this in memory).
 function savePendingOrder({ downloadItems, isPhysical, shipping, ticketType, ticketPrice }) {
-  sessionStorage.setItem("manlungPendingOrder", JSON.stringify({ downloadItems, isPhysical, shipping, ticketType, ticketPrice }));
+  return window.appErrors.session.setJson("manlungPendingOrder", { downloadItems, isPhysical, shipping, ticketType, ticketPrice });
 }
 
 function consumePendingOrder() {
-  const raw = sessionStorage.getItem("manlungPendingOrder");
-  sessionStorage.removeItem("manlungPendingOrder");
-  if (!raw) return null;
-  try { return JSON.parse(raw); } catch (e) { return null; }
+  const pending = window.appErrors.session.getJson("manlungPendingOrder", null);
+  window.appErrors.session.remove("manlungPendingOrder");
+  return pending;
 }
 
 // Redirects the browser to the Manlung Gateway, which handles country,
@@ -165,7 +167,13 @@ function checkoutViaGateway({ items, metadata, needsShipping, downloadItems, isP
     if (!shipping) return;
   }
 
-  savePendingOrder({ downloadItems, isPhysical, shipping, ticketType, ticketPrice });
+  // Losing this means the customer comes back from a *successful* payment to
+  // no download and no ticket, so warn them before they leave rather than
+  // after they've paid.
+  const pendingSaved = savePendingOrder({ downloadItems, isPhysical, shipping, ticketType, ticketPrice });
+  if (!pendingSaved) {
+    window.appErrors.notify("⚠️ Your browser is blocking storage — keep this tab open and contact us if your download doesn't start after payment");
+  }
 
   const cartStr = items.map(i => `${i.id}:${i.quantity}`).join(",");
   const returnUrl = window.location.origin + window.location.pathname;
@@ -202,11 +210,14 @@ function checkGatewayReturn() {
     return;
   }
 
-  fetch(`${window.SITE_CONFIG.GATEWAY_URL.replace(/\/$/, "")}/api/paystack/verify/${encodeURIComponent(reference)}`)
-    .then(r => r.json())
+  window.appErrors.fetchJson(`${window.SITE_CONFIG.GATEWAY_URL.replace(/\/$/, "")}/api/paystack/verify/${encodeURIComponent(reference)}`)
     .then(data => {
       if (!data.success || data.status !== "success") {
-        window.cartFunctions?.showToast("Payment could not be confirmed.");
+        window.appErrors.report(
+          "paystack:verify-rejected",
+          new Error(`Gateway did not confirm reference ${reference}: ${JSON.stringify(data)}`),
+          "Payment could not be confirmed — contact us if you were charged."
+        );
         return;
       }
       const pending = consumePendingOrder();
@@ -226,7 +237,11 @@ function checkGatewayReturn() {
       // Cart is only relevant for the multi-item checkout path — clear it now that payment is confirmed.
       if (window.cartFunctions?.clearCart) window.cartFunctions.clearCart();
     })
-    .catch(() => window.cartFunctions?.showToast("Couldn't confirm payment status — contact us if you were charged."));
+    .catch(e => window.appErrors.report(
+      "paystack:verify",
+      e,
+      "Couldn't confirm payment status — contact us if you were charged."
+    ));
 }
 
 // Unified checkout used everywhere: cart, buy-now, merch, tour tickets.

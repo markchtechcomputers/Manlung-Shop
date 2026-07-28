@@ -34,6 +34,12 @@ function initBrandsCarousel() {
   if (!images.length) return;
 
   const imgEls = wrap.querySelectorAll(".brands-carousel-img");
+  // The cross-fade needs exactly two stacked <img> elements to swap between.
+  if (imgEls.length < 2) {
+    window.appErrors.report("brands-carousel", new Error(`#brandsCarousel needs 2 .brands-carousel-img elements, found ${imgEls.length}`));
+    return;
+  }
+
   let index = 0;
   let showingFirst = true;
 

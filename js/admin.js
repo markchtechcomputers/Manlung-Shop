@@ -4,20 +4,36 @@
 
 function toast(msg) {
   const t = document.getElementById("adminToast");
+  if (!t) {
+    console.warn("[notice]", msg);
+    return;
+  }
   t.textContent = msg;
   t.style.opacity = "1";
   setTimeout(() => (t.style.opacity = "0"), 1800);
 }
 
+// data-store.js reports failures through cartFunctions.showToast, which only
+// exists on the storefront — point it at the admin toast so cloud/storage
+// errors are visible here too instead of console-only.
+window.cartFunctions = window.cartFunctions || { showToast: toast };
+
+// Wires a listener and says which control is missing rather than throwing and
+// silently leaving every later control unwired.
+function on(id, event, handler) {
+  const el = window.appErrors.requireElement(id, "admin:wiring");
+  if (el) el.addEventListener(event, handler);
+  return el;
+}
+
 // ---------- LOGIN ----------
 function initLogin() {
-  const form = document.getElementById("loginForm");
-  const input = document.getElementById("adminPasswordInput");
-  const err = document.getElementById("loginError");
+  const form = window.appErrors.requireElement("loginForm", "admin:login");
+  const input = window.appErrors.requireElement("adminPasswordInput", "admin:login");
+  const err = window.appErrors.requireElement("loginError", "admin:login");
+  if (!form || !input || !err) return;
 
-  let alreadyIn = false;
-  try { alreadyIn = sessionStorage.getItem("manlungAdminLoggedIn") === "true"; } catch (e) { /* storage blocked, ignore */ }
-  if (alreadyIn) { showDashboard(); return; }
+  if (window.appErrors.session.get("manlungAdminLoggedIn") === "true") { showDashboard(); return; }
 
   form.addEventListener("submit", (e) => {
     e.preventDefault();
@@ -25,54 +41,59 @@ function initLogin() {
       const entered = input.value.trim();
       const expected = (window.SITE_CONFIG && window.SITE_CONFIG.ADMIN_PASSWORD) || "manlung2026";
       if (entered === expected) {
-        try { sessionStorage.setItem("manlungAdminLoggedIn", "true"); } catch (e) { /* storage blocked, ignore */ }
+        // A blocked session store only costs a re-login on refresh.
+        window.appErrors.session.set("manlungAdminLoggedIn", "true");
         showDashboard();
       } else {
         err.textContent = "Incorrect password";
         input.value = "";
       }
     } catch (ex) {
+      window.appErrors.report("admin:login", ex);
       err.textContent = "Login error — " + ex.message;
-      console.error("Admin login error:", ex);
     }
   });
 }
 
 function showDashboard() {
-  document.getElementById("loginScreen").style.display = "none";
-  document.getElementById("dashboard").style.display = "block";
+  const loginScreen = window.appErrors.requireElement("loginScreen", "admin:dashboard");
+  const dashboard = window.appErrors.requireElement("dashboard", "admin:dashboard");
+  if (loginScreen) loginScreen.style.display = "none";
+  if (dashboard) dashboard.style.display = "block";
   renderAllTabs();
 
   const badge = document.getElementById("cloudStatusBadge");
-  const sbOn = window.dataStore.isSupabaseConnected?.();
-  const fbOn = window.dataStore.isFirebaseConnected?.();
+  if (!badge) return;
+  const cloudOn = window.dataStore.isCloudConnected();
 
-  if (sbOn && fbOn) {
-    badge.textContent = "🟢 Cloud synced (Supabase + Firebase backup) — visible to all visitors";
-    badge.style.background = "rgba(16,185,129,0.12)";
-    badge.style.color = "#0d8f5f";
-  } else if (sbOn || fbOn) {
-    badge.textContent = `🟢 Cloud synced (${sbOn ? "Supabase" : "Firebase"} only) — visible to all visitors`;
+  if (cloudOn) {
+    badge.textContent = "🟢 Cloud synced (Supabase) — visible to all visitors";
     badge.style.background = "rgba(16,185,129,0.12)";
     badge.style.color = "#0d8f5f";
   } else {
-    badge.textContent = "🟡 This device only — set up Supabase and/or Firebase in config.js to go live for everyone";
+    badge.textContent = "🟡 This device only — set up Supabase in config.js to go live for everyone";
     badge.style.background = "rgba(230,160,20,0.12)";
     badge.style.color = "#a86a00";
   }
 }
 
 function logout() {
-  sessionStorage.removeItem("manlungAdminLoggedIn");
+  window.appErrors.session.remove("manlungAdminLoggedIn");
   location.reload();
 }
 
 // ---------- TAB SWITCHING ----------
 function showTab(tab) {
+  const panel = window.appErrors.requireElement(`tab-${tab}`, "admin:tabs");
+  const btn = document.querySelector(`.admin-tab-btn[data-tab="${tab}"]`);
+  if (!panel || !btn) {
+    window.appErrors.report("admin:tabs", new Error(`Tab "${tab}" has no matching panel or button`), "That tab is unavailable");
+    return;
+  }
   document.querySelectorAll(".admin-tab-content").forEach(el => (el.style.display = "none"));
   document.querySelectorAll(".admin-tab-btn").forEach(el => el.classList.remove("active"));
-  document.getElementById(`tab-${tab}`).style.display = "block";
-  document.querySelector(`.admin-tab-btn[data-tab="${tab}"]`).classList.add("active");
+  panel.style.display = "block";
+  btn.classList.add("active");
 }
 
 // ---------- RENDERING ----------
@@ -96,7 +117,16 @@ function fieldLabel(f) {
 function renderCategory(dataKey, tabId, fields) {
   const container = document.getElementById(`list-${tabId}`);
   if (!container) return;
-  const items = window.productData[dataKey];
+  const items = window.productData?.[dataKey];
+  if (!Array.isArray(items)) {
+    window.appErrors.report(
+      "admin:render",
+      new Error(`productData.${dataKey} is not an array — nothing to edit`),
+      "Couldn't load this category — try Reset to defaults if it persists"
+    );
+    container.innerHTML = `<p class="admin-empty">Couldn't load this category — see the browser console for details.</p>`;
+    return;
+  }
 
   container.innerHTML = items.map((item, idx) => `
     <div class="admin-card" data-key="${dataKey}" data-idx="${idx}">
@@ -211,9 +241,18 @@ function saveCategory(dataKey, tabId, fields) {
     });
   });
 
-  window.dataStore.saveToStorage();
-  renderAllTabs();
-  toast("✅ Saved — live on this device now. Click Export to publish site-wide.");
+  // Only report success once the write actually succeeded; saveToStorage
+  // already explains any local/cloud failure.
+  Promise.resolve(window.dataStore.saveToStorage())
+    .then(result => {
+      renderAllTabs();
+      if (!result || result.localSaved === false) return;
+      if (result.cloudConfigured && !result.cloudSaved) return;
+      toast(result.cloudSaved
+        ? "✅ Saved and synced to the cloud — live for every visitor."
+        : "✅ Saved — live on this device now. Click Export to publish site-wide.");
+    })
+    .catch(e => window.appErrors.report("admin:save", e, "⚠️ Couldn't save your changes — see the browser console"));
 }
 
 // ---------- ADD NEW ITEM ----------
@@ -249,78 +288,97 @@ window.productData = {
 };
 `;
 
-  const blob = new Blob([code], { type: "text/javascript" });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = "products.js";
-  a.click();
-  URL.revokeObjectURL(url);
-  toast("⬇ products.js downloaded");
+  try {
+    const blob = new Blob([code], { type: "text/javascript" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "products.js";
+    a.click();
+    URL.revokeObjectURL(url);
+    toast("⬇ products.js downloaded");
+  } catch (e) {
+    window.appErrors.report("admin:export", e, "⚠️ Couldn't build the export file — see the browser console");
+  }
 }
 
 function resetAllData() {
-  if (confirm("Reset all products/CDs/merch back to the original defaults? This discards all admin edits.")) {
-    window.dataStore.resetToDefaults();
-    renderAllTabs();
-    toast("Reset to defaults");
-  }
+  if (!confirm("Reset all products/CDs/merch back to the original defaults? This discards all admin edits.")) return;
+
+  Promise.resolve(window.dataStore.resetToDefaults())
+    .then(cloudCleared => {
+      renderAllTabs();
+      if (cloudCleared) toast("Reset to defaults");
+    })
+    .catch(e => window.appErrors.report("admin:reset", e, "⚠️ Reset didn't finish — see the browser console"));
 }
 
 // ---------- CHANGE PASSWORD ----------
 function initChangePassword() {
-  const form = document.getElementById("changePasswordForm");
-  form.addEventListener("submit", (e) => {
+  const output = window.appErrors.requireElement("newHashOutput", "admin:change-password");
+  const box = window.appErrors.requireElement("newHashBox", "admin:change-password");
+  const input = window.appErrors.requireElement("newPasswordInput", "admin:change-password");
+  if (!output || !box || !input) return;
+
+  on("changePasswordForm", "submit", (e) => {
     e.preventDefault();
-    const newPass = document.getElementById("newPasswordInput").value.trim();
+    const newPass = input.value.trim();
     if (newPass.length < 6) {
       toast("Password should be at least 6 characters");
       return;
     }
-    document.getElementById("newHashOutput").value = newPass;
-    document.getElementById("newHashBox").style.display = "block";
+    output.value = newPass;
+    box.style.display = "block";
   });
 
-  document.getElementById("copyHashBtn").addEventListener("click", async () => {
-    const output = document.getElementById("newHashOutput");
+  on("copyHashBtn", "click", async () => {
     try {
       await navigator.clipboard.writeText(output.value);
+      toast("Copied — paste into js/config.js");
+      return;
     } catch (e) {
-      output.select();
-      document.execCommand("copy");
+      window.appErrors.report("admin:clipboard", e);
     }
-    toast("Copied — paste into js/config.js");
+    // Legacy fallback: execCommand reports failure by returning false, so the
+    // "Copied" toast must depend on it.
+    output.select();
+    const copied = document.execCommand("copy");
+    toast(copied
+      ? "Copied — paste into js/config.js"
+      : "Couldn't copy automatically — select the text above and copy it manually");
   });
 }
 
 // ---------- INIT ----------
 window.onProductDataUpdated = () => {
-  if (document.getElementById("dashboard").style.display === "block") renderAllTabs();
+  const dashboard = document.getElementById("dashboard");
+  if (dashboard && dashboard.style.display === "block") renderAllTabs();
 };
 
 document.addEventListener("DOMContentLoaded", () => {
-  initLogin();
-  initChangePassword();
+  const E = window.appErrors;
+  E.safeRun("admin:init-login", initLogin, "⚠️ The login form didn't load correctly — see the browser console");
+  E.safeRun("admin:init-change-password", initChangePassword);
 
   document.querySelectorAll(".admin-tab-btn").forEach(btn => {
     btn.addEventListener("click", () => showTab(btn.dataset.tab));
   });
 
-  document.getElementById("saveDigitalBtn").addEventListener("click", () =>
+  on("saveDigitalBtn", "click", () =>
     saveCategory("digitalProducts", "digital", ["title", "price", "unit", "description", "features", "stock", "featured", "soldOut", "imgUrl", "images", "downloadUrl"]));
-  document.getElementById("saveCdsBtn").addEventListener("click", () =>
+  on("saveCdsBtn", "click", () =>
     saveCategory("cdProducts", "cds", ["title", "price", "unit", "description", "features", "stock", "featured", "soldOut", "imgUrl", "images", "audioUrl", "tracks"]));
-  document.getElementById("saveMerchBtn").addEventListener("click", () =>
+  on("saveMerchBtn", "click", () =>
     saveCategory("merchItems", "merch", ["title", "price", "unit", "description", "features", "category", "stock", "colors", "sizes", "comingSoon", "soldOut", "imgUrl", "images"]));
 
-  document.getElementById("addDigitalBtn").addEventListener("click", () =>
+  on("addDigitalBtn", "click", () =>
     addItem("digitalProducts", { title: "New Track", price: 199, unit: "per track", description: "", features: [], imgUrl: "https://placehold.co/600x600/eef1f8/0b2a6b?text=NEW", images: ["https://placehold.co/600x600/eef1f8/0b2a6b?text=NEW"], featured: false, stock: 999, soldOut: false, downloadUrl: "" }));
-  document.getElementById("addCdBtn").addEventListener("click", () =>
+  on("addCdBtn", "click", () =>
     addItem("cdProducts", { title: "New CD", price: 1499, unit: "per CD", description: "", features: [], imgUrl: "https://placehold.co/600x600/eef1f8/0b2a6b?text=NEW+CD", images: ["https://placehold.co/600x600/eef1f8/0b2a6b?text=NEW+CD"], audioUrl: "", tracks: [], featured: false, stock: 50, soldOut: false }));
-  document.getElementById("addMerchBtn").addEventListener("click", () =>
+  on("addMerchBtn", "click", () =>
     addItem("merchItems", { title: "New Merch Item", price: 2999, unit: "per item", description: "", features: [], category: "unisex", stock: 20, imgUrl: "https://placehold.co/600x600/eef1f8/0b2a6b?text=NEW", images: ["https://placehold.co/600x600/eef1f8/0b2a6b?text=NEW"], comingSoon: false, soldOut: false, colors: [], sizes: [] }));
 
-  document.getElementById("exportBtn").addEventListener("click", exportProductsFile);
-  document.getElementById("resetBtn").addEventListener("click", resetAllData);
-  document.getElementById("logoutBtn").addEventListener("click", logout);
+  on("exportBtn", "click", exportProductsFile);
+  on("resetBtn", "click", resetAllData);
+  on("logoutBtn", "click", logout);
 });

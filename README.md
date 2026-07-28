@@ -16,6 +16,7 @@ manlung-shop/
 ├── css/
 │   └── styles.css         # All styling
 ├── js/
+│   ├── errors.js          # Shared error reporting + safe localStorage/sessionStorage helpers
 │   ├── config.js          # ⚙️ EDIT THIS — Paystack key, Gateway URL, Firebase, admin password
 │   ├── data-store.js      # Loads/saves product data (Firebase if configured, else this browser only)
 │   ├── currency.js        # Country/currency detection, picker, conversion

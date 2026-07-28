@@ -11,8 +11,8 @@ function initScrollTopButton() {
 }
 
 function showWelcomeMessage() {
-  if (sessionStorage.getItem("manlungWelcomeShown")) return;
-  sessionStorage.setItem("manlungWelcomeShown", "true");
+  if (window.appErrors.session.get("manlungWelcomeShown")) return;
+  window.appErrors.session.set("manlungWelcomeShown", "true");
   setTimeout(() => {
     window.cartFunctions?.showToast("👋 Welcome to Manlung Shop!");
   }, 600);
@@ -23,10 +23,14 @@ function initEmailSubscription() {
   if (!subscribeBtn) return;
   
   subscribeBtn.addEventListener("click", () => {
-    const email = document.getElementById("captureEmail").value;
-    if (email.includes("@") && email.includes(".")) { 
-      window.cartFunctions.showToast("Subscribed!"); 
-      document.getElementById("captureEmail").value = ""; 
+    const input = window.appErrors.requireElement("captureEmail", "app:subscribe");
+    if (!input) {
+      window.cartFunctions.showToast("Newsletter signup is unavailable right now");
+      return;
+    }
+    if (input.value.includes("@") && input.value.includes(".")) {
+      window.cartFunctions.showToast("Subscribed!");
+      input.value = "";
     } else {
       window.cartFunctions.showToast("Enter valid email");
     }
@@ -38,7 +42,11 @@ function initTourNotify() {
   if (!btn) return;
 
   btn.addEventListener("click", () => {
-    const input = document.getElementById("tourNotifyEmail");
+    const input = window.appErrors.requireElement("tourNotifyEmail", "app:tour-notify");
+    if (!input) {
+      window.cartFunctions.showToast("Tour notifications are unavailable right now");
+      return;
+    }
     const email = input.value;
     if (email.includes("@") && email.includes(".")) {
       window.cartFunctions.showToast("You'll be notified when a show is announced!");
@@ -87,36 +95,44 @@ function initCartSidebar() {
 
 // Main initialization function
 function initApp() {
-  // Load product data first
   console.log("Initializing Adict Manlung Store...");
-  
-  // Initialize all modules
-  window.cartFunctions.loadCart();
-  window.renderFunctions.renderProducts();
-  window.renderFunctions.renderMerch();
-  window.renderFunctions.renderTestimonials();
-  window.tourSystem.setupTourEvents();
-  window.tourSystem.initTourSlideshow();
-  window.tourSystem.initRateCardDownload();
-  window.tourSystem.checkPaymentReturn();
-  window.paystackCheckoutFunctions.checkGatewayReturn();
-  window.brandsCarouselFunctions.initBrandsCarousel();
-  initScrollTopButton();
-  showWelcomeMessage();
-  
-  // Initialize core functionality
-  window.currencyFunctions.populateCurrencyDropdowns();
-  window.currencyFunctions.initCurrencyModal();
-  window.currencyFunctions.initCountrySearch();
-  window.menuFunctions.initMenuPanel();
-  window.menuFunctions.initAccountSystem();
-  initEmailSubscription();
-  initTourNotify();
-  initNavigation();
-  initCartSidebar();
-  window.currencyFunctions.initCurrencySelector();
-  window.currencyFunctions.detectAndApplyCurrency();
-  
+
+  // Every step is isolated: before this, one throwing module (a missing
+  // element, corrupt stored data) cancelled every step after it, so the
+  // storefront came up half-wired with nothing but a console trace to show it.
+  const steps = [
+    ["app:load-cart", () => window.cartFunctions.loadCart()],
+    ["app:render-products", () => window.renderFunctions.renderProducts()],
+    ["app:render-merch", () => window.renderFunctions.renderMerch()],
+    ["app:render-testimonials", () => window.renderFunctions.renderTestimonials()],
+    ["app:tour-events", () => window.tourSystem.setupTourEvents()],
+    ["app:tour-slideshow", () => window.tourSystem.initTourSlideshow()],
+    ["app:rate-card", () => window.tourSystem.initRateCardDownload()],
+    ["app:tour-payment-return", () => window.tourSystem.checkPaymentReturn()],
+    ["app:gateway-return", () => window.paystackCheckoutFunctions.checkGatewayReturn()],
+    ["app:brands-carousel", () => window.brandsCarouselFunctions.initBrandsCarousel()],
+    ["app:scroll-top", initScrollTopButton],
+    ["app:welcome", showWelcomeMessage],
+    ["app:currency-dropdowns", () => window.currencyFunctions.populateCurrencyDropdowns()],
+    ["app:currency-modal", () => window.currencyFunctions.initCurrencyModal()],
+    ["app:country-search", () => window.currencyFunctions.initCountrySearch()],
+    ["app:menu-panel", () => window.menuFunctions.initMenuPanel()],
+    ["app:account-system", () => window.menuFunctions.initAccountSystem()],
+    ["app:email-subscription", initEmailSubscription],
+    ["app:tour-notify", initTourNotify],
+    ["app:navigation", initNavigation],
+    ["app:cart-sidebar", initCartSidebar],
+    ["app:currency-selector", () => window.currencyFunctions.initCurrencySelector()],
+    ["app:currency-detect", () => window.currencyFunctions.detectAndApplyCurrency()]
+  ];
+
+  const failed = steps.filter(([context, fn]) => !window.appErrors.safeRun(context, fn));
+
+  if (failed.length) {
+    window.appErrors.notify("Some parts of the store didn't load — please refresh, or contact us on WhatsApp if it continues");
+    console.error("Store initialized with failures:", failed.map(([context]) => context));
+    return;
+  }
   console.log("Store initialized successfully!");
 }
 
