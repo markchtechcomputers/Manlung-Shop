@@ -255,7 +255,7 @@ describe("cloud mode (Supabase configured)", () => {
   });
 
   it("warns the admin when the cloud write fails but the local save succeeded", async () => {
-    const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
+    const warn = vi.spyOn(console, "warn");
     const toasts = [];
     window.cartFunctions = { renderCartUI: vi.fn(), showToast: msg => toasts.push(msg) };
     const sb = fakeSupabase({ upsertResult: { error: { message: "row level security" } } });
