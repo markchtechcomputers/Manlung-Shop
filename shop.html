@@ -18,7 +18,7 @@
 <meta name="twitter:image" content="https://files.catbox.moe/xt27vu.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;0,800;0,900;1,600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
@@ -74,6 +74,7 @@
       </div>
       <div class="hero-text">
         <h1>ADICT <span class="highlight">MANLUNG</span></h1>
+        <div class="drip-influencer-tag">Certified Drip Influencer 🫟</div>
         <div class="bio-text">
           <p>Raw voice from the streets, painting vivid pictures of struggle, ambition, and growth. Independent Kenyan hip-hop — new music, merch, and tour dates, straight from the source.</p>
         </div>
@@ -132,6 +133,9 @@
   <!-- MUSIC / DIGITAL -->
   <section id="music-section">
     <div class="section-title">Digital Singles</div>
+    <div class="search-bar-wrap">
+      <input type="text" id="musicSearch" class="search-bar" placeholder="🔍 Search songs...">
+    </div>
     <div class="product-grid" id="digitalGrid"></div>
   </section>
 
@@ -146,6 +150,15 @@
     <div class="merch-hero">
       <h1>Official Merch</h1>
       <p>Wear the movement. Limited drops, made for the fans who ride from day one.</p>
+    </div>
+    <div class="search-bar-wrap">
+      <input type="text" id="merchSearch" class="search-bar" placeholder="🔍 Search merch...">
+    </div>
+    <div class="merch-category-tabs">
+      <button class="merch-cat-tab active" data-cat="all">All</button>
+      <button class="merch-cat-tab" data-cat="men">Men's</button>
+      <button class="merch-cat-tab" data-cat="women">Women's</button>
+      <button class="merch-cat-tab" data-cat="jewelry">Jewelry</button>
     </div>
     <div class="merch-grid" id="merchGrid"></div>
   </section>
@@ -401,6 +414,8 @@
 <script src="data/products.js"></script>
 <script src="data/countries.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-database-compat.js"></script>
 <script src="js/config.js"></script>
 <script src="js/data-store.js"></script>
 

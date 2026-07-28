@@ -25,7 +25,18 @@ const POLICY_CONTENT = {
   },
   terms: {
     title: "Terms of Service",
-    body: "<p>By purchasing from Manlung Shop, you agree to provide accurate information for delivery and payment. All sales of digital music are final once downloaded. Physical goods (CDs, merch) can be addressed via our Returns policy.</p><p>A full terms of service will be published here soon.</p>"
+    body: `
+      <p><strong>1. Acceptance of Terms</strong><br>By accessing or purchasing from Manlung Shop, you agree to be bound by these Terms of Service. If you do not agree, please do not use this site.</p>
+      <p><strong>2. Products & Pricing</strong><br>All prices are listed in Kenyan Shillings (KSh) unless converted for display in your local currency at checkout. We reserve the right to correct pricing errors and to change prices or discontinue products at any time without prior notice.</p>
+      <p><strong>3. Orders & Payment</strong><br>All payments are processed securely through Paystack. By placing an order, you confirm that the payment details provided are accurate and that you are authorized to use the payment method. We reserve the right to refuse or cancel any order suspected of fraud or unauthorized activity.</p>
+      <p><strong>4. Digital Products</strong><br>All digital singles and CD track downloads are licensed for personal, non-commercial use only. Redistribution, resale, or public performance without permission is prohibited. Due to the nature of digital goods, all digital sales are final once the download has started — no refunds will be issued for digital products except in cases of a verified technical error on our part.</p>
+      <p><strong>5. Physical Products & Shipping</strong><br>CDs and merchandise are shipped based on the delivery details you provide at checkout. You are responsible for ensuring this information is accurate. We are not liable for delays caused by couriers, customs, or incorrect address information. See our Shipping Info and Returns sections for further detail.</p>
+      <p><strong>6. Intellectual Property</strong><br>All music, artwork, branding, and content on this site are the property of Adict Manlung and may not be copied, reproduced, or used without written permission.</p>
+      <p><strong>7. User Accounts</strong><br>If you create an account, you are responsible for maintaining the confidentiality of your login details and for all activity under your account.</p>
+      <p><strong>8. Limitation of Liability</strong><br>Manlung Shop is not liable for any indirect, incidental, or consequential damages arising from the use of this site or its products, to the fullest extent permitted by law.</p>
+      <p><strong>9. Changes to These Terms</strong><br>We may update these Terms of Service at any time. Continued use of the site after changes are posted constitutes acceptance of the revised terms.</p>
+      <p><strong>10. Contact</strong><br>Questions about these terms can be sent to adictmanlung@gmail.com or via WhatsApp.</p>
+    `
   },
   trackorder: {
     title: "Track My Order",

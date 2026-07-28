@@ -7,17 +7,17 @@
 // This file only defines the DEFAULTS the site falls back to.
 
 const digitalProducts = [
-  { id:1, title:"My Gee", price:199, unit:"per track", description:"Official digital single from Adict Manlung.", features:["Instant download","MP3 320kbps"], imgUrl:"https://placehold.co/600x600/0b2a6b/ffffff?text=My+Gee", featured:false, stock:999, soldOut:false, downloadUrl:"" },
-  { id:2, title:"Unfinished Business", price:199, unit:"per track", description:"Official digital single from Adict Manlung.", features:["Instant download","MP3 320kbps"], imgUrl:"https://placehold.co/600x600/0b2a6b/ffffff?text=Unfinished+Business", featured:false, stock:999, soldOut:false, downloadUrl:"" },
-  { id:3, title:"Black Africa", price:499, unit:"per track", description:"Official digital single from Adict Manlung.", features:["Instant download","MP3 320kbps"], imgUrl:"https://placehold.co/600x600/0b2a6b/FFD700?text=Black+Africa", featured:true, stock:999, soldOut:false, downloadUrl:"" },
-  { id:4, title:"Still Outside", price:199, unit:"per track", description:"Official digital single from Adict Manlung.", features:["Instant download","MP3 320kbps"], imgUrl:"https://placehold.co/600x600/0b2a6b/ffffff?text=Still+Outside", featured:false, stock:999, soldOut:false, downloadUrl:"" },
-  { id:5, title:"Cold (Adict Manlung x Trecky)", price:299, unit:"per track", description:"Collab single with Trecky.", features:["Instant download","MP3 320kbps"], imgUrl:"https://placehold.co/600x600/123a8c/FFD700?text=Cold", featured:true, stock:999, soldOut:false, downloadUrl:"" },
-  { id:6, title:"Money Bag", price:199, unit:"per track", description:"Official digital single from Adict Manlung.", features:["Instant download","MP3 320kbps"], imgUrl:"https://placehold.co/600x600/16213e/ffffff?text=Money+Bag", featured:false, stock:999, soldOut:false, downloadUrl:"" }
+  { id:1, title:"My Gee", price:199, unit:"per track", description:"Official digital single from Adict Manlung.", features:["Instant download","MP3 320kbps"], imgUrl:"https://placehold.co/600x600/0b2a6b/ffffff?text=My+Gee", images:["https://placehold.co/600x600/0b2a6b/ffffff?text=My+Gee"], featured:false, stock:999, soldOut:false, downloadUrl:"" },
+  { id:2, title:"Unfinished Business", price:199, unit:"per track", description:"Official digital single from Adict Manlung.", features:["Instant download","MP3 320kbps"], imgUrl:"https://placehold.co/600x600/0b2a6b/ffffff?text=Unfinished+Business", images:["https://placehold.co/600x600/0b2a6b/ffffff?text=Unfinished+Business"], featured:false, stock:999, soldOut:false, downloadUrl:"" },
+  { id:3, title:"Black Africa", price:499, unit:"per track", description:"Official digital single from Adict Manlung.", features:["Instant download","MP3 320kbps"], imgUrl:"https://placehold.co/600x600/0b2a6b/FFD700?text=Black+Africa", images:["https://placehold.co/600x600/0b2a6b/FFD700?text=Black+Africa"], featured:true, stock:999, soldOut:false, downloadUrl:"" },
+  { id:4, title:"Still Outside", price:199, unit:"per track", description:"Official digital single from Adict Manlung.", features:["Instant download","MP3 320kbps"], imgUrl:"https://placehold.co/600x600/0b2a6b/ffffff?text=Still+Outside", images:["https://placehold.co/600x600/0b2a6b/ffffff?text=Still+Outside"], featured:false, stock:999, soldOut:false, downloadUrl:"" },
+  { id:5, title:"Cold (Adict Manlung x Trecky)", price:299, unit:"per track", description:"Collab single with Trecky.", features:["Instant download","MP3 320kbps"], imgUrl:"https://placehold.co/600x600/123a8c/FFD700?text=Cold", images:["https://placehold.co/600x600/123a8c/FFD700?text=Cold"], featured:true, stock:999, soldOut:false, downloadUrl:"" },
+  { id:6, title:"Money Bag", price:199, unit:"per track", description:"Official digital single from Adict Manlung.", features:["Instant download","MP3 320kbps"], imgUrl:"https://placehold.co/600x600/16213e/ffffff?text=Money+Bag", images:["https://placehold.co/600x600/16213e/ffffff?text=Money+Bag"], featured:false, stock:999, soldOut:false, downloadUrl:"" }
 ];
 
 const cdProducts = [
-  { id:7, title:"MANLUNG CD (Signed)", price:1499, unit:"per CD", description:"Signed physical CD copy, delivered to your door.", features:["Signed by the artist","Free Nairobi delivery"], imgUrl:"https://placehold.co/600x600/0b2a6b/ffffff?text=Manlung+CD", audioUrl:"", tracks:[], featured:true, stock:47, soldOut:false },
-  { id:8, title:"Money Bag Bundle", price:1299, unit:"per bundle", description:"Physical CD bundle featuring Money Bag and more.", features:["Limited run","Free Nairobi delivery"], imgUrl:"https://placehold.co/600x600/0b2a6b/ffffff?text=Manlung+CD", audioUrl:"", tracks:[], featured:true, stock:38, soldOut:false }
+  { id:7, title:"MANLUNG CD (Signed)", price:1499, unit:"per CD", description:"Signed physical CD copy, delivered to your door.", features:["Signed by the artist","Free Nairobi delivery"], imgUrl:"https://placehold.co/600x600/0b2a6b/ffffff?text=Manlung+CD", images:["https://placehold.co/600x600/0b2a6b/ffffff?text=Manlung+CD"], audioUrl:"", tracks:[], featured:true, stock:47, soldOut:false },
+  { id:8, title:"Money Bag Bundle", price:1299, unit:"per bundle", description:"Physical CD bundle featuring Money Bag and more.", features:["Limited run","Free Nairobi delivery"], imgUrl:"https://placehold.co/600x600/0b2a6b/ffffff?text=Manlung+CD", images:["https://placehold.co/600x600/0b2a6b/ffffff?text=Manlung+CD"], audioUrl:"", tracks:[], featured:true, stock:38, soldOut:false }
 ];
 
 const merchItems = [
@@ -26,7 +26,10 @@ const merchItems = [
     title:"Money Bag Hoodie",
     price:4999,
     unit:"per hoodie",
+    category:"men",
+    stock:24,
     imgUrl:"https://placehold.co/600x600/16213e/ffffff?text=Money+Bag+Hoodie",
+    images:["https://placehold.co/600x600/16213e/ffffff?text=Money+Bag+Hoodie"],
     description:"Premium heavyweight hoodie - Embroidered Money Bag logo - Soft cotton blend",
     features:["Heavyweight cotton blend","Embroidered logo","True to size"],
     comingSoon:false,
@@ -40,9 +43,9 @@ const merchItems = [
       { name:"Green", code:"#10B981", border:"none" }
     ]
   },
-  { id:102, title:"Manlung Tee", price:2999, unit:"per tee", imgUrl:"https://placehold.co/600x600/1a1a1a/ffffff?text=TEE", description:"100% combed cotton - Screen printed design", features:["100% combed cotton","Screen printed"], comingSoon:true, soldOut:false, sizes:["S","M","L","XL"], colors:[] },
-  { id:103, title:"Drip Cap", price:2499, unit:"per cap", imgUrl:"https://placehold.co/600x600/1a1a1a/ffffff?text=CAP", description:"Structured snapback - Embroidered logo", features:["Structured fit","Embroidered logo"], comingSoon:true, soldOut:false, sizes:["One Size"], colors:[] },
-  { id:104, title:"Money Bag Chain", price:3499, unit:"per piece", imgUrl:"https://placehold.co/600x600/1a1a1a/ffffff?text=JEWELRY", description:"Stainless steel chain with Money Bag pendant - Tarnish resistant - Everyday streetwear jewelry piece", features:["Stainless steel","Tarnish resistant","Adjustable length"], comingSoon:true, soldOut:false, sizes:[], colors:[] }
+  { id:102, title:"Manlung Tee", price:2999, unit:"per tee", category:"men", stock:0, imgUrl:"https://placehold.co/600x600/1a1a1a/ffffff?text=TEE", images:["https://placehold.co/600x600/1a1a1a/ffffff?text=TEE"], description:"100% combed cotton - Screen printed design", features:["100% combed cotton","Screen printed"], comingSoon:true, soldOut:false, sizes:["S","M","L","XL"], colors:[] },
+  { id:103, title:"Drip Cap", price:2499, unit:"per cap", category:"unisex", stock:0, imgUrl:"https://placehold.co/600x600/1a1a1a/ffffff?text=CAP", images:["https://placehold.co/600x600/1a1a1a/ffffff?text=CAP"], description:"Structured snapback - Embroidered logo", features:["Structured fit","Embroidered logo"], comingSoon:true, soldOut:false, sizes:["One Size"], colors:[] },
+  { id:104, title:"Money Bag Chain", price:3499, unit:"per piece", category:"jewelry", stock:0, imgUrl:"https://placehold.co/600x600/1a1a1a/ffffff?text=JEWELRY", images:["https://placehold.co/600x600/1a1a1a/ffffff?text=JEWELRY"], description:"Stainless steel chain with Money Bag pendant - Tarnish resistant - Everyday streetwear jewelry piece for men", features:["Stainless steel","Tarnish resistant","Adjustable length"], comingSoon:true, soldOut:false, sizes:[], colors:[] }
 ];
 
 const testimonials = [
