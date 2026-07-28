@@ -23,7 +23,7 @@ function initLogin() {
     e.preventDefault();
     try {
       const entered = input.value.trim();
-      const expected = (window.SITE_CONFIG && window.SITE_CONFIG.ADMIN_PASSWORD) || "@Adictmanlung15073221";
+      const expected = (window.SITE_CONFIG && window.SITE_CONFIG.ADMIN_PASSWORD) || "manlung2026";
       if (entered === expected) {
         try { sessionStorage.setItem("manlungAdminLoggedIn", "true"); } catch (e) { /* storage blocked, ignore */ }
         showDashboard();
