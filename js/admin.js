@@ -44,12 +44,19 @@ function showDashboard() {
   renderAllTabs();
 
   const badge = document.getElementById("cloudStatusBadge");
-  if (window.dataStore.isCloudConnected()) {
-    badge.textContent = "🟢 Cloud synced — visible to all visitors";
+  const sbOn = window.dataStore.isSupabaseConnected?.();
+  const fbOn = window.dataStore.isFirebaseConnected?.();
+
+  if (sbOn && fbOn) {
+    badge.textContent = "🟢 Cloud synced (Supabase + Firebase backup) — visible to all visitors";
+    badge.style.background = "rgba(16,185,129,0.12)";
+    badge.style.color = "#0d8f5f";
+  } else if (sbOn || fbOn) {
+    badge.textContent = `🟢 Cloud synced (${sbOn ? "Supabase" : "Firebase"} only) — visible to all visitors`;
     badge.style.background = "rgba(16,185,129,0.12)";
     badge.style.color = "#0d8f5f";
   } else {
-    badge.textContent = "🟡 This device only — set up Firebase in config.js to go live for everyone";
+    badge.textContent = "🟡 This device only — set up Supabase and/or Firebase in config.js to go live for everyone";
     badge.style.background = "rgba(230,160,20,0.12)";
     badge.style.color = "#a86a00";
   }
@@ -70,9 +77,9 @@ function showTab(tab) {
 
 // ---------- RENDERING ----------
 function renderAllTabs() {
-  renderCategory("digitalProducts", "digital", ["title", "price", "unit", "description", "features", "stock", "featured", "soldOut", "imgUrl", "downloadUrl"]);
-  renderCategory("cdProducts", "cds", ["title", "price", "unit", "description", "features", "stock", "featured", "soldOut", "imgUrl", "audioUrl", "tracks"]);
-  renderCategory("merchItems", "merch", ["title", "price", "unit", "description", "features", "colors", "sizes", "comingSoon", "soldOut", "imgUrl"]);
+  renderCategory("digitalProducts", "digital", ["title", "price", "unit", "description", "features", "stock", "featured", "soldOut", "imgUrl", "images", "downloadUrl"]);
+  renderCategory("cdProducts", "cds", ["title", "price", "unit", "description", "features", "stock", "featured", "soldOut", "imgUrl", "images", "audioUrl", "tracks"]);
+  renderCategory("merchItems", "merch", ["title", "price", "unit", "description", "features", "category", "stock", "colors", "sizes", "comingSoon", "soldOut", "imgUrl", "images"]);
 }
 
 function fieldLabel(f) {
@@ -120,6 +127,19 @@ function renderCategory(dataKey, tabId, fields) {
 function renderField(dataKey, idx, field, value) {
   const inputId = `${dataKey}-${idx}-${field}`;
 
+  if (field === "images") {
+    const val = Array.isArray(value) ? value.join("\n") : "";
+    return `<label class="admin-field-full">Product Images (one image URL per line — first one is the main image; add more for a scrollable gallery)
+      <textarea id="${inputId}" rows="3" placeholder="https://...\nhttps://...">${val}</textarea></label>`;
+  }
+  if (field === "category") {
+    const options = ["men", "women", "unisex", "jewelry"];
+    return `<label>Category
+      <select id="${inputId}">
+        ${options.map(o => `<option value="${o}" ${value === o ? "selected" : ""}>${o.charAt(0).toUpperCase() + o.slice(1)}</option>`).join("")}
+      </select>
+    </label>`;
+  }
   if (field === "tracks") {
     const val = Array.isArray(value) ? value.map(t => `${t.title} | ${t.url}`).join("\n") : "";
     return `<label class="admin-field-full">Album Tracklist (one per line: <code>Track Title | https://audio-url.mp3</code> — add as many as the album has)
@@ -173,6 +193,9 @@ function saveCategory(dataKey, tabId, fields) {
           const [name, code] = line.split("|").map(s => s.trim());
           return name && code ? { name, code, border: code.toLowerCase() === "#ffffff" ? "1px solid #ccc" : "none" } : null;
         }).filter(Boolean);
+      } else if (f === "images") {
+        item[f] = el.value.split("\n").map(s => s.trim()).filter(Boolean);
+        if (item[f].length && !item.imgUrl) item.imgUrl = item[f][0];
       } else if (f === "tracks") {
         item[f] = el.value.split("\n").map(line => {
           const [title, url] = line.split("|").map(s => s.trim());
@@ -284,18 +307,18 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   document.getElementById("saveDigitalBtn").addEventListener("click", () =>
-    saveCategory("digitalProducts", "digital", ["title", "price", "unit", "description", "features", "stock", "featured", "soldOut", "imgUrl", "downloadUrl"]));
+    saveCategory("digitalProducts", "digital", ["title", "price", "unit", "description", "features", "stock", "featured", "soldOut", "imgUrl", "images", "downloadUrl"]));
   document.getElementById("saveCdsBtn").addEventListener("click", () =>
-    saveCategory("cdProducts", "cds", ["title", "price", "unit", "description", "features", "stock", "featured", "soldOut", "imgUrl", "audioUrl", "tracks"]));
+    saveCategory("cdProducts", "cds", ["title", "price", "unit", "description", "features", "stock", "featured", "soldOut", "imgUrl", "images", "audioUrl", "tracks"]));
   document.getElementById("saveMerchBtn").addEventListener("click", () =>
-    saveCategory("merchItems", "merch", ["title", "price", "unit", "description", "features", "colors", "sizes", "comingSoon", "soldOut", "imgUrl"]));
+    saveCategory("merchItems", "merch", ["title", "price", "unit", "description", "features", "category", "stock", "colors", "sizes", "comingSoon", "soldOut", "imgUrl", "images"]));
 
   document.getElementById("addDigitalBtn").addEventListener("click", () =>
-    addItem("digitalProducts", { title: "New Track", price: 199, unit: "per track", description: "", features: [], imgUrl: "https://placehold.co/600x600/eef1f8/0b2a6b?text=NEW", featured: false, stock: 999, soldOut: false, downloadUrl: "" }));
+    addItem("digitalProducts", { title: "New Track", price: 199, unit: "per track", description: "", features: [], imgUrl: "https://placehold.co/600x600/eef1f8/0b2a6b?text=NEW", images: ["https://placehold.co/600x600/eef1f8/0b2a6b?text=NEW"], featured: false, stock: 999, soldOut: false, downloadUrl: "" }));
   document.getElementById("addCdBtn").addEventListener("click", () =>
-    addItem("cdProducts", { title: "New CD", price: 1499, unit: "per CD", description: "", features: [], imgUrl: "https://placehold.co/600x600/eef1f8/0b2a6b?text=NEW+CD", audioUrl: "", tracks: [], featured: false, stock: 50, soldOut: false }));
+    addItem("cdProducts", { title: "New CD", price: 1499, unit: "per CD", description: "", features: [], imgUrl: "https://placehold.co/600x600/eef1f8/0b2a6b?text=NEW+CD", images: ["https://placehold.co/600x600/eef1f8/0b2a6b?text=NEW+CD"], audioUrl: "", tracks: [], featured: false, stock: 50, soldOut: false }));
   document.getElementById("addMerchBtn").addEventListener("click", () =>
-    addItem("merchItems", { title: "New Merch Item", price: 2999, unit: "per item", description: "", features: [], imgUrl: "https://placehold.co/600x600/eef1f8/0b2a6b?text=NEW", comingSoon: false, soldOut: false, colors: [], sizes: [] }));
+    addItem("merchItems", { title: "New Merch Item", price: 2999, unit: "per item", description: "", features: [], category: "unisex", stock: 20, imgUrl: "https://placehold.co/600x600/eef1f8/0b2a6b?text=NEW", images: ["https://placehold.co/600x600/eef1f8/0b2a6b?text=NEW"], comingSoon: false, soldOut: false, colors: [], sizes: [] }));
 
   document.getElementById("exportBtn").addEventListener("click", exportProductsFile);
   document.getElementById("resetBtn").addEventListener("click", resetAllData);
