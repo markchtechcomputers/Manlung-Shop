@@ -52,9 +52,13 @@ function getStoredEmail() {
   return sessionStorage.getItem("manlungCustomerEmail") || "";
 }
 
+function isValidEmail(email) {
+  return /^[^\s@"'<>]{1,64}@[^\s@"'<>.]+(\.[^\s@"'<>.]+)+$/.test(email);
+}
+
 function askForEmail() {
-  let email = window.prompt("Enter your email to receive your receipt:", getStoredEmail());
-  if (!email || !email.includes("@") || !email.includes(".")) {
+  const email = (window.prompt("Enter your email to receive your receipt:", getStoredEmail()) || "").trim();
+  if (!isValidEmail(email)) {
     window.cartFunctions?.showToast("A valid email is needed to checkout");
     return null;
   }
@@ -88,8 +92,10 @@ function askForShipping() {
 }
 
 function triggerDownload(url, filename) {
+  const safe = window.security.safeUrl(url);
+  if (!safe) return;
   const a = document.createElement("a");
-  a.href = url;
+  a.href = safe;
   a.download = filename || "";
   a.target = "_blank";
   document.body.appendChild(a);
@@ -101,7 +107,7 @@ function triggerDownload(url, filename) {
 // so for an album's worth of tracks we stagger them AND keep a clickable panel
 // on screen as a guaranteed fallback for anything the browser blocked.
 function autoDownloadAll(items, onAllStarted) {
-  const valid = (items || []).filter(i => i.downloadUrl);
+  const valid = (items || []).filter(i => window.security.safeUrl(i.downloadUrl));
   valid.forEach((item, idx) => {
     setTimeout(() => triggerDownload(item.downloadUrl, item.title), idx * 600);
   });
@@ -113,8 +119,11 @@ function autoDownloadAll(items, onAllStarted) {
 }
 
 function showDownloadPanel(items, isPhysical, shippingAddress) {
-  const valid = (items || []).filter(i => i.downloadUrl);
-  const missing = (items || []).filter(i => !i.downloadUrl);
+  const esc = window.security.escapeHtml;
+  // A download URL comes from the catalog, which can be edited remotely — only
+  // http(s) links are ever turned into a clickable link.
+  const valid = (items || []).filter(i => window.security.safeUrl(i.downloadUrl));
+  const missing = (items || []).filter(i => !window.security.safeUrl(i.downloadUrl));
 
   const existing = document.getElementById("downloadPanel");
   if (existing) existing.remove();
@@ -128,10 +137,10 @@ function showDownloadPanel(items, isPhysical, shippingAddress) {
       <h3>✅ Payment Successful</h3>
       <p id="downloadPanelStatus">${valid.length ? "Starting your download" + (valid.length > 1 ? "s" : "") + "..." : ""}</p>
       ${valid.length ? `<div class="download-panel-list">
-        ${valid.map(i => `<a href="${i.downloadUrl}" download="${i.title}" target="_blank" class="download-panel-link">⬇ ${i.title}</a>`).join("")}
+        ${valid.map(i => `<a href="${window.security.safeUrlAttr(i.downloadUrl)}" download="${esc(i.title)}" target="_blank" rel="noopener noreferrer" class="download-panel-link">⬇ ${esc(i.title)}</a>`).join("")}
       </div>` : ""}
-      ${missing.length ? `<p class="download-panel-note">${missing.length} item(s) will have their download link emailed to you shortly.</p>` : ""}
-      ${isPhysical ? `<p class="download-panel-note">📦 Your order will be shipped to: <strong>${shippingAddress || "the address provided"}</strong></p>` : ""}
+      ${missing.length ? `<p class="download-panel-note">${esc(missing.length)} item(s) will have their download link emailed to you shortly.</p>` : ""}
+      ${isPhysical ? `<p class="download-panel-note">📦 Your order will be shipped to: <strong>${esc(shippingAddress || "the address provided")}</strong></p>` : ""}
     </div>
   `;
   document.body.appendChild(panel);
@@ -170,7 +179,13 @@ function checkoutViaGateway({ items, metadata, needsShipping, downloadItems, isP
   const cartStr = items.map(i => `${i.id}:${i.quantity}`).join(",");
   const returnUrl = window.location.origin + window.location.pathname;
 
-  const url = new URL(window.SITE_CONFIG.GATEWAY_URL.replace(/\/$/, "") + "/");
+  const gatewayBase = window.security.safeUrl(window.SITE_CONFIG.GATEWAY_URL);
+  if (!gatewayBase) {
+    window.cartFunctions?.showToast("Checkout isn't set up correctly — GATEWAY_URL must be an https:// address");
+    return;
+  }
+
+  const url = new URL(gatewayBase.replace(/\/$/, "") + "/");
   url.searchParams.set("cart", cartStr);
   url.searchParams.set("email", email);
   url.searchParams.set("return", returnUrl);
@@ -202,7 +217,10 @@ function checkGatewayReturn() {
     return;
   }
 
-  fetch(`${window.SITE_CONFIG.GATEWAY_URL.replace(/\/$/, "")}/api/paystack/verify/${encodeURIComponent(reference)}`)
+  const gatewayBase = window.security.safeUrl(window.SITE_CONFIG.GATEWAY_URL);
+  if (!gatewayBase) return;
+
+  fetch(`${gatewayBase.replace(/\/$/, "")}/api/paystack/verify/${encodeURIComponent(reference)}`)
     .then(r => r.json())
     .then(data => {
       if (!data.success || data.status !== "success") {

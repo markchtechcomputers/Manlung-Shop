@@ -1,8 +1,13 @@
 // UI Rendering Functions
+// Product data can come from the cloud or another device, so every value is
+// escaped (esc) and every URL sanitised (url) before it reaches innerHTML.
+
+function escHtml(v) { return window.security.escapeHtml(v); }
+function safeAttrUrl(v) { return window.security.safeUrlAttr(v); }
 
 function featureTagsHtml(features) {
   if (!features || !features.length) return "";
-  return `<div class="feature-tags">${features.map(f => `<span class="feature-tag">${f}</span>`).join("")}</div>`;
+  return `<div class="feature-tags">${features.map(f => `<span class="feature-tag">${escHtml(f)}</span>`).join("")}</div>`;
 }
 
 function renderProducts() {
@@ -22,23 +27,23 @@ function renderProducts() {
     card.innerHTML = `
       ${soldOut ? '<div class="sold-out-ribbon">SOLD OUT</div>' : ''}
       ${!soldOut && p.featured ? '<div class="featured-badge">🔥 FEATURED</div>' : ''}
-      <div class="product-img"><img src="${p.imgUrl}" loading="lazy" alt="${p.title}"></div>
+      <div class="product-img"><img src="${safeAttrUrl(p.imgUrl)}" loading="lazy" alt="${escHtml(p.title)}"></div>
       <div class="product-info">
         <div class="product-type">DIGITAL</div>
-        <div class="product-title">${p.title}</div>
-        ${p.description ? `<div class="product-desc">${p.description}</div>` : ''}
+        <div class="product-title">${escHtml(p.title)}</div>
+        ${p.description ? `<div class="product-desc">${escHtml(p.description)}</div>` : ''}
         ${featureTagsHtml(p.features)}
         <div class="product-price-row">
-          <span class="product-price">${window.currencyFunctions.formatPrice(p.price)}</span>
-          ${p.unit ? `<span class="product-unit">${p.unit}</span>` : ''}
+          <span class="product-price">${escHtml(window.currencyFunctions.formatPrice(p.price))}</span>
+          ${p.unit ? `<span class="product-unit">${escHtml(p.unit)}</span>` : ''}
         </div>
-        ${!soldOut ? `<div class="qty-stepper" data-id="${p.id}">
+        ${!soldOut ? `<div class="qty-stepper" data-id="${escHtml(p.id)}">
           <button type="button" class="qty-dec">−</button>
           <span class="qty-display">1</span>
           <button type="button" class="qty-inc">+</button>
         </div>` : ''}
-        <button class="btn-add" data-id="${p.id}" ${soldOut ? 'disabled' : ''}>ADD TO CART</button>
-        <button class="btn-buy-now buy-now" data-id="${p.id}" ${soldOut ? 'disabled' : ''}>${soldOut ? 'SOLD OUT' : 'BUY NOW'}</button>
+        <button class="btn-add" data-id="${escHtml(p.id)}" ${soldOut ? 'disabled' : ''}>ADD TO CART</button>
+        <button class="btn-buy-now buy-now" data-id="${escHtml(p.id)}" ${soldOut ? 'disabled' : ''}>${soldOut ? 'SOLD OUT' : 'BUY NOW'}</button>
       </div>
     `;
     digitalGrid.appendChild(card);
@@ -50,26 +55,26 @@ function renderProducts() {
     card.className = "product-card";
     const soldOut = p.soldOut || p.stock === 0;
     card.innerHTML = `
-      ${soldOut ? '<div class="sold-out-ribbon">SOLD OUT</div>' : (p.stock < 50 ? `<div class="stock-badge">Only ${p.stock} left</div>` : '')}
+      ${soldOut ? '<div class="sold-out-ribbon">SOLD OUT</div>' : (p.stock < 50 ? `<div class="stock-badge">Only ${escHtml(p.stock)} left</div>` : '')}
       ${!soldOut && p.featured ? '<div class="featured-badge">BESTSELLER</div>' : ''}
-      <div class="product-img"><img src="${p.imgUrl}" loading="lazy" alt="${p.title}"></div>
+      <div class="product-img"><img src="${safeAttrUrl(p.imgUrl)}" loading="lazy" alt="${escHtml(p.title)}"></div>
       <div class="product-info">
         <div class="product-type">PHYSICAL CD</div>
-        <div class="product-title">${p.title}</div>
-        ${p.description ? `<div class="product-desc">${p.description}</div>` : ''}
+        <div class="product-title">${escHtml(p.title)}</div>
+        ${p.description ? `<div class="product-desc">${escHtml(p.description)}</div>` : ''}
         ${featureTagsHtml(p.features)}
-        ${p.audioUrl ? `<audio controls controlsList="nodownload noplaybackrate" oncontextmenu="return false" class="cd-audio-preview" src="${p.audioUrl}"></audio>` : ''}
+        ${p.audioUrl ? `<audio controls controlsList="nodownload noplaybackrate" oncontextmenu="return false" class="cd-audio-preview" src="${safeAttrUrl(p.audioUrl)}"></audio>` : ''}
         <div class="product-price-row">
-          <span class="product-price">${window.currencyFunctions.formatPrice(p.price)}</span>
-          ${p.unit ? `<span class="product-unit">${p.unit}</span>` : ''}
+          <span class="product-price">${escHtml(window.currencyFunctions.formatPrice(p.price))}</span>
+          ${p.unit ? `<span class="product-unit">${escHtml(p.unit)}</span>` : ''}
         </div>
-        ${!soldOut ? `<div class="qty-stepper" data-id="${p.id}">
+        ${!soldOut ? `<div class="qty-stepper" data-id="${escHtml(p.id)}">
           <button type="button" class="qty-dec">−</button>
           <span class="qty-display">1</span>
           <button type="button" class="qty-inc">+</button>
         </div>` : ''}
-        <button class="btn-add" data-id="${p.id}" ${soldOut ? 'disabled' : ''}>ADD TO CART</button>
-        <button class="btn-buy-now buy-now" data-id="${p.id}" ${soldOut ? 'disabled' : ''}>${soldOut ? 'SOLD OUT' : 'BUY NOW'}</button>
+        <button class="btn-add" data-id="${escHtml(p.id)}" ${soldOut ? 'disabled' : ''}>ADD TO CART</button>
+        <button class="btn-buy-now buy-now" data-id="${escHtml(p.id)}" ${soldOut ? 'disabled' : ''}>${soldOut ? 'SOLD OUT' : 'BUY NOW'}</button>
       </div>
     `;
     cdGrid.appendChild(card);
@@ -123,17 +128,17 @@ function renderMerch() {
     if (item.comingSoon) {
       card.innerHTML = `
         <div class="merch-img">
-          <img src="${item.imgUrl}" loading="lazy" alt="${item.title}">
+          <img src="${safeAttrUrl(item.imgUrl)}" loading="lazy" alt="${escHtml(item.title)}">
           <div class="merch-tag">PREMIUM</div>
           <div class="coming-soon-overlay"><div class="coming-soon-text">COMING SOON</div></div>
         </div>
         <div class="merch-info">
-          <div class="merch-title">${item.title}</div>
-          <div class="merch-desc">${item.description}</div>
+          <div class="merch-title">${escHtml(item.title)}</div>
+          <div class="merch-desc">${escHtml(item.description)}</div>
           ${featureTagsHtml(item.features)}
           <div class="merch-price-row">
-            <span class="merch-price">${window.currencyFunctions.formatPrice(item.price)}</span>
-            ${item.unit ? `<span class="product-unit">${item.unit}</span>` : ''}
+            <span class="merch-price">${escHtml(window.currencyFunctions.formatPrice(item.price))}</span>
+            ${item.unit ? `<span class="product-unit">${escHtml(item.unit)}</span>` : ''}
             <button class="merch-btn" disabled style="opacity:0.5;">NOTIFY ME</button>
           </div>
         </div>
@@ -141,17 +146,17 @@ function renderMerch() {
     } else if (soldOut) {
       card.innerHTML = `
         <div class="merch-img">
-          <img src="${item.imgUrl}" loading="lazy" alt="${item.title}">
+          <img src="${safeAttrUrl(item.imgUrl)}" loading="lazy" alt="${escHtml(item.title)}">
           <div class="merch-tag">LIMITED</div>
           <div class="coming-soon-overlay"><div class="coming-soon-text">SOLD OUT</div></div>
         </div>
         <div class="merch-info">
-          <div class="merch-title">${item.title}</div>
-          <div class="merch-desc">${item.description}</div>
+          <div class="merch-title">${escHtml(item.title)}</div>
+          <div class="merch-desc">${escHtml(item.description)}</div>
           ${featureTagsHtml(item.features)}
           <div class="merch-price-row">
-            <span class="merch-price">${window.currencyFunctions.formatPrice(item.price)}</span>
-            ${item.unit ? `<span class="product-unit">${item.unit}</span>` : ''}
+            <span class="merch-price">${escHtml(window.currencyFunctions.formatPrice(item.price))}</span>
+            ${item.unit ? `<span class="product-unit">${escHtml(item.unit)}</span>` : ''}
             <button class="merch-btn" disabled style="opacity:0.5;">SOLD OUT</button>
           </div>
         </div>
@@ -162,38 +167,41 @@ function renderMerch() {
 
       let colorHtml = "";
       if (hasColors) {
-        colorHtml = `<div class="color-swatches" id="colors-${item.id}">`;
+        colorHtml = `<div class="color-swatches" id="colors-${escHtml(item.id)}">`;
         item.colors.forEach((color, idx) => {
           const isSelected = idx === 0 ? 'selected' : '';
-          colorHtml += `<div class="color-option ${isSelected}" style="background-color: ${color.code}; border: ${color.border || 'none'};" data-color="${color.name}" data-id="${item.id}" title="${color.name}"></div>`;
+          // Only plain hex/rgb colours and simple border values are allowed into the style attribute.
+          const code = /^#[0-9a-f]{3,8}$|^rgba?\([\d\s.,%]+\)$/i.test(String(color.code || "")) ? color.code : "transparent";
+          const border = /^[\w\s#().,%]{0,40}$/.test(String(color.border || "")) ? (color.border || "none") : "none";
+          colorHtml += `<div class="color-option ${isSelected}" style="background-color: ${escHtml(code)}; border: ${escHtml(border)};" data-color="${escHtml(color.name)}" data-id="${escHtml(item.id)}" title="${escHtml(color.name)}"></div>`;
         });
         colorHtml += `</div>`;
       }
 
       let sizeHtml = "";
       if (hasSizes) {
-        sizeHtml = `<div class="size-selector" id="sizes-${item.id}">`;
+        sizeHtml = `<div class="size-selector" id="sizes-${escHtml(item.id)}">`;
         item.sizes.forEach(size => {
-          sizeHtml += `<button class="size-btn" data-size="${size}">${size}</button>`;
+          sizeHtml += `<button class="size-btn" data-size="${escHtml(size)}">${escHtml(size)}</button>`;
         });
         sizeHtml += `</div>`;
       }
 
       card.innerHTML = `
         <div class="merch-img">
-          <img src="${item.imgUrl}" loading="lazy" alt="${item.title}">
+          <img src="${safeAttrUrl(item.imgUrl)}" loading="lazy" alt="${escHtml(item.title)}">
           <div class="merch-tag">LIMITED</div>
         </div>
         <div class="merch-info">
-          <div class="merch-title">${item.title}</div>
-          <div class="merch-desc">${item.description}</div>
+          <div class="merch-title">${escHtml(item.title)}</div>
+          <div class="merch-desc">${escHtml(item.description)}</div>
           ${featureTagsHtml(item.features)}
           ${colorHtml}
           ${sizeHtml}
           <div class="merch-price-row">
-            <span class="merch-price">${window.currencyFunctions.formatPrice(item.price)}</span>
-            ${item.unit ? `<span class="product-unit">${item.unit}</span>` : ''}
-            <button class="merch-pay-btn" data-id="${item.id}">BUY NOW →</button>
+            <span class="merch-price">${escHtml(window.currencyFunctions.formatPrice(item.price))}</span>
+            ${item.unit ? `<span class="product-unit">${escHtml(item.unit)}</span>` : ''}
+            <button class="merch-pay-btn" data-id="${escHtml(item.id)}">BUY NOW →</button>
           </div>
         </div>
       `;
@@ -272,9 +280,9 @@ function renderTestimonials() {
   
   grid.innerHTML = window.productData.testimonials.map(t => `
     <div class="testimonial-card">
-      <div class="stars">${"★".repeat(t.stars)}${"☆".repeat(5 - t.stars)}</div>
-      <div class="testimonial-text">"${t.text}"</div>
-      <div class="testimonial-author">— ${t.name}</div>
+      <div class="stars">${"★".repeat(Math.max(0, Math.min(5, parseInt(t.stars) || 0)))}${"☆".repeat(5 - Math.max(0, Math.min(5, parseInt(t.stars) || 0)))}</div>
+      <div class="testimonial-text">"${escHtml(t.text)}"</div>
+      <div class="testimonial-author">— ${escHtml(t.name)}</div>
     </div>
   `).join("");
 }

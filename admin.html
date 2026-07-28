@@ -6,6 +6,7 @@
 <title>Manlung Shop | Admin</title>
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <meta name="robots" content="noindex, nofollow">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https:; frame-ancestors 'none'; base-uri 'none'; object-src 'none'">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@700;800&display=swap" rel="stylesheet">
 <style>
   * { margin:0; padding:0; box-sizing:border-box; }
@@ -140,10 +141,25 @@
     <h1>Manlung Shop</h1>
     <p>Admin Portal — authorized access only</p>
     <form id="loginForm">
-      <input type="password" id="adminPasswordInput" placeholder="Admin password" required>
+      <div id="adminEmailField" style="display:none;">
+        <input type="email" id="adminEmailInput" placeholder="Admin email" autocomplete="username">
+      </div>
+      <input type="password" id="adminPasswordInput" placeholder="Admin password" autocomplete="current-password" required>
       <button type="submit">Log In</button>
     </form>
     <div id="loginError"></div>
+
+    <!-- Shown only when no admin password is configured yet -->
+    <div id="passwordSetupBox" style="display:none; text-align:left; margin-top:18px;">
+      <p style="font-size:0.78rem; color:#7d8bab; margin-bottom:10px;">
+        Pick an admin password below, then paste the generated line into
+        <code>js/config.js</code> (replacing <code>ADMIN_PASSWORD_PBKDF2: null,</code>) and reload.
+        Only the hash is stored — the password itself is never saved in the repo.
+      </p>
+      <input type="password" id="setupPasswordInput" placeholder="New admin password (min 10 chars)" autocomplete="new-password">
+      <button type="button" id="passwordSetupBtn">Generate config line</button>
+      <textarea id="setupHashOutput" rows="4" readonly style="display:none; width:100%; margin-top:10px; font-family:monospace; font-size:0.7rem; padding:10px; border-radius:12px; border:1px solid rgba(11,42,107,0.2);"></textarea>
+    </div>
   </div>
 </div>
 
@@ -192,11 +208,11 @@
     <div class="change-password-section">
       <h3>🔑 Change Admin Password</h3>
       <form id="changePasswordForm">
-        <input type="password" id="newPasswordInput" placeholder="New password (min 6 chars)">
+        <input type="password" id="newPasswordInput" placeholder="New password (min 10 chars)" autocomplete="new-password">
         <button class="admin-btn primary" type="submit">Generate New Hash</button>
       </form>
       <div id="newHashBox" style="display:none;">
-        <p style="font-size:0.75rem; color:#7d8bab; margin:8px 0;">Copy this and paste it as <code>ADMIN_PASSWORD</code> in <code>js/config.js</code>:</p>
+        <p style="font-size:0.75rem; color:#7d8bab; margin:8px 0;">Copy this and paste it over the <code>ADMIN_PASSWORD_PBKDF2</code> line in <code>js/config.js</code>:</p>
         <input type="text" id="newHashOutput" readonly>
         <button class="admin-btn secondary" id="copyHashBtn" type="button">Copy</button>
       </div>
@@ -206,9 +222,10 @@
 
 <div id="adminToast"></div>
 
+<script src="js/security.js"></script>
 <script src="js/config.js"></script>
 <script src="data/products.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.110.7/dist/umd/supabase.js" integrity="sha384-hazsLVND17GNLVdtV19te6qbFT2YuLgl8SamcF+QR5eIOC+W4dGKrUNMxU1jH1zD" crossorigin="anonymous"></script>
 <script src="js/data-store.js"></script>
 <script src="js/admin.js"></script>
 </body>

@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Manlung Shop</title>
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://js.paystack.co https://*.paystack.co https://*.paystack.com https://widgetv3.bandsintown.com https://*.bandsintown.com https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: https:; media-src 'self' https:; connect-src 'self' https:; frame-src https://*.paystack.co https://*.paystack.com https://*.bandsintown.com; object-src 'none'; base-uri 'none'; form-action 'self' https://*.paystack.co https://*.paystack.com">
 <meta name="description" content="Official online store for Kenyan hip-hop artist Adict Manlung — digital singles, signed CDs, merch, and tour tickets.">
 
 <!-- Social sharing previews -->
@@ -400,7 +401,8 @@
 <!-- Data -->
 <script src="data/products.js"></script>
 <script src="data/countries.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.110.7/dist/umd/supabase.js" integrity="sha384-hazsLVND17GNLVdtV19te6qbFT2YuLgl8SamcF+QR5eIOC+W4dGKrUNMxU1jH1zD" crossorigin="anonymous"></script>
+<script src="js/security.js"></script>
 <script src="js/config.js"></script>
 <script src="js/data-store.js"></script>
 

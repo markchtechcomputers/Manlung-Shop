@@ -15,6 +15,23 @@
 
   window.DEFAULT_PRODUCT_DATA = JSON.parse(JSON.stringify(window.productData));
 
+  // Catalog data arrives from the cloud or another device's localStorage, so it
+  // is untrusted: keep only the expected arrays and rebuild allProducts here.
+  function normalizeCatalog(raw) {
+    if (!raw || typeof raw !== "object") return null;
+    const arr = key => (Array.isArray(raw[key]) ? raw[key].filter(i => i && typeof i === "object") : []);
+    const catalog = {
+      digitalProducts: arr("digitalProducts"),
+      cdProducts: arr("cdProducts"),
+      merchItems: arr("merchItems"),
+      testimonials: arr("testimonials")
+    };
+    if (!catalog.digitalProducts.length && !catalog.cdProducts.length && !catalog.merchItems.length) return null;
+    if (!catalog.testimonials.length) catalog.testimonials = window.DEFAULT_PRODUCT_DATA.testimonials;
+    catalog.allProducts = [...catalog.digitalProducts, ...catalog.cdProducts];
+    return catalog;
+  }
+
   function supabaseConfigured() {
     const cfg = window.SITE_CONFIG?.SUPABASE_CONFIG;
     return !!(cfg && cfg.url && !cfg.url.includes("REPLACE_WITH") && typeof supabase !== "undefined");
@@ -38,9 +55,8 @@
     const saved = localStorage.getItem(STORAGE_KEY);
     if (!saved) return;
     try {
-      const parsed = JSON.parse(saved);
-      parsed.allProducts = [...(parsed.digitalProducts || []), ...(parsed.cdProducts || [])];
-      window.productData = parsed;
+      const parsed = normalizeCatalog(JSON.parse(saved));
+      if (parsed) window.productData = parsed;
     } catch (e) {
       console.warn("Could not parse saved local data, using defaults.", e);
     }
@@ -72,9 +88,8 @@
       sb.from(TABLE).select("data").eq("id", ROW_ID).single()
         .then(({ data, error }) => {
           if (!error && data && data.data) {
-            const parsed = data.data;
-            parsed.allProducts = [...(parsed.digitalProducts || []), ...(parsed.cdProducts || [])];
-            window.productData = parsed;
+            const parsed = normalizeCatalog(data.data);
+            if (parsed) window.productData = parsed;
           }
           rerenderEverything();
         })
@@ -83,9 +98,8 @@
       // Live updates — if the admin (or anyone) changes data, every open tab updates automatically
       sb.channel("manlung_products_changes")
         .on("postgres_changes", { event: "*", schema: "public", table: TABLE, filter: `id=eq.${ROW_ID}` }, payload => {
-          const newData = payload.new?.data;
+          const newData = normalizeCatalog(payload.new?.data);
           if (!newData) return;
-          newData.allProducts = [...(newData.digitalProducts || []), ...(newData.cdProducts || [])];
           window.productData = newData;
           rerenderEverything();
         })

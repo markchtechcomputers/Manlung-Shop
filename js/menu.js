@@ -111,6 +111,8 @@ function showAccountLoggedOut() {
 const LOCAL_ACCOUNTS_KEY = "manlungAccounts";
 const LOCAL_SESSION_KEY = "manlungLoggedInEmail";
 
+// Passwords are stored as PBKDF2 records ({ salt, iterations, hash }) so a
+// stolen/shared device can't reveal the password itself.
 function getLocalAccounts() {
   try { return JSON.parse(localStorage.getItem(LOCAL_ACCOUNTS_KEY) || "{}"); }
   catch (e) { return {}; }
@@ -119,45 +121,65 @@ function saveLocalAccounts(accounts) {
   localStorage.setItem(LOCAL_ACCOUNTS_KEY, JSON.stringify(accounts));
 }
 
+function isValidAccountEmail(email) {
+  return /^[^\s@"'<>]{1,64}@[^\s@"'<>.]+(\.[^\s@"'<>.]+)+$/.test(email);
+}
+
 function initLocalAccountSystem(loginBtn, createBtn, logoutBtn, errorBox) {
   const existingSession = sessionStorage.getItem(LOCAL_SESSION_KEY);
   if (existingSession) showAccountLoggedIn(existingSession);
 
-  loginBtn.addEventListener("click", () => {
+  loginBtn.addEventListener("click", async () => {
     errorBox.textContent = "";
     const email = document.getElementById("accountEmail").value.trim().toLowerCase();
-    const password = document.getElementById("accountPassword").value;
+    const passwordInput = document.getElementById("accountPassword");
+    const password = passwordInput.value;
     const accounts = getLocalAccounts();
+    const record = accounts[email];
 
     if (!email || !password) {
       errorBox.textContent = "Enter your email and password";
       return;
     }
-    if (!accounts[email]) {
+    if (!record) {
       errorBox.textContent = "No account found with that email — create one below";
       return;
     }
-    if (accounts[email] !== password) {
+    if (typeof record === "string") {
+      // Account created before passwords were hashed — verify once, then upgrade.
+      if (record !== password) {
+        errorBox.textContent = "Incorrect password";
+        return;
+      }
+      accounts[email] = await window.security.hashPassword(password);
+      saveLocalAccounts(accounts);
+    } else if (!(await window.security.verifyPassword(password, record))) {
       errorBox.textContent = "Incorrect password";
       return;
     }
+    passwordInput.value = "";
     sessionStorage.setItem(LOCAL_SESSION_KEY, email);
     showAccountLoggedIn(email);
     window.cartFunctions.showToast("Logged in!");
   });
 
-  createBtn.addEventListener("click", (e) => {
+  createBtn.addEventListener("click", async (e) => {
     e.preventDefault();
     errorBox.textContent = "";
     const email = document.getElementById("accountEmail").value.trim().toLowerCase();
-    const password = document.getElementById("accountPassword").value;
+    const passwordInput = document.getElementById("accountPassword");
+    const password = passwordInput.value;
 
-    if (!email || !email.includes("@") || !email.includes(".")) {
+    if (!isValidAccountEmail(email)) {
       errorBox.textContent = "Enter a valid email first";
       return;
     }
-    if (password.length < 6) {
-      errorBox.textContent = "Password should be at least 6 characters";
+    if (password.length < 8) {
+      errorBox.textContent = "Password should be at least 8 characters";
+      return;
+    }
+    if (!window.security.cryptoAvailable()) {
+      errorBox.textContent = "This browser can't create an account securely — open the site over https://";
       return;
     }
     const accounts = getLocalAccounts();
@@ -165,8 +187,9 @@ function initLocalAccountSystem(loginBtn, createBtn, logoutBtn, errorBox) {
       errorBox.textContent = "An account with that email already exists — try logging in";
       return;
     }
-    accounts[email] = password;
+    accounts[email] = await window.security.hashPassword(password);
     saveLocalAccounts(accounts);
+    passwordInput.value = "";
     sessionStorage.setItem(LOCAL_SESSION_KEY, email);
     showAccountLoggedIn(email);
     window.cartFunctions.showToast("Account created!");
@@ -206,9 +229,11 @@ function initAccountSystem() {
 
   loginBtn.addEventListener("click", async () => {
     errorBox.textContent = "";
-    const email = document.getElementById("accountEmail").value;
-    const password = document.getElementById("accountPassword").value;
+    const email = document.getElementById("accountEmail").value.trim();
+    const passwordInput = document.getElementById("accountPassword");
+    const password = passwordInput.value;
     const { error } = await sb.auth.signInWithPassword({ email, password });
+    passwordInput.value = "";
     if (error) {
       errorBox.textContent = error.message;
     } else {

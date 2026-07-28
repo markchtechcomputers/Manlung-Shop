@@ -22,11 +22,24 @@ window.SITE_CONFIG = {
   // WhatsApp number used by the floating WhatsApp button (digits only, country code, no +)
   WHATSAPP_NUMBER: "254724356178",
 
-  // Admin Portal login password. Change this to something only you know.
-  // Note: since this is a static site with no server, this is a light deterrent
-  // (like an unlisted door), not bank-grade security — anyone who really wants to
-  // view your site's source code could find it. Don't reuse a password you use elsewhere.
-  ADMIN_PASSWORD: "manlung2026",
+  // ----------------------------------------------------------------
+  // ADMIN PORTAL LOGIN
+  // ----------------------------------------------------------------
+  // Preferred: create ONE Supabase user for yourself (Supabase dashboard ->
+  // Authentication -> Users -> Add user) and put its email here. admin.html then
+  // logs in against Supabase, and the Supabase RLS policies (see README) only let
+  // that signed-in user write to the catalog — so nobody can edit your products
+  // by reading this file.
+  ADMIN_EMAIL: "",
+
+  // Fallback for offline/preview use only, when ADMIN_EMAIL is empty. This is a
+  // PBKDF2-SHA256 hash of your password, NOT the password — never paste a plain
+  // password here. Leave it empty and admin.html will walk you through creating
+  // one on first load ("Set up admin password"), then paste the generated block here.
+  // Reminder: with no server, a local-only password gate is a deterrent — anyone
+  // determined can bypass the check in their own browser. Use ADMIN_EMAIL for real
+  // protection of the shared catalog.
+  ADMIN_PASSWORD_PBKDF2: null,
 
   // ----------------------------------------------------------------
   // SUPABASE (makes admin edits visible to EVERY visitor, not just you;
@@ -40,6 +53,11 @@ window.SITE_CONFIG = {
   //     columns: id (int8, primary key) and data (jsonb)
   //  3. Project Settings -> API -> copy "Project URL" and "anon public" key
   //  4. Paste the values below
+  //  5. IMPORTANT: turn on Row Level Security for that table and add the two
+  //     policies from the README ("Supabase security"). The anon key below is
+  //     public by design (every visitor downloads it) — RLS is the only thing
+  //     stopping a stranger from rewriting your prices or download links.
+  //     NEVER put the "service_role" key in this file.
   // Until you do this, the site works fine using this-browser-only storage.
   SUPABASE_CONFIG: {
     url: "https://qpsiqaefsulqphsqkaau.supabase.co",

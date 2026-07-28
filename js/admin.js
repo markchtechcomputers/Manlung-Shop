@@ -10,31 +10,111 @@ function toast(msg) {
 }
 
 // ---------- LOGIN ----------
+// Two modes:
+//  1. SUPABASE MODE (config.ADMIN_EMAIL set): the real one. The password is
+//     checked by Supabase Auth, and RLS lets only this signed-in user write the
+//     shared catalog, so the login can't be bypassed from the browser.
+//  2. LOCAL MODE (no ADMIN_EMAIL): offline/preview gate. The password is checked
+//     against a PBKDF2 hash in config.js; edits stay in this browser.
+function supabaseAdminAuthConfigured() {
+  return !!(window.SITE_CONFIG?.ADMIN_EMAIL && window.dataStore?.getClient?.());
+}
+
+function storedPasswordRecord() {
+  const rec = window.SITE_CONFIG?.ADMIN_PASSWORD_PBKDF2;
+  return rec && rec.salt && rec.hash ? rec : null;
+}
+
 function initLogin() {
   const form = document.getElementById("loginForm");
+  const emailField = document.getElementById("adminEmailField");
+  const emailInput = document.getElementById("adminEmailInput");
   const input = document.getElementById("adminPasswordInput");
   const err = document.getElementById("loginError");
+  const setupBox = document.getElementById("passwordSetupBox");
 
-  let alreadyIn = false;
-  try { alreadyIn = sessionStorage.getItem("manlungAdminLoggedIn") === "true"; } catch (e) { /* storage blocked, ignore */ }
-  if (alreadyIn) { showDashboard(); return; }
+  if (supabaseAdminAuthConfigured()) {
+    if (emailField) emailField.style.display = "block";
+    if (emailInput) emailInput.value = window.SITE_CONFIG.ADMIN_EMAIL;
+    initSupabaseLogin(form, emailInput, input, err);
+    return;
+  }
 
-  form.addEventListener("submit", (e) => {
+  if (!storedPasswordRecord()) {
+    // No password configured yet — refuse to open the dashboard and show the
+    // one-time setup flow instead of falling back to a default password.
+    form.style.display = "none";
+    if (setupBox) setupBox.style.display = "block";
+    err.textContent = "No admin password configured yet.";
+    return;
+  }
+
+  initLocalLogin(form, input, err);
+}
+
+function initSupabaseLogin(form, emailInput, input, err) {
+  const sb = window.dataStore.getClient();
+
+  sb.auth.getSession().then(({ data: { session } }) => {
+    if (session?.user) showDashboard();
+  });
+
+  form.addEventListener("submit", async (e) => {
     e.preventDefault();
+    err.textContent = "";
+    const email = (emailInput?.value || window.SITE_CONFIG.ADMIN_EMAIL || "").trim();
+    const password = input.value;
+    const { data, error } = await sb.auth.signInWithPassword({ email, password });
+    input.value = "";
+    if (error || !data?.session) {
+      err.textContent = error?.message || "Incorrect email or password";
+      return;
+    }
+    showDashboard();
+  });
+}
+
+function initLocalLogin(form, input, err) {
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    err.textContent = "";
     try {
-      const entered = input.value.trim();
-      const expected = (window.SITE_CONFIG && window.SITE_CONFIG.ADMIN_PASSWORD) || "manlung2026";
-      if (entered === expected) {
-        try { sessionStorage.setItem("manlungAdminLoggedIn", "true"); } catch (e) { /* storage blocked, ignore */ }
-        showDashboard();
-      } else {
-        err.textContent = "Incorrect password";
-        input.value = "";
+      if (!window.security?.cryptoAvailable()) {
+        err.textContent = "This browser can't verify the password (WebCrypto unavailable over plain HTTP — use https:// or localhost).";
+        return;
       }
+      const ok = await window.security.verifyPassword(input.value, storedPasswordRecord());
+      input.value = "";
+      if (!ok) {
+        err.textContent = "Incorrect password";
+        return;
+      }
+      showDashboard();
     } catch (ex) {
       err.textContent = "Login error — " + ex.message;
       console.error("Admin login error:", ex);
     }
+  });
+}
+
+// First-run helper: turns a password into the PBKDF2 block to paste into config.js.
+function initPasswordSetup() {
+  const btn = document.getElementById("passwordSetupBtn");
+  const pass = document.getElementById("setupPasswordInput");
+  const out = document.getElementById("setupHashOutput");
+  if (!btn) return;
+
+  btn.addEventListener("click", async () => {
+    const value = pass.value;
+    if (value.length < 10) {
+      out.style.display = "block";
+      out.value = "Use at least 10 characters.";
+      return;
+    }
+    const record = await window.security.hashPassword(value);
+    out.style.display = "block";
+    out.value = `ADMIN_PASSWORD_PBKDF2: ${JSON.stringify(record)},`;
+    pass.value = "";
   });
 }
 
@@ -44,26 +124,21 @@ function showDashboard() {
   renderAllTabs();
 
   const badge = document.getElementById("cloudStatusBadge");
-  const sbOn = window.dataStore.isSupabaseConnected?.();
-  const fbOn = window.dataStore.isFirebaseConnected?.();
-
-  if (sbOn && fbOn) {
-    badge.textContent = "🟢 Cloud synced (Supabase + Firebase backup) — visible to all visitors";
-    badge.style.background = "rgba(16,185,129,0.12)";
-    badge.style.color = "#0d8f5f";
-  } else if (sbOn || fbOn) {
-    badge.textContent = `🟢 Cloud synced (${sbOn ? "Supabase" : "Firebase"} only) — visible to all visitors`;
+  if (window.dataStore.isCloudConnected?.()) {
+    badge.textContent = "🟢 Cloud synced (Supabase) — visible to all visitors";
     badge.style.background = "rgba(16,185,129,0.12)";
     badge.style.color = "#0d8f5f";
   } else {
-    badge.textContent = "🟡 This device only — set up Supabase and/or Firebase in config.js to go live for everyone";
+    badge.textContent = "🟡 This device only — set up Supabase in config.js to go live for everyone";
     badge.style.background = "rgba(230,160,20,0.12)";
     badge.style.color = "#a86a00";
   }
 }
 
-function logout() {
-  sessionStorage.removeItem("manlungAdminLoggedIn");
+async function logout() {
+  if (supabaseAdminAuthConfigured()) {
+    try { await window.dataStore.getClient().auth.signOut(); } catch (e) { /* offline, ignore */ }
+  }
   location.reload();
 }
 
@@ -98,11 +173,13 @@ function renderCategory(dataKey, tabId, fields) {
   if (!container) return;
   const items = window.productData[dataKey];
 
+  const esc = window.security.escapeHtml;
+
   container.innerHTML = items.map((item, idx) => `
-    <div class="admin-card" data-key="${dataKey}" data-idx="${idx}">
+    <div class="admin-card" data-key="${esc(dataKey)}" data-idx="${idx}">
       <div class="admin-card-header">
-        <strong>#${item.id} — ${item.title || "New Item"}</strong>
-        <button class="admin-delete-btn" data-key="${dataKey}" data-idx="${idx}">🗑 Delete</button>
+        <strong>#${esc(item.id)} — ${esc(item.title || "New Item")}</strong>
+        <button class="admin-delete-btn" data-key="${esc(dataKey)}" data-idx="${idx}">🗑 Delete</button>
       </div>
       <div class="admin-fields">
         ${fields.map(f => renderField(dataKey, idx, f, item[f])).join("")}
@@ -125,12 +202,13 @@ function renderCategory(dataKey, tabId, fields) {
 }
 
 function renderField(dataKey, idx, field, value) {
-  const inputId = `${dataKey}-${idx}-${field}`;
+  const esc = window.security.escapeHtml;
+  const inputId = esc(`${dataKey}-${idx}-${field}`);
 
   if (field === "images") {
     const val = Array.isArray(value) ? value.join("\n") : "";
     return `<label class="admin-field-full">Product Images (one image URL per line — first one is the main image; add more for a scrollable gallery)
-      <textarea id="${inputId}" rows="3" placeholder="https://...\nhttps://...">${val}</textarea></label>`;
+      <textarea id="${inputId}" rows="3" placeholder="https://...\nhttps://...">${esc(val)}</textarea></label>`;
   }
   if (field === "category") {
     const options = ["men", "women", "unisex", "jewelry"];
@@ -143,36 +221,32 @@ function renderField(dataKey, idx, field, value) {
   if (field === "tracks") {
     const val = Array.isArray(value) ? value.map(t => `${t.title} | ${t.url}`).join("\n") : "";
     return `<label class="admin-field-full">Album Tracklist (one per line: <code>Track Title | https://audio-url.mp3</code> — add as many as the album has)
-      <textarea id="${inputId}" rows="6" placeholder="Track 1 | https://...\nTrack 2 | https://...">${val}</textarea></label>`;
+      <textarea id="${inputId}" rows="6" placeholder="Track 1 | https://...\nTrack 2 | https://...">${esc(val)}</textarea></label>`;
   }
   if (field === "colors") {
     const val = Array.isArray(value) ? value.map(c => `${c.name} | ${c.code}`).join("\n") : "";
     return `<label class="admin-field-full">Colours (one per line: <code>Name | #hexcode</code> — add as many as you like, e.g. Gold, Silver, Rose Gold for jewelry)
-      <textarea id="${inputId}" rows="4" placeholder="White | #FFFFFF\nGold | #D4AF37">${val}</textarea></label>`;
+      <textarea id="${inputId}" rows="4" placeholder="White | #FFFFFF\nGold | #D4AF37">${esc(val)}</textarea></label>`;
   }
   if (field === "sizes") {
     const val = Array.isArray(value) ? value.join(", ") : "";
     return `<label class="admin-field-full">Sizes (comma separated — e.g. <code>S, M, L, XL</code> or <code>6, 7, 8, 9</code> for rings, or <code>One Size</code>)
-      <input type="text" id="${inputId}" value="${escapeAttr(val)}" placeholder="S, M, L, XL, XXL"></label>`;
+      <input type="text" id="${inputId}" value="${esc(val)}" placeholder="S, M, L, XL, XXL"></label>`;
   }
   if (field === "features") {
     const val = Array.isArray(value) ? value.join(", ") : "";
-    return `<label>${fieldLabel(field)}<input type="text" id="${inputId}" value="${escapeAttr(val)}"></label>`;
+    return `<label>${fieldLabel(field)}<input type="text" id="${inputId}" value="${esc(val)}"></label>`;
   }
   if (field === "featured" || field === "soldOut" || field === "comingSoon") {
     return `<label class="admin-checkbox-label"><input type="checkbox" id="${inputId}" ${value ? "checked" : ""}> ${fieldLabel(field)}</label>`;
   }
   if (field === "description") {
-    return `<label>${fieldLabel(field)}<textarea id="${inputId}" rows="2">${value || ""}</textarea></label>`;
+    return `<label>${fieldLabel(field)}<textarea id="${inputId}" rows="2">${esc(value || "")}</textarea></label>`;
   }
   if (field === "price" || field === "stock") {
-    return `<label>${fieldLabel(field)}<input type="number" id="${inputId}" value="${value ?? 0}"></label>`;
+    return `<label>${fieldLabel(field)}<input type="number" id="${inputId}" value="${esc(value ?? 0)}"></label>`;
   }
-  return `<label>${fieldLabel(field)}<input type="text" id="${inputId}" value="${escapeAttr(value || "")}"></label>`;
-}
-
-function escapeAttr(str) {
-  return String(str).replace(/"/g, "&quot;");
+  return `<label>${fieldLabel(field)}<input type="text" id="${inputId}" value="${esc(value || "")}"></label>`;
 }
 
 // ---------- SAVE (reads DOM back into data) ----------
@@ -270,15 +344,24 @@ function resetAllData() {
 // ---------- CHANGE PASSWORD ----------
 function initChangePassword() {
   const form = document.getElementById("changePasswordForm");
-  form.addEventListener("submit", (e) => {
+  form.addEventListener("submit", async (e) => {
     e.preventDefault();
-    const newPass = document.getElementById("newPasswordInput").value.trim();
-    if (newPass.length < 6) {
-      toast("Password should be at least 6 characters");
+    const input = document.getElementById("newPasswordInput");
+    const newPass = input.value;
+    if (newPass.length < 10) {
+      toast("Password should be at least 10 characters");
       return;
     }
-    document.getElementById("newHashOutput").value = newPass;
+    if (supabaseAdminAuthConfigured()) {
+      const { error } = await window.dataStore.getClient().auth.updateUser({ password: newPass });
+      input.value = "";
+      toast(error ? `Couldn't change password — ${error.message}` : "✅ Password changed in Supabase");
+      return;
+    }
+    const record = await window.security.hashPassword(newPass);
+    document.getElementById("newHashOutput").value = `ADMIN_PASSWORD_PBKDF2: ${JSON.stringify(record)},`;
     document.getElementById("newHashBox").style.display = "block";
+    input.value = "";
   });
 
   document.getElementById("copyHashBtn").addEventListener("click", async () => {
@@ -301,6 +384,7 @@ window.onProductDataUpdated = () => {
 document.addEventListener("DOMContentLoaded", () => {
   initLogin();
   initChangePassword();
+  initPasswordSetup();
 
   document.querySelectorAll(".admin-tab-btn").forEach(btn => {
     btn.addEventListener("click", () => showTab(btn.dataset.tab));

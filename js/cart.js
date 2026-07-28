@@ -8,8 +8,13 @@ function saveCart() {
 }
 
 function loadCart() { 
-  const s = localStorage.getItem("manlungCart"); 
-  cart = s ? JSON.parse(s) : []; 
+  const s = localStorage.getItem("manlungCart");
+  try {
+    const parsed = s ? JSON.parse(s) : [];
+    cart = Array.isArray(parsed) ? parsed.filter(i => i && typeof i === "object") : [];
+  } catch (e) {
+    cart = [];
+  }
   updateBadge(); 
   renderCartUI(); 
 }
@@ -93,18 +98,19 @@ function renderCartUI() {
   cart.forEach(item => { 
     const itemTotal = item.price * item.quantity; 
     total += itemTotal;
+    const esc = window.security.escapeHtml;
     html += `
       <div class='cart-item'>
         <div>
-          <strong>${item.title}</strong><br>
-          ${window.currencyFunctions.formatPrice(item.price)} x ${item.quantity}
+          <strong>${esc(item.title)}</strong><br>
+          ${esc(window.currencyFunctions.formatPrice(item.price))} x ${esc(item.quantity)}
           <div>
-            <button class='cart-qty-btn' data-id='${item.id}' data-delta='-1'>-</button>
-            <button class='cart-qty-btn' data-id='${item.id}' data-delta='1'>+</button>
-            <button class='remove-item' data-id='${item.id}'>remove</button>
+            <button class='cart-qty-btn' data-id='${esc(item.id)}' data-delta='-1'>-</button>
+            <button class='cart-qty-btn' data-id='${esc(item.id)}' data-delta='1'>+</button>
+            <button class='remove-item' data-id='${esc(item.id)}'>remove</button>
           </div>
         </div>
-        <div>${window.currencyFunctions.formatPrice(itemTotal)}</div>
+        <div>${esc(window.currencyFunctions.formatPrice(itemTotal))}</div>
       </div>
     `;
   });
