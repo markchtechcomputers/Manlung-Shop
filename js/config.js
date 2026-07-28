@@ -5,13 +5,13 @@
 window.SITE_CONFIG = {
   // Paste your Paystack PUBLIC key here (starts with pk_live_ or pk_test_)
   // Get it from: Paystack Dashboard → Settings → API Keys & Webhooks
-  PAYSTACK_PUBLIC_KEY: "pk_live_6fac23c23b199c93126e8b106cb191de266e26bc",
+  PAYSTACK_PUBLIC_KEY: "pk_test_REPLACE_WITH_YOUR_PAYSTACK_PUBLIC_KEY",
 
   // Your deployed Manlung Gateway (the secure Node backend project) — once
   // this is set to your real Render/Railway URL, checkout redirects there
   // for real server-calculated pricing instead of the in-page popup.
   // Leave the placeholder in to keep using the in-page Paystack popup.
-  GATEWAY_URL: "https://REPLACE_WITH_YOUR_GATEWAY_URL.onrender.com",
+  GATEWAY_URL: "https://shopgetwaymn-1.onrender.com",
 
   // Currency Paystack will charge in. "KES" for Kenyan Shillings.
   CURRENCY: "KES",
@@ -26,7 +26,7 @@ window.SITE_CONFIG = {
   // Note: since this is a static site with no server, this is a light deterrent
   // (like an unlisted door), not bank-grade security — anyone who really wants to
   // view your site's source code could find it. Don't reuse a password you use elsewhere.
-  ADMIN_PASSWORD: "manlung2026",
+  ADMIN_PASSWORD: "@Adictmanlung15073221",
 
   // ----------------------------------------------------------------
   // SUPABASE (makes admin edits visible to EVERY visitor, not just you;
@@ -44,6 +44,26 @@ window.SITE_CONFIG = {
   SUPABASE_CONFIG: {
     url: "https://qpsiqaefsulqphsqkaau.supabase.co",
     anonKey: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFwc2lxYWVmc3VscXBoc3FrYWF1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODUxMTAxNjYsImV4cCI6MjEwMDY4NjE2Nn0.ornxT6TBlTM4-DISP4SJlG3yKAOjDE6pHSBMLgfm-T0"
+  },
+
+  // ----------------------------------------------------------------
+  // FIREBASE (optional BACKUP database, in case Supabase ever goes down)
+  // ----------------------------------------------------------------
+  // The site writes product data to BOTH Supabase and Firebase (when both
+  // are configured) so if either one stops working, the other keeps the
+  // site running. Reading prefers Supabase, falling back to Firebase
+  // automatically if Supabase is unreachable.
+  // Setup: https://console.firebase.google.com -> Create project (free) ->
+  // Build -> Realtime Database -> Create Database -> start in TEST MODE ->
+  // Project Settings -> General -> "Your apps" -> Add app (Web) -> copy config.
+  FIREBASE_CONFIG: {
+    apiKey: "REPLACE_WITH_YOUR_FIREBASE_API_KEY",
+    authDomain: "REPLACE_WITH_YOUR_PROJECT.firebaseapp.com",
+    databaseURL: "REPLACE_WITH_YOUR_DATABASE_URL",
+    projectId: "REPLACE_WITH_YOUR_PROJECT_ID",
+    storageBucket: "REPLACE_WITH_YOUR_PROJECT.appspot.com",
+    messagingSenderId: "REPLACE_WITH_YOUR_SENDER_ID",
+    appId: "REPLACE_WITH_YOUR_APP_ID"
   },
   // Rate Card image — clicking "Booking Rate Card" downloads this file directly.
   // IMPORTANT: use the DIRECT image link, not the postimg.cc viewer page.

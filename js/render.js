@@ -5,6 +5,41 @@ function featureTagsHtml(features) {
   return `<div class="feature-tags">${features.map(f => `<span class="feature-tag">${f}</span>`).join("")}</div>`;
 }
 
+function galleryHtml(id, images, title, wrapClass) {
+  const imgs = (images && images.length) ? images : [];
+  if (imgs.length <= 1) {
+    const src = imgs[0] || "";
+    return `<div class="${wrapClass}"><img src="${src}" loading="lazy" alt="${title}"></div>`;
+  }
+  const slides = imgs.map((src, i) => `<img src="${src}" loading="lazy" alt="${title} ${i + 1}" class="gallery-slide ${i === 0 ? 'active' : ''}">`).join("");
+  const dots = imgs.map((_, i) => `<span class="gallery-dot ${i === 0 ? 'active' : ''}" data-idx="${i}"></span>`).join("");
+  return `
+    <div class="${wrapClass} gallery-wrap" data-gallery-id="${id}" data-count="${imgs.length}">
+      ${slides}
+      <button type="button" class="gallery-arrow gallery-prev">‹</button>
+      <button type="button" class="gallery-arrow gallery-next">›</button>
+      <div class="gallery-dots">${dots}</div>
+    </div>
+  `;
+}
+
+function initGalleries(container) {
+  container.querySelectorAll(".gallery-wrap").forEach(wrap => {
+    const slides = wrap.querySelectorAll(".gallery-slide");
+    const dots = wrap.querySelectorAll(".gallery-dot");
+    let index = 0;
+
+    function show(i) {
+      index = (i + slides.length) % slides.length;
+      slides.forEach((s, n) => s.classList.toggle("active", n === index));
+      dots.forEach((d, n) => d.classList.toggle("active", n === index));
+    }
+    wrap.querySelector(".gallery-prev")?.addEventListener("click", (e) => { e.stopPropagation(); show(index - 1); });
+    wrap.querySelector(".gallery-next")?.addEventListener("click", (e) => { e.stopPropagation(); show(index + 1); });
+    dots.forEach(d => d.addEventListener("click", (e) => { e.stopPropagation(); show(parseInt(d.dataset.idx)); }));
+  });
+}
+
 function renderProducts() {
   const digitalGrid = document.getElementById("digitalGrid");
   const cdGrid = document.getElementById("cdGrid");
@@ -18,11 +53,12 @@ function renderProducts() {
   window.productData.digitalProducts.forEach(p => {
     const card = document.createElement("div");
     card.className = "product-card";
+    card.dataset.title = p.title.toLowerCase();
     const soldOut = p.soldOut || p.stock === 0;
     card.innerHTML = `
       ${soldOut ? '<div class="sold-out-ribbon">SOLD OUT</div>' : ''}
       ${!soldOut && p.featured ? '<div class="featured-badge">🔥 FEATURED</div>' : ''}
-      <div class="product-img"><img src="${p.imgUrl}" loading="lazy" alt="${p.title}"></div>
+      ${galleryHtml('digital-' + p.id, p.images, p.title, 'product-img')}
       <div class="product-info">
         <div class="product-type">DIGITAL</div>
         <div class="product-title">${p.title}</div>
@@ -52,7 +88,7 @@ function renderProducts() {
     card.innerHTML = `
       ${soldOut ? '<div class="sold-out-ribbon">SOLD OUT</div>' : (p.stock < 50 ? `<div class="stock-badge">Only ${p.stock} left</div>` : '')}
       ${!soldOut && p.featured ? '<div class="featured-badge">BESTSELLER</div>' : ''}
-      <div class="product-img"><img src="${p.imgUrl}" loading="lazy" alt="${p.title}"></div>
+      ${galleryHtml('cd-' + p.id, p.images, p.title, 'product-img')}
       <div class="product-info">
         <div class="product-type">PHYSICAL CD</div>
         <div class="product-title">${p.title}</div>
@@ -74,6 +110,9 @@ function renderProducts() {
     `;
     cdGrid.appendChild(card);
   });
+
+  initGalleries(digitalGrid);
+  initGalleries(cdGrid);
   
   // Quantity steppers
   document.querySelectorAll(".qty-stepper").forEach(stepper => {
@@ -118,6 +157,8 @@ function renderMerch() {
   window.productData.merchItems.forEach(item => {
     const card = document.createElement("div");
     card.className = "merch-card";
+    card.dataset.title = item.title.toLowerCase();
+    card.dataset.category = item.category || "unisex";
     const soldOut = item.soldOut && !item.comingSoon;
     
     if (item.comingSoon) {
@@ -180,9 +221,10 @@ function renderMerch() {
       }
 
       card.innerHTML = `
-        <div class="merch-img">
-          <img src="${item.imgUrl}" loading="lazy" alt="${item.title}">
+        <div class="merch-img-wrap-outer">
+          ${galleryHtml('merch-' + item.id, item.images, item.title, 'merch-img')}
           <div class="merch-tag">LIMITED</div>
+          ${typeof item.stock === 'number' && item.stock > 0 && item.stock < 20 ? `<div class="stock-badge">Only ${item.stock} left</div>` : ''}
         </div>
         <div class="merch-info">
           <div class="merch-title">${item.title}</div>
@@ -193,6 +235,9 @@ function renderMerch() {
           <div class="merch-price-row">
             <span class="merch-price">${window.currencyFunctions.formatPrice(item.price)}</span>
             ${item.unit ? `<span class="product-unit">${item.unit}</span>` : ''}
+          </div>
+          <div class="merch-btn-row">
+            <button class="btn-add merch-add-btn" data-id="${item.id}">ADD TO CART</button>
             <button class="merch-pay-btn" data-id="${item.id}">BUY NOW →</button>
           </div>
         </div>
@@ -200,6 +245,8 @@ function renderMerch() {
     }
     grid.appendChild(card);
   });
+
+  initGalleries(grid);
   
   // Wire up color + size selection for every merch item that has them
   // (generic — works for any item added via the Admin Portal, not just one hardcoded product)
@@ -230,6 +277,22 @@ function renderMerch() {
         });
       });
     }
+  });
+
+  // Merch: Add to Cart (captures the currently selected color/size, if any)
+  document.querySelectorAll(".merch-add-btn").forEach(btn => {
+    btn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      const item = window.productData.merchItems.find(i => i.id == parseInt(btn.dataset.id));
+      if (!item) return;
+
+      const selectedColorEl = document.querySelector(`#colors-${item.id} .color-option.selected`);
+      const selectedSizeEl = document.querySelector(`#sizes-${item.id} .size-btn.selected`);
+      const color = selectedColorEl ? selectedColorEl.dataset.color : null;
+      const size = selectedSizeEl ? selectedSizeEl.dataset.size : null;
+
+      window.cartFunctions.addToCart({ ...item, color, size }, 1);
+    });
   });
 
   // Merch checkout — every "BUY NOW" button goes through the same Paystack system
