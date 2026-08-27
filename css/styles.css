@@ -2708,3 +2708,180 @@ html[data-theme="light"] .bio-text p { color:var(--theme-text) !important; }
 @media(max-width:950px){.store-highlights{grid-template-columns:repeat(2,1fr)}.compact-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}.admin-stats{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:700px){.header-search-btn{width:38px}.store-highlights{grid-template-columns:1fr 1fr;gap:8px}.highlight-card{padding:12px}.highlight-card>span{font-size:1.15rem}.highlight-card strong{font-size:.76rem}.highlight-card small{font-size:.62rem}.section-heading-row{align-items:flex-start;flex-direction:column;gap:8px}.shop-toolbar{align-items:stretch;flex-direction:column}.shop-sort{width:100%}.quick-view-grid{grid-template-columns:1fr;gap:18px}.quick-view-box{padding:18px}.quick-view-media img{max-height:45vh}.card-float-tools{opacity:1;transform:none}.quick-view-float{display:none}.mobile-bottom-nav{position:fixed;left:10px;right:10px;bottom:10px;z-index:2200;display:grid;grid-template-columns:repeat(5,1fr);padding:9px 6px;border:1px solid var(--theme-border);border-radius:18px;background:color-mix(in srgb,var(--theme-surface) 94%,transparent);box-shadow:0 15px 40px rgba(0,0,0,.2);backdrop-filter:blur(16px)}body{padding-bottom:82px}.admin-stats{grid-template-columns:1fr 1fr}.promo-row{margin-top:4px}}
 @media(max-width:420px){.store-highlights{grid-template-columns:1fr}.compact-grid{grid-template-columns:1fr!important}.navbar-right #currencySelector{max-width:70px}.theme-label{display:none}}
+
+/* ==========================================================
+   MANLUNG MONOCHROME ACCESSIBILITY + HEADER/HOME REFINEMENT
+   One visual language: black / white / neutral gray only.
+   Light mode is default; dark mode inverts the system cleanly.
+   ========================================================== */
+:root {
+  --theme-bg:#f7f7f7;
+  --theme-surface:#ffffff;
+  --theme-surface-2:#eeeeee;
+  --theme-text:#0b0b0b;
+  --theme-muted:#555555;
+  --theme-border:#d8d8d8;
+  --theme-accent:#111111;
+  --theme-accent-strong:#000000;
+  --theme-accent-contrast:#ffffff;
+  --theme-header:rgba(255,255,255,.96);
+  --theme-shadow:0 18px 50px rgba(0,0,0,.09);
+  --ml-gold:#111111;
+  color-scheme:light;
+}
+html[data-theme="dark"] {
+  --theme-bg:#070707;
+  --theme-surface:#111111;
+  --theme-surface-2:#191919;
+  --theme-text:#ffffff;
+  --theme-muted:#c2c2c2;
+  --theme-border:#303030;
+  --theme-accent:#ffffff;
+  --theme-accent-strong:#ffffff;
+  --theme-accent-contrast:#050505;
+  --theme-header:rgba(10,10,10,.96);
+  --theme-shadow:0 18px 55px rgba(0,0,0,.45);
+  --ml-gold:#ffffff;
+  color-scheme:dark;
+}
+
+html,body{background:var(--theme-bg)!important;color:var(--theme-text)!important}
+body::before{opacity:.14!important;background-image:radial-gradient(var(--theme-text) 1px,transparent 1px)!important}
+
+/* Header: generous spacing so Contact never collides with Search. */
+.navbar{
+  grid-template-columns:230px minmax(0,1fr) auto!important;
+  column-gap:24px!important;
+  padding:12px 18px!important;
+  background:var(--theme-header)!important;
+  border:1px solid var(--theme-border)!important;
+}
+.navbar-brand{min-width:0}
+.nav-links{gap:10px!important;min-width:0;white-space:nowrap}
+.nav-links a{
+  color:var(--theme-text)!important;
+  padding:10px 13px!important;
+  font-size:.78rem!important;
+  font-weight:700!important;
+  letter-spacing:.35px!important;
+  border-radius:10px!important;
+}
+.nav-links a:hover{background:var(--theme-surface-2)!important;color:var(--theme-text)!important}
+.nav-links a.active{background:var(--theme-text)!important;color:var(--theme-bg)!important}
+.navbar-right{gap:8px!important;white-space:nowrap}
+.header-search-btn{background:var(--theme-surface)!important;color:var(--theme-text)!important;border-color:var(--theme-border)!important}
+.header-search-btn:hover{background:var(--theme-text)!important;color:var(--theme-bg)!important;border-color:var(--theme-text)!important}
+#currencySelector{background:var(--theme-surface)!important;color:var(--theme-text)!important;border-color:var(--theme-border)!important}
+.theme-toggle{background:var(--theme-surface)!important;color:var(--theme-text)!important;border-color:var(--theme-border)!important}
+.cart-icon{background:var(--theme-text)!important;color:var(--theme-bg)!important}
+#cartCountBadge{background:var(--theme-bg)!important;color:var(--theme-text)!important}
+
+/* Monochrome text rules: no gold/blue/green text that can disappear. */
+body p,body li,body span,body small,body label,body legend,body dt,body dd,
+body .section-heading-row p,body .eyebrow,body .text-link-btn,
+body .about-text p,body .profile-info-label,body .contact-sub,
+body .product-description,body .merch-description,body .ticket-description,
+body .cart-item-meta,body .muted,body .small-text,
+body .product-title,body .merch-title,body .ticket-title,body .product-name,
+body .cart-item-title,body .contact-row,body .profile-info-value,
+body .feature-item p,body .feature-item h4,body .testimonial-text,
+body .testimonial-author,body .trust-item,body .venture-title,body .venture-desc,
+body .blog-excerpt,body .blog-excerpt strong,body .stat-label,
+body .payment-label,body .payment-badge{color:var(--theme-text)!important}
+body .about-text p,body .contact-sub,body .product-description,body .merch-description,
+body .ticket-description,body .cart-item-meta,body .muted,body .small-text,
+body .profile-info-label,body .feature-item p,body .stat-label,body .venture-desc,
+body .payment-label{color:var(--theme-muted)!important}
+
+/* Cards / controls always use the active surface. */
+.about-panel,.follow-card,.contact-card,.rate-card-section,.notify-section,
+.sponsored-card,.product-card,.merch-card,.ticket-card,.product-detail-card,
+.cart-sidebar,.menu-panel,.account-card,.highlight-card,.alternate-section,
+.mini-product-card,.quick-view-box,.global-search-box,.currency-modal-box,
+.policy-modal-box,.checkout-modal-box,.download-panel-box,.account-modal-box{
+  background:var(--theme-surface)!important;color:var(--theme-text)!important;
+  border-color:var(--theme-border)!important;
+}
+input,textarea,select{background:var(--theme-surface)!important;color:var(--theme-text)!important;border-color:var(--theme-border)!important}
+input::placeholder,textarea::placeholder{color:var(--theme-muted)!important;opacity:1!important}
+button{color:var(--theme-text)}
+.btn-primary{background:var(--theme-text)!important;color:var(--theme-bg)!important;border:1px solid var(--theme-text)!important}
+.btn-primary:hover{background:var(--theme-bg)!important;color:var(--theme-text)!important}
+
+/* Home / hero: strong editorial typography, readable in both themes. */
+.hero{
+  min-height:590px!important;
+  padding:76px clamp(24px,5vw,70px)!important;
+  background:linear-gradient(90deg,rgba(255,255,255,.97) 0%,rgba(255,255,255,.90) 48%,rgba(255,255,255,.62) 100%),
+    url('https://raw.githubusercontent.com/markchtechcomputers/galary-/main/Black%20White%20Bold%20Minimalist%20Music%20Album%20Cover%20(5).jpg') center/cover no-repeat!important;
+  border-color:var(--theme-border)!important;
+}
+html[data-theme="dark"] .hero{
+  background:linear-gradient(90deg,rgba(0,0,0,.97) 0%,rgba(0,0,0,.88) 48%,rgba(0,0,0,.58) 100%),
+    url('https://raw.githubusercontent.com/markchtechcomputers/galary-/main/Black%20White%20Bold%20Minimalist%20Music%20Album%20Cover%20(5).jpg') center/cover no-repeat!important;
+}
+.hero-text{max-width:650px!important}
+.hero-text h1{
+  font-family:'Anton',Impact,sans-serif!important;
+  font-size:clamp(3.4rem,7vw,6.8rem)!important;
+  line-height:.92!important;
+  letter-spacing:.02em!important;
+  color:var(--theme-text)!important;
+  text-shadow:none!important;
+}
+.hero-text h1 .highlight{color:var(--theme-text)!important;-webkit-text-stroke:0!important}
+.drip-influencer-tag{color:var(--theme-text)!important;text-decoration-color:var(--theme-text)!important}
+.bio-text{background:color-mix(in srgb,var(--theme-surface) 88%,transparent)!important;border:1px solid var(--theme-border)!important;border-left:4px solid var(--theme-text)!important;backdrop-filter:blur(10px)!important}
+.bio-text p{color:var(--theme-text)!important}
+.brands-carousel-label{color:var(--theme-text)!important}
+.hero::after{background:var(--theme-text)!important}
+
+/* Accent labels become neutral black/white instead of yellow. */
+.eyebrow,.section-title::after,.section-heading-row .eyebrow{color:var(--theme-text)!important;background-color:transparent!important}
+.section-title::after{background:var(--theme-text)!important}
+.stat-number,.product-price,.merch-price,.ticket-price,.price,.quick-view-price{color:var(--theme-text)!important}
+.stars{color:var(--theme-text)!important}
+
+/* Search bar: visually separated and readable. */
+.search-bar-wrap{margin:16px 0!important}
+.search-bar{width:100%!important;min-height:48px!important;background:var(--theme-surface)!important;color:var(--theme-text)!important;border:1px solid var(--theme-border)!important;border-radius:14px!important;box-shadow:none!important}
+.search-bar:focus{outline:2px solid var(--theme-text)!important;outline-offset:2px}
+.global-search-box>input{background:var(--theme-surface)!important;color:var(--theme-text)!important}
+
+/* Footer follows the same monochrome system. */
+.site-footer{background:var(--theme-text)!important;color:var(--theme-bg)!important;border-top:1px solid var(--theme-text)!important}
+.site-footer .footer-brand-lockup,.site-footer .footer-brand-block p,
+.site-footer .footer-column a,.site-footer .footer-bottom,.site-footer .footer-location{color:var(--theme-bg)!important}
+.site-footer .footer-brand-lockup .brand-copy strong,.site-footer .footer-column h3{color:var(--theme-bg)!important}
+.site-footer .footer-column a:hover{color:var(--theme-bg)!important;text-decoration:underline!important}
+.site-footer .social-icons a{background:transparent!important;color:var(--theme-bg)!important;border-color:rgba(255,255,255,.35)!important}
+.site-footer .social-icons a:hover{background:var(--theme-bg)!important;color:var(--theme-text)!important}
+.site-footer .footer-bottom{border-top-color:rgba(255,255,255,.25)!important}
+
+/* Make the theme toggle itself unmistakable. */
+html[data-theme="light"] .theme-toggle .theme-icon::after{content:''}
+html[data-theme="dark"] .theme-toggle{background:#fff!important;color:#000!important;border-color:#fff!important}
+html[data-theme="dark"] .theme-toggle .theme-icon,html[data-theme="dark"] .theme-toggle .theme-label{color:#000!important}
+
+@media (max-width:1180px){
+  .navbar{grid-template-columns:210px minmax(0,1fr) auto!important;column-gap:14px!important}
+  .nav-links{gap:4px!important}
+  .nav-links a{padding-left:9px!important;padding-right:9px!important;font-size:.72rem!important}
+}
+@media (max-width:900px){
+  .navbar{grid-template-columns:1fr auto!important;row-gap:8px!important}
+  .nav-links{grid-column:1/-1;grid-row:2;display:flex;justify-content:center;gap:7px!important;overflow-x:auto;padding:4px 2px 2px!important}
+  .nav-links a{flex:0 0 auto;font-size:.75rem!important;padding:9px 12px!important}
+}
+@media (max-width:600px){
+  .navbar{position:sticky!important;top:6px!important;margin-top:6px!important;border-radius:15px!important;padding:9px!important}
+  .navbar-brand .brand-copy small{display:none}
+  .brand-mark{width:38px!important;height:38px!important}
+  .navbar-right{gap:5px!important}
+  .header-search-btn,.theme-toggle{width:38px!important;height:38px!important;min-height:38px!important;padding:8px!important}
+  .cart-icon{padding:9px!important}
+  .cart-icon span:nth-child(2){display:none}
+  .nav-links{justify-content:flex-start!important}
+  .hero{min-height:620px!important;padding:48px 20px!important;border-radius:18px!important}
+  .hero-text h1{font-size:clamp(3rem,16vw,5rem)!important}
+}
