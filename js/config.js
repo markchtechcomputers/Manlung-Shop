@@ -7,14 +7,14 @@ window.SITE_CONFIG = {
   // Get it from: Paystack Dashboard → Settings → API Keys & Webhooks
   // Payment credentials are intentionally not committed.
   // Wire this from your Vercel runtime/build environment when payments are enabled.
-  PAYSTACK_PUBLIC_KEY: "",
+  PAYSTACK_PUBLIC_KEY: window.__MANLUNG_PAYSTACK_PUBLIC_KEY__ || "",
 
   // Your deployed Manlung Gateway (the secure Node backend project) — once
   // this is set to your real Render/Railway URL, checkout redirects there
   // for real server-calculated pricing instead of the in-page popup.
   // Leave the placeholder in to keep using the in-page Paystack popup.
   // Set from Vercel when the secure payment gateway is enabled.
-  GATEWAY_URL: "",
+  GATEWAY_URL: window.__MANLUNG_GATEWAY_URL__ || "",
 
   // Currency Paystack will charge in. "KES" for Kenyan Shillings.
   CURRENCY: "KES",

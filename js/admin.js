@@ -38,10 +38,21 @@ function initLogin() {
   });
 }
 
+function updateAdminStats() {
+  const d = window.productData || {};
+  const set = (id, value) => { const el = document.getElementById(id); if (el) el.textContent = value; };
+  set("adminStatProducts", (d.digitalProducts || []).length);
+  set("adminStatCds", (d.cdProducts || []).length);
+  set("adminStatMerch", (d.merchItems || []).length);
+  const today = new Date();
+  set("adminStatShows", (d.tourShows || []).filter(s => { const dt = new Date(s.date); return !isNaN(dt) && dt >= today; }).length);
+}
+
 function showDashboard() {
   document.getElementById("loginScreen").style.display = "none";
   document.getElementById("dashboard").style.display = "block";
   renderAllTabs();
+  updateAdminStats();
 
   const badge = document.getElementById("cloudStatusBadge");
   const sbOn = window.dataStore.isSupabaseConnected?.();
@@ -416,7 +427,7 @@ function addShow() {
 
 // ---------- INIT ----------
 window.onProductDataUpdated = () => {
-  if (document.getElementById("dashboard").style.display === "block") renderAllTabs();
+  if (document.getElementById("dashboard").style.display === "block") { renderAllTabs(); updateAdminStats(); }
 };
 
 document.addEventListener("DOMContentLoaded", () => {

@@ -111,7 +111,14 @@ function renderCartUI() {
   
   cont.innerHTML = html;
   if (footerDiv) footerDiv.style.display = "block";
-  document.getElementById("cartTotalPrice").innerText = window.currencyFunctions.formatPrice(total);
+  const pricing = getCartPricing();
+  const subtotalEl = document.getElementById("cartSubtotalPrice");
+  const discountRow = document.getElementById("cartDiscountRow");
+  const discountEl = document.getElementById("cartDiscountPrice");
+  if (subtotalEl) subtotalEl.innerText = window.currencyFunctions.formatPrice(pricing.subtotal);
+  if (discountRow) discountRow.style.display = pricing.discount > 0 ? "flex" : "none";
+  if (discountEl) discountEl.innerText = `-${window.currencyFunctions.formatPrice(pricing.discount)}`;
+  document.getElementById("cartTotalPrice").innerText = window.currencyFunctions.formatPrice(pricing.total);
   
   document.querySelectorAll(".cart-qty-btn").forEach(btn => btn.addEventListener("click", () => updateQty(parseInt(btn.dataset.id), parseInt(btn.dataset.delta))));
   document.querySelectorAll(".remove-item").forEach(btn => btn.addEventListener("click", () => removeItem(parseInt(btn.dataset.id))));
@@ -137,13 +144,28 @@ function clearCart() {
   saveCart();
 }
 
+function getActivePromo() {
+  try {
+    const p = JSON.parse(localStorage.getItem("manlungPromo") || "null");
+    return p && p.percent ? p : null;
+  } catch { return null; }
+}
+
+function getCartPricing() {
+  const subtotal = cart.reduce((s, i) => s + (i.price * i.quantity), 0);
+  const promo = getActivePromo();
+  const discount = promo ? Math.round(subtotal * (promo.percent / 100)) : 0;
+  return { subtotal, discount, total: Math.max(0, subtotal - discount), promo };
+}
+
 function processCheckout() {
   if (cart.length === 0) { 
     showToast("Cart empty"); 
     return; 
   }
 
-  const total = cart.reduce((s, i) => s + (i.price * i.quantity), 0);
+  const pricing = getCartPricing();
+  const total = pricing.total;
   const itemsSummary = cart.map(i => `${i.title} x${i.quantity}`).join(", ");
   const hasPhysical = cart.some(i => isPhysicalItem(i.id));
   const downloadItems = cart.flatMap(i => getDownloadItems(i));
@@ -158,7 +180,8 @@ function processCheckout() {
     downloadItems: downloadItems,
     metadata: {
       custom_fields: [
-        { display_name: "Items", variable_name: "items", value: itemsSummary }
+        { display_name: "Items", variable_name: "items", value: itemsSummary },
+        ...(pricing.promo ? [{ display_name: "Promo", variable_name: "promo", value: pricing.promo.code }] : [])
       ]
     },
     onSuccess: (response) => {
@@ -182,5 +205,7 @@ window.cartFunctions = {
   updateQty,
   removeItem,
   processCheckout,
+  getCartPricing,
+  getActivePromo,
   clearCart
 };

@@ -6,7 +6,9 @@
 <title>Manlung Shop</title>
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link rel="apple-touch-icon" href="app-icon-512.png">
-<meta name="description" content="Official online store for Kenyan hip-hop artist Adict Manlung — digital singles, signed CDs, merch, and tour tickets.">
+<meta name="description" content="Official Manlung Shop by Adict Manlung — music, signed CDs, limited merch and tour tickets.">
+<link rel="canonical" href="https://www.manlungshop.co.ke/">
+<link rel="manifest" href="manifest.webmanifest">
 
 <!-- Social sharing previews -->
 <meta property="og:type" content="website">
@@ -22,6 +24,15 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700;800&family=Anton&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/styles.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+<script type="application/ld+json">{
+  "@context":"https://schema.org",
+  "@type":"OnlineStore",
+  "name":"Manlung Shop",
+  "url":"https://www.manlungshop.co.ke/",
+  "description":"Official online store for Adict Manlung music, merchandise and tour tickets.",
+  "brand":{"@type":"Brand","name":"Manlung"},
+  "areaServed":"KE"
+}</script>
 </head>
 <body>
 
@@ -65,9 +76,13 @@
       <a data-nav="contact">Contact</a>
     </div>
     <div class="navbar-right">
+      <button class="header-search-btn" id="headerSearchBtn" type="button" aria-label="Search products" title="Search products">⌕</button>
       <select id="currencySelector" title="Display currency">
         <option>...</option>
       </select>
+      <button class="theme-toggle" id="themeToggle" type="button" aria-label="Switch to dark mode" title="Switch theme">
+        <span class="theme-icon" aria-hidden="true">☾</span><span class="theme-label">Dark</span>
+      </button>
       <button class="cart-icon" id="cartIconBtn" type="button" aria-label="Open cart">
         <span aria-hidden="true">🛒</span><span>Cart</span><span id="cartCountBadge">0</span>
       </button>
@@ -94,6 +109,24 @@
         <button class="btn-primary" id="shopNowBtn">Shop Now</button>
       </div>
     </div>
+
+    <!-- STORE HIGHLIGHTS -->
+    <section class="store-highlights" aria-label="Store highlights">
+      <div class="highlight-card"><span>🔒</span><div><strong>Secure checkout</strong><small>Pay safely with Paystack</small></div></div>
+      <div class="highlight-card"><span>🚚</span><div><strong>Fast dispatch</strong><small>Kenya &amp; international options</small></div></div>
+      <div class="highlight-card"><span>🎁</span><div><strong>Exclusive drops</strong><small>Limited Manlung releases</small></div></div>
+      <div class="highlight-card"><span>🇰🇪</span><div><strong>Proudly Kenyan</strong><small>Built from Nairobi</small></div></div>
+    </section>
+
+    <section class="featured-store-section">
+      <div class="section-heading-row"><div><span class="eyebrow">SHOP THE LATEST</span><h2>New &amp; Notable</h2><p>Fresh music, physical releases and selected merch — all in one place.</p></div><button class="text-link-btn" data-nav="music">View music →</button></div>
+      <div class="product-grid compact-grid" id="featuredGrid"></div>
+    </section>
+
+    <section class="featured-store-section alternate-section">
+      <div class="section-heading-row"><div><span class="eyebrow">BEST OF MANLUNG</span><h2>Fan Favourites</h2><p>Popular picks from the Manlung catalogue.</p></div><button class="text-link-btn" data-nav="merch">Shop merch →</button></div>
+      <div class="product-grid compact-grid" id="bestsellerGrid"></div>
+    </section>
 
     <div class="about-section">
       <div class="section-title">About Adict Manlung</div>
@@ -138,25 +171,7 @@
           <a href="https://web.facebook.com/iamadictmanlung1" class="social-pill" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg> Facebook</a>
         </div>
       </div>
-
-      <div class="ventures-section">
-        <div class="ventures-heading">More from Adict Manlung</div>
-        <div class="ventures-grid">
-          <a href="https://manlungtech.www.manlungshop.co.ke/" target="_blank" rel="noopener" class="venture-card">
-            <div class="venture-icon">🏙️</div>
-            <div class="venture-title">Manlung Tech City</div>
-            <div class="venture-desc">Explore the tech venture — visit site</div>
-          </a>
-          <a href="https://cybersecuritytools.manlungshop.co.ke/" target="_blank" rel="noopener" class="venture-card">
-            <div class="venture-icon">🛡️</div>
-            <div class="venture-title">Cybersecurity Tools</div>
-            <div class="venture-desc">Tools &amp; resources — visit site</div>
-          </a>
-        </div>
-      </div>
-    </div>
-
-    <div class="blog-section">
+<div class="blog-section">
       <div class="section-title">📝 From the Blog</div>
       <article class="blog-card">
         <div class="blog-meta">FASHION &amp; MUSIC · ADICT MANLUNG</div>
@@ -210,15 +225,16 @@
   <!-- MUSIC / DIGITAL -->
   <section id="music-section">
     <div class="section-title">Digital Singles</div>
-    <div class="search-bar-wrap">
-      <input type="text" id="musicSearch" class="search-bar" placeholder="🔍 Search songs...">
+    <div class="shop-toolbar">
+      <div class="search-bar-wrap"><input type="text" id="musicSearch" class="search-bar" placeholder="🔍 Search songs..."></div>
+      <select class="shop-sort" id="musicSort" aria-label="Sort music"><option value="featured">Featured</option><option value="newest">Newest</option><option value="price-low">Price: low to high</option><option value="price-high">Price: high to low</option></select>
     </div>
     <div class="product-grid" id="digitalGrid"></div>
   </section>
 
   <!-- CDs -->
   <section id="cds-section">
-    <div class="section-title">Physical CDs</div>
+    <div class="section-heading-row"><div><span class="eyebrow">PHYSICAL RELEASES</span><div class="section-title">Physical CDs</div><p>Collect the music, artwork and full project experience.</p></div><select class="shop-sort" id="cdSort" aria-label="Sort CDs"><option value="featured">Featured</option><option value="price-low">Price: low to high</option><option value="price-high">Price: high to low</option></select></div>
     <div class="product-grid" id="cdGrid"></div>
   </section>
 
@@ -228,8 +244,9 @@
       <h1>Official Merch</h1>
       <p>Wear the movement. Limited drops, made for the fans who ride from day one.</p>
     </div>
-    <div class="search-bar-wrap">
-      <input type="text" id="merchSearch" class="search-bar" placeholder="🔍 Search merch...">
+    <div class="shop-toolbar">
+      <div class="search-bar-wrap"><input type="text" id="merchSearch" class="search-bar" placeholder="🔍 Search merch..."></div>
+      <select class="shop-sort" id="merchSort" aria-label="Sort merchandise"><option value="featured">Featured</option><option value="price-low">Price: low to high</option><option value="price-high">Price: high to low</option></select>
     </div>
     <div class="merch-category-tabs">
       <button class="merch-cat-tab active" data-cat="all">All</button>
@@ -392,6 +409,11 @@
   </div>
   <div class="cart-items" id="cartItemsContainer"></div>
   <div id="cartFooter" style="display:none;">
+    <div class="shipping-progress" id="shippingProgress"></div>
+    <div class="promo-row"><input id="promoCodeInput" type="text" placeholder="Promo code"><button id="promoApplyBtn" type="button">Apply</button></div>
+    <div class="promo-message" id="promoMessage"></div>
+    <div class="cart-total cart-subtotal"><span>Subtotal</span><span id="cartSubtotalPrice">KSh 0</span></div>
+    <div class="cart-total discount-row" id="cartDiscountRow" style="display:none"><span>Discount</span><span id="cartDiscountPrice">-KSh 0</span></div>
     <div class="cart-total">
       <span>Total</span>
       <span id="cartTotalPrice">KSh 0</span>
@@ -399,6 +421,20 @@
     <button class="checkout-btn" id="checkoutBtn">Checkout</button>
   </div>
 </div>
+
+<!-- QUICK VIEW -->
+<div class="quick-view-modal" id="quickViewModal" aria-hidden="true">
+  <div class="quick-view-box"><button class="quick-view-close" id="quickViewClose" type="button">✕</button><div id="quickViewContent"></div></div>
+</div>
+
+<!-- MOBILE NAV -->
+<nav class="mobile-bottom-nav" aria-label="Mobile navigation">
+  <button data-nav="home"><span>⌂</span><small>Home</small></button>
+  <button data-nav="music"><span>♫</span><small>Music</small></button>
+  <button data-nav="merch"><span>◈</span><small>Shop</small></button>
+  <button id="mobileWishlistBtn"><span>♡</span><small>Saved</small><b id="wishlistBadge">0</b></button>
+  <button id="mobileCartBtn"><span>🛒</span><small>Cart</small><b id="mobileCartBadge">0</b></button>
+</nav>
 
 <!-- MENU PANEL -->
 <div class="menu-overlay" id="menuOverlay">
@@ -516,6 +552,7 @@
 <script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-database-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-auth-compat.js"></script>
 <script src="js/config.js"></script>
+<script src="js/theme.js"></script>
 <script src="js/data-store.js"></script>
 
 <!-- App scripts -->
@@ -527,6 +564,7 @@
 <script src="js/menu.js"></script>
 <script src="js/brands-carousel.js"></script>
 <script src="js/app.js"></script>
+<script src="js/enhancements.js"></script>
 
 </body>
 </html>

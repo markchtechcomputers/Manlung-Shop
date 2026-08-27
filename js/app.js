@@ -115,7 +115,7 @@ function initNavigation() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
-  document.querySelectorAll(".nav-links a").forEach(a => a.addEventListener("click", (e) => showSection(e.target.getAttribute("data-nav"))));
+  document.querySelectorAll("[data-nav]").forEach(a => a.addEventListener("click", (e) => { e.preventDefault(); showSection(a.getAttribute("data-nav")); }));
   document.getElementById("shopNowBtn")?.addEventListener("click", () => showSection("music"));
   backBtn?.addEventListener("click", () => showSection("home"));
 

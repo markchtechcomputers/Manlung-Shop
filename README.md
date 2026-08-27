@@ -82,3 +82,13 @@ Since this is a static site with no server, the admin password check happens in 
 
 ## Vercel payment configuration
 Payment credentials are no longer stored in the storefront source. When payments are enabled again, provide the required payment configuration through your Vercel deployment environment/runtime integration rather than committing keys to `js/config.js`. The existing checkout, admin and data-store code has been left in place.
+
+## Storefront upgrades in this build
+
+The storefront now includes a responsive light/dark design system (light is the default), improved contrast, a redesigned responsive footer/header, mobile bottom navigation, global product search, quick view, wishlist persistence, featured/bestseller rows, product sorting, cart shipping-progress messaging, promo-code UI, improved product discovery, SEO metadata, sitemap/robots, PWA manifest, and Vercel security/cache headers. The existing Admin Portal remains in place and now shows quick catalogue/show counts without replacing its current workflow.
+
+### Paystack on Vercel
+
+The storefront remains compatible with the existing secure `GATEWAY_URL` flow. For production payments, use a server-side Paystack gateway or Vercel serverless backend and keep the Paystack secret key in Vercel Environment Variables only. Never place `sk_live_...` in `config.js` or browser JavaScript. The existing frontend supports `PAYSTACK_PUBLIC_KEY` for popup mode and `GATEWAY_URL` for the recommended server-calculated checkout.
+
+Built-in demo promo codes for popup checkout: `MANLUNG10`, `FLOCK15`, and `WELCOME5`. A secure gateway must also validate any promotion server-side before accepting a discounted order.
