@@ -1,0 +1,685 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Adict Manlung — Official Website</title>
+<meta name="description" content="Official website of Adict Manlung — music, live dates, merch, EPK and contact.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#EFE6D3;
+  --paper-dark:#E4D6B8;
+  --paper-deep:#D9C9A3;
+  --ink:#1A1610;
+  --ink-soft:#4a4335;
+  --red:#B3311E;
+  --red-dark:#8f2517;
+  --mustard:#DCA53E;
+  --moss:#445C3C;
+  --line: rgba(26,22,16,.22);
+  --line-soft: rgba(26,22,16,.12);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  background:var(--paper);
+  color:var(--ink);
+  font-family:'Archivo',sans-serif;
+  font-size:16px;
+  -webkit-font-smoothing:antialiased;
+}
+/* paper grain */
+.grain{position:fixed;inset:0;pointer-events:none;opacity:.05;z-index:60;mix-blend-mode:multiply;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+a{color:inherit}
+img{max-width:100%;display:block}
+h1,h2,h3{font-family:'Anton',sans-serif;font-weight:400;letter-spacing:.01em;margin:0;line-height:.92}
+p{margin:0}
+
+/* ---------- header ---------- */
+.header{
+  position:sticky;top:0;z-index:50;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:16px 5vw;
+  background:var(--paper);
+  border-bottom:3px solid var(--ink);
+}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--ink)}
+.logo-mark{width:34px;height:34px;border-radius:50%;background:var(--red);color:var(--paper);
+  display:grid;place-items:center;font-family:'Anton';font-size:15px;transform:rotate(-8deg);flex:none}
+.logo-text{font-family:'Anton';font-size:19px;letter-spacing:.01em}
+nav{display:flex;gap:26px}
+nav a{text-decoration:none;color:var(--ink);font-weight:700;font-size:14px;position:relative;padding-bottom:2px}
+nav a::after{content:"";position:absolute;left:0;right:0;bottom:-3px;height:3px;background:var(--red);
+  transform:scaleX(0);transform-origin:left;transition:transform .18s ease}
+nav a:hover::after{transform:scaleX(1)}
+.menu-btn{display:none;background:none;border:2px solid var(--ink);border-radius:8px;padding:6px 9px;font-size:18px;cursor:pointer}
+
+/* ---------- hero ---------- */
+.hero{
+  position:relative;
+  padding:56px 5vw 0;
+  display:grid;grid-template-columns:1.05fr .95fr;gap:5vw;align-items:center;
+  overflow:hidden;
+}
+.hero::before{ /* corkboard flecks */
+  content:"";position:absolute;inset:0;pointer-events:none;opacity:.5;
+  background-image:radial-gradient(var(--paper-deep) 1.5px,transparent 1.5px);
+  background-size:26px 26px;
+}
+.hero-copy{position:relative;z-index:2;padding-bottom:70px}
+.stamp-tag{
+  display:inline-flex;align-items:center;gap:8px;
+  border:2px solid var(--ink);border-radius:999px;
+  padding:6px 14px;font-weight:800;font-size:12px;letter-spacing:.06em;
+  transform:rotate(-3deg);margin-bottom:26px;background:var(--paper);
+}
+.stamp-tag .dot{width:7px;height:7px;border-radius:50%;background:var(--red)}
+.hero h1{font-size:clamp(58px,8.6vw,118px);color:var(--ink)}
+.hero h1 .line2{color:var(--red)}
+.hero-underline{width:min(420px,80%);height:14px;margin:14px 0 22px}
+.hero-sub{font-size:19px;color:var(--ink-soft);max-width:44ch;line-height:1.5;font-weight:500}
+.hero-actions{display:flex;gap:14px;flex-wrap:wrap;margin-top:32px}
+.btn{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:15px 24px;font-weight:800;font-size:14px;
+  border:2.5px solid var(--ink);border-radius:6px;
+  text-decoration:none;cursor:pointer;background:var(--ink);color:var(--paper);
+  box-shadow:4px 4px 0 var(--ink);
+  transition:transform .12s ease, box-shadow .12s ease;
+}
+.btn:hover{transform:translate(2px,2px);box-shadow:2px 2px 0 var(--ink)}
+.btn.solid-red{background:var(--red);border-color:var(--red);box-shadow:4px 4px 0 var(--ink)}
+.btn.ghost{background:transparent;color:var(--ink)}
+.btn.small{padding:10px 16px;font-size:12px;box-shadow:3px 3px 0 var(--ink)}
+.btn.disabled{opacity:.55;cursor:default;box-shadow:none;transform:none;background:var(--paper-dark);color:var(--ink-soft);border-color:var(--line)}
+
+.hero-photo-wrap{position:relative;z-index:2;justify-self:center}
+.polaroid{
+  background:#fff;padding:14px 14px 46px;
+  box-shadow:0 18px 34px rgba(0,0,0,.28);
+  transform:rotate(4deg);
+  width:min(360px,88vw);
+  position:relative;
+}
+.polaroid .frame{aspect-ratio:4/5;overflow:hidden;background:var(--ink);position:relative}
+.polaroid .frame img{width:100%;height:100%;object-fit:cover;object-position:center 22%;
+  filter:grayscale(1) sepia(.35) contrast(1.15) brightness(.95)}
+.polaroid .frame::after{ /* duotone halftone */
+  content:"";position:absolute;inset:0;mix-blend-mode:multiply;opacity:.65;
+  background:
+    radial-gradient(circle, var(--red) 1.1px, transparent 1.1px) 0 0/7px 7px,
+    linear-gradient(0deg,rgba(179,49,30,.55),rgba(179,49,30,.1));
+}
+.polaroid .caption{position:absolute;bottom:12px;left:14px;right:14px;font-family:'Anton';font-size:15px;letter-spacing:.02em}
+.tape{position:absolute;width:90px;height:30px;background:rgba(255,255,255,.55);
+  box-shadow:0 2px 6px rgba(0,0,0,.15);transform:rotate(-6deg);z-index:3}
+.tape.t1{top:-14px;left:-18px}
+.tape.t2{bottom:14px;right:-24px;transform:rotate(8deg)}
+.stamp-round{
+  position:absolute;right:-6px;top:-24px;z-index:4;
+  width:96px;height:96px;border-radius:50%;
+  border:2.5px dashed var(--ink);
+  display:grid;place-items:center;text-align:center;
+  transform:rotate(10deg);background:var(--mustard);color:var(--ink);
+}
+.stamp-round b{font-family:'Anton';font-size:22px;display:block;line-height:.9}
+.stamp-round small{font-size:8px;letter-spacing:.14em;font-weight:800}
+
+/* ---------- ticker (gaffer tape strip) ---------- */
+.ticker{
+  background:var(--ink);color:var(--paper);
+  overflow:hidden;white-space:nowrap;padding:11px 0;
+  border-block:3px solid var(--ink);
+  transform:rotate(-.6deg);margin:10px 0 -6px;
+}
+.ticker-track{display:inline-block;animation:scroll 26s linear infinite;font-weight:800;font-size:13px;letter-spacing:.08em}
+.ticker-track span{margin:0 22px;color:var(--mustard)}
+@keyframes scroll{to{transform:translateX(-50%)}}
+@media (prefers-reduced-motion: reduce){.ticker-track{animation:none}}
+
+/* ---------- sections ---------- */
+.section{padding:96px 5vw;position:relative}
+.section-title{font-size:clamp(38px,5.6vw,64px);max-width:14ch}
+.section-lede{color:var(--ink-soft);font-size:16px;max-width:46ch;margin-top:10px;font-weight:500}
+.section-head{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;flex-wrap:wrap;margin-bottom:46px}
+
+/* torn edge between sections */
+.torn{position:relative}
+.torn::after{
+  content:"";position:absolute;left:0;right:0;bottom:-1px;height:16px;
+  background:var(--paper);
+  clip-path:polygon(0% 0%,3% 100%,6% 20%,9% 90%,12% 10%,15% 80%,18% 15%,21% 95%,24% 25%,27% 85%,
+    30% 5%,33% 90%,36% 20%,39% 100%,42% 10%,45% 80%,48% 15%,51% 95%,54% 25%,57% 85%,
+    60% 5%,63% 90%,66% 20%,69% 100%,72% 10%,75% 80%,78% 15%,81% 95%,84% 25%,87% 85%,
+    90% 5%,93% 90%,96% 20%,100% 100%,100% 0%);
+}
+
+/* alternating section paper tones */
+.tone-a{background:var(--paper)}
+.tone-b{background:var(--paper-dark)}
+.tone-ink{background:var(--ink);color:var(--paper)}
+.tone-ink .section-lede{color:#c9c0ab}
+
+/* ---------- music: tracklist ---------- */
+.tracklist{border-top:2.5px solid var(--ink)}
+.track-row{
+  display:grid;grid-template-columns:56px 74px 1fr auto;gap:18px;align-items:center;
+  padding:20px 0;border-bottom:2.5px solid var(--ink);
+}
+.track-num{font-family:'Anton';font-size:24px;color:var(--red)}
+.track-cover{width:74px;height:74px;overflow:hidden;background:var(--ink);flex:none;position:relative}
+.track-cover img{width:100%;height:100%;object-fit:cover;filter:grayscale(.3) contrast(1.05)}
+.track-info h3{font-family:'Archivo';font-weight:800;font-size:17px;letter-spacing:0}
+.track-info p{color:var(--ink-soft);font-size:13.5px;margin-top:5px;max-width:56ch}
+.track-tag{display:inline-block;font-size:10.5px;font-weight:800;letter-spacing:.06em;
+  background:var(--mustard);padding:3px 8px;border-radius:4px;margin-bottom:6px}
+.track-actions{display:flex;align-items:center;gap:10px}
+.play-btn{
+  width:46px;height:46px;border-radius:50%;border:2.5px solid var(--ink);background:var(--ink);color:var(--paper);
+  font-size:14px;cursor:pointer;flex:none;
+}
+.play-btn.playing{background:var(--red);border-color:var(--red)}
+.track-row audio{display:none}
+.track-row.open audio{display:block;grid-column:1/-1;width:100%;margin-top:4px;height:34px}
+.discog-note{margin-top:22px;padding:16px 18px;border:2px dashed var(--line);border-radius:6px;
+  font-size:14px;color:var(--ink-soft);background:var(--paper-dark)}
+.discog-note b{color:var(--ink);font-weight:800}
+
+/* ---------- story / about ---------- */
+.story{display:grid;grid-template-columns:.85fr 1.15fr;gap:6vw;align-items:center}
+.story-collage{position:relative}
+.story-photo{width:100%;aspect-ratio:4/5;overflow:hidden;box-shadow:0 16px 30px rgba(0,0,0,.25);transform:rotate(-2.5deg)}
+.story-photo img{width:100%;height:100%;object-fit:cover;filter:grayscale(1) contrast(1.1)}
+.story-photo::after{content:"";position:absolute;inset:0}
+.quote-note{
+  position:absolute;bottom:-30px;left:-24px;background:var(--mustard);color:var(--ink);
+  padding:16px 18px;width:200px;transform:rotate(4deg);box-shadow:0 10px 20px rgba(0,0,0,.2);
+  font-family:'Anton';font-size:16px;line-height:1.15;
+}
+.story-copy p{color:var(--ink-soft);line-height:1.75;font-size:16px;max-width:56ch;margin-bottom:16px}
+.staple{position:absolute;top:-10px;left:38px;width:18px;height:10px;background:#8a8a8a;border-radius:3px;
+  box-shadow:0 1px 2px rgba(0,0,0,.4);z-index:5}
+.story-card{background:var(--paper);border:2.5px solid var(--ink);padding:30px 28px;position:relative;margin-top:6px}
+
+/* corkboard clippings */
+.clip-board{position:relative;margin-top:70px}
+.clip-board::before{ /* corkboard texture */
+  content:"";position:absolute;inset:-24px -5vw;z-index:-1;opacity:.4;
+  background-image:radial-gradient(var(--paper-deep) 1.5px,transparent 1.5px);background-size:24px 24px;
+}
+.clip-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:34px 24px}
+.clip-card{
+  background:#fbf7ec;border:1px solid var(--line);padding:22px 20px 20px;position:relative;
+  box-shadow:0 10px 18px rgba(0,0,0,.16);
+}
+.clip-card:nth-child(1){transform:rotate(-2deg)}
+.clip-card:nth-child(2){transform:rotate(1.5deg)}
+.clip-card:nth-child(3){transform:rotate(-1deg)}
+.clip-card:nth-child(4){transform:rotate(2deg)}
+.clip-card:nth-child(5){transform:rotate(-1.6deg)}
+.clip-card::before{ /* pin */
+  content:"";position:absolute;top:-9px;left:50%;transform:translateX(-50%);
+  width:14px;height:14px;border-radius:50%;
+  background:radial-gradient(circle at 35% 30%, #e8836c, var(--red-dark));
+  box-shadow:0 2px 4px rgba(0,0,0,.4);
+}
+.clip-card h4{font-family:'Anton';font-size:17px;letter-spacing:.01em;margin-bottom:10px}
+.clip-card p{color:var(--ink-soft);font-size:14px;line-height:1.6}
+
+/* ecosystem chain */
+.chain-wrap{margin-top:64px}
+.chain-label{font-size:12px;font-weight:800;letter-spacing:.08em;color:var(--ink-soft);margin-bottom:16px}
+.chain{display:flex;flex-wrap:wrap;align-items:center;gap:0}
+.chain-link{
+  display:flex;flex-direction:column;gap:2px;
+  background:var(--ink);color:var(--paper);border-radius:999px;
+  padding:11px 20px;
+}
+.chain-link b{font-family:'Archivo';font-weight:800;font-size:13.5px;letter-spacing:.01em}
+.chain-link span{font-size:10.5px;color:#c9c0ab;letter-spacing:.02em}
+.chain-link.accent{background:var(--red)}
+.chain-link.accent span{color:#f2d2c9}
+.chain-arrow{color:var(--red);font-size:18px;margin:0 12px;font-weight:800}
+@media (max-width:900px){
+  .chain{flex-direction:column;align-items:flex-start;gap:10px}
+  .chain-arrow{transform:rotate(90deg);margin:2px 0 2px 24px}
+}
+
+/* ---------- live: ticket stubs ---------- */
+.shows{display:flex;flex-direction:column;gap:20px}
+.ticket{
+  display:grid;grid-template-columns:110px 1fr auto;align-items:center;gap:20px;
+  background:var(--paper);border:2.5px dashed var(--ink);
+  padding:22px 24px;position:relative;
+}
+.ticket:nth-child(odd){transform:rotate(-.6deg)}
+.ticket:nth-child(even){transform:rotate(.6deg)}
+.ticket::before,.ticket::after{content:"";position:absolute;width:24px;height:24px;border-radius:50%;
+  background:var(--paper-dark);top:50%;transform:translateY(-50%)}
+.ticket::before{left:-12px}
+.ticket::after{right:-12px}
+.ticket-date{font-family:'Anton';font-size:15px;text-align:center;border-right:2px dashed var(--ink);padding-right:16px}
+.ticket-date b{display:block;font-size:44px;line-height:.8;color:var(--red)}
+.ticket-venue b{display:block;font-size:19px;font-weight:800}
+.ticket-venue span{display:block;color:var(--ink-soft);margin-top:4px;font-size:14px}
+.sold-stamp{
+  position:absolute;right:26px;top:8px;border:3px solid var(--moss);color:var(--moss);
+  font-family:'Anton';font-size:13px;padding:3px 10px;transform:rotate(-10deg);letter-spacing:.05em;
+}
+
+/* ---------- merch ---------- */
+.merch-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:36px 28px}
+.merch-item{position:relative}
+.merch-polaroid{background:#fff;padding:10px 10px 0;box-shadow:0 12px 22px rgba(0,0,0,.2)}
+.merch-item:nth-child(2) .merch-polaroid{transform:rotate(-2deg)}
+.merch-item:nth-child(3) .merch-polaroid{transform:rotate(2deg)}
+.merch-art{aspect-ratio:1;overflow:hidden;background:var(--ink);display:grid;place-items:center;position:relative}
+.merch-art img{width:100%;height:100%;object-fit:cover;filter:grayscale(.15)}
+.merch-art .type-art{font-family:'Anton';font-size:34px;line-height:.85;text-align:center;color:var(--paper)}
+.merch-meta{padding:14px 4px 18px;display:flex;justify-content:space-between;align-items:flex-end}
+.merch-meta h3{font-family:'Archivo';font-weight:800;font-size:16px}
+.price-tag{
+  background:var(--red);color:var(--paper);font-weight:800;font-size:13px;padding:5px 10px;
+  border-radius:3px;transform:rotate(-3deg);display:inline-block;margin-top:4px;
+}
+
+/* ---------- epk ---------- */
+.epk{display:grid;grid-template-columns:1fr .8fr;gap:6vw;align-items:center}
+.epk-copy p{color:#c9c0ab;line-height:1.8;font-size:16px;max-width:52ch;margin-top:16px}
+.epk-actions{display:flex;gap:14px;flex-wrap:wrap;margin-top:28px}
+.press-stamp{
+  width:190px;height:190px;border-radius:50%;border:3px dashed var(--mustard);
+  display:grid;place-items:center;text-align:center;justify-self:center;transform:rotate(-8deg);color:var(--mustard);
+}
+.press-stamp b{font-family:'Anton';font-size:26px;display:block;line-height:1}
+.press-stamp small{font-size:10px;letter-spacing:.14em;font-weight:800;display:block;margin-top:6px}
+
+/* ---------- newsletter (tear tab) ---------- */
+.newsletter{background:var(--mustard);text-align:left}
+.newsletter-inner{display:grid;grid-template-columns:1.2fr 1fr;gap:6vw;align-items:center}
+.newsletter h2{font-size:clamp(36px,5.4vw,58px)}
+.newsletter p{color:#4a3a12;margin-top:14px;max-width:42ch;font-weight:600}
+.tear-card{
+  background:var(--paper);border:2.5px solid var(--ink);padding:28px;position:relative;
+}
+.tear-card::before{content:"";position:absolute;top:0;bottom:0;left:-2px;width:0;
+  border-left:3px dashed var(--ink)}
+#newsletter-form{display:flex;flex-direction:column;gap:12px}
+#newsletter-form input{padding:14px;border:2px solid var(--ink);font-family:'Archivo';font-weight:600;font-size:15px;background:#fff}
+#formMsg{margin-top:12px;font-weight:800;font-size:14px;color:var(--moss)}
+
+/* ---------- contact: tear tabs ---------- */
+.contact{display:grid;grid-template-columns:1fr 1.1fr;gap:6vw;align-items:start}
+.tab-row{display:flex;flex-wrap:wrap;gap:22px;margin-top:8px}
+.tab{
+  background:var(--paper-dark);border:2px solid var(--ink);border-top:none;
+  padding:16px 16px 14px;min-width:180px;position:relative;text-decoration:none;color:var(--ink);
+}
+.tab::before{content:"";position:absolute;top:-2px;left:0;right:0;height:2px;
+  background-image:repeating-linear-gradient(90deg,var(--ink) 0 6px,transparent 6px 12px)}
+.tab small{display:block;color:var(--red);font-weight:800;font-size:10px;letter-spacing:.1em;margin-bottom:6px}
+.tab b{font-size:14px;font-weight:700;word-break:break-word}
+.socials{display:flex;gap:10px;flex-wrap:wrap;margin-top:28px}
+.socials a{border:2px solid var(--ink);border-radius:999px;padding:8px 16px;font-size:13px;font-weight:800;text-decoration:none;color:var(--ink)}
+
+footer{padding:30px 5vw;display:flex;justify-content:space-between;align-items:center;gap:16px;
+  border-top:3px solid var(--ink);flex-wrap:wrap}
+footer .foot-logo{font-family:'Anton';font-size:18px}
+footer p{color:var(--ink-soft);font-size:12px;font-weight:600}
+footer a{font-weight:800;font-size:12px;text-decoration:none}
+
+.toast{
+  position:fixed;bottom:22px;right:22px;background:var(--ink);color:var(--paper);
+  padding:14px 20px;font-weight:800;font-size:13px;border-radius:6px;
+  transform:translateY(140px);transition:transform .3s ease;z-index:80;max-width:280px;
+  box-shadow:4px 4px 0 var(--red);
+}
+.toast.show{transform:none}
+
+:focus-visible{outline:3px solid var(--red);outline-offset:2px}
+
+@media (max-width:900px){
+  nav{position:fixed;inset:64px 0 auto 0;background:var(--paper);flex-direction:column;padding:20px 5vw;
+    border-bottom:3px solid var(--ink);display:none;gap:16px;z-index:49}
+  nav.open{display:flex}
+  .menu-btn{display:block}
+  .hero{grid-template-columns:1fr;padding-top:36px}
+  .hero-photo-wrap{margin-top:20px}
+  .story,.epk,.contact,.newsletter-inner{grid-template-columns:1fr}
+  .story-collage{margin-bottom:56px}
+  .merch-grid{grid-template-columns:1fr 1fr}
+  .section{padding:64px 5vw}
+  .track-row{grid-template-columns:36px 60px 1fr;grid-template-areas:"num cover info" "actions actions actions"}
+  .track-num{grid-area:num}.track-cover{grid-area:cover}.track-info{grid-area:info}.track-actions{grid-area:actions;margin-top:12px}
+  .ticket{grid-template-columns:80px 1fr;grid-template-areas:"date venue" "actions actions"}
+  .ticket-date{grid-area:date}.ticket-venue{grid-area:venue}.ticket-actions{grid-area:actions;margin-top:10px}
+  .press-stamp{margin-bottom:20px}
+  footer{flex-direction:column;align-items:flex-start}
+}
+@media (max-width:560px){
+  .merch-grid{grid-template-columns:1fr}
+  .hero h1{font-size:15vw}
+}
+</style>
+</head>
+<body>
+<div class="grain"></div>
+
+<header class="header">
+  <a class="logo" href="#top">
+    <span class="logo-mark">AM</span>
+    <span class="logo-text">ADICT MANLUNG</span>
+  </a>
+  <nav id="nav">
+    <a href="#music">Music</a>
+    <a href="#story">Story</a>
+    <a href="#live">Live</a>
+    <a href="#merch">Merch</a>
+    <a href="#epk">EPK</a>
+    <a href="#contact">Contact</a>
+  </nav>
+  <button class="menu-btn" id="menuBtn" aria-label="Open menu">☰</button>
+</header>
+
+<main id="top">
+
+  <section class="hero torn">
+    <div class="hero-copy">
+      <span class="stamp-tag"><span class="dot"></span>NAIROBI, KENYA</span>
+      <h1>ADICT<br><span class="line2">MANLUNG</span></h1>
+      <svg class="hero-underline" viewBox="0 0 420 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M2 8C60 2 140 12 210 6C280 0 350 12 418 6" stroke="#B3311E" stroke-width="5" stroke-linecap="round"/>
+      </svg>
+      <p class="hero-sub">Stories from the block, told over hard-hitting beats. Every track is a chapter — every show, the Flock shows up.</p>
+      <div class="hero-actions">
+        <a class="btn solid-red" href="#music">Play the new tracks</a>
+        <a class="btn ghost" href="#live">See tour dates</a>
+      </div>
+    </div>
+    <div class="hero-photo-wrap">
+      <div class="polaroid">
+        <div class="tape t1"></div>
+        <div class="tape t2"></div>
+        <div class="stamp-round"><b>EST.<br>2025</b><small>THE FLOCK</small></div>
+        <div class="frame">
+          <img src="https://files.catbox.moe/jok7xm.png" alt="Adict Manlung portrait">
+        </div>
+        <p class="caption">THE FLOCK STORYTELLER</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="ticker">
+    <div class="ticker-track">
+      <span>NEW SINGLE OUT NOW</span>•<span>NAIROBI</span>•<span>STREET STORIES</span>•<span>LIVE ON THE ROAD</span>•
+      <span>NEW SINGLE OUT NOW</span>•<span>NAIROBI</span>•<span>STREET STORIES</span>•<span>LIVE ON THE ROAD</span>•
+    </div>
+  </div>
+
+  <section id="music" class="section tone-a torn">
+    <div class="section-head">
+      <div>
+        <h2 class="section-title">The tracklist</h2>
+        <p class="section-lede">Six records, six chapters — press play on any one.</p>
+      </div>
+    </div>
+    <div id="tracks" class="tracklist"></div>
+    <div class="discog-note">
+      <b>Blow Your Head</b> (feat. Ice Smoke &amp; Avin) — the newest single, streaming on Apple Music and Amazon Music.
+    </div>
+  </section>
+
+  <section id="story" class="section tone-b torn">
+    <div class="story">
+      <div class="story-collage">
+        <div class="staple"></div>
+        <div class="story-photo">
+          <img src="https://files.catbox.moe/jok7xm.png" alt="Adict Manlung portrait, black and white">
+        </div>
+        <div class="quote-note">"Every record is a chapter."</div>
+      </div>
+      <div class="story-copy">
+        <h2 class="section-title">Who is Adict Manlung?</h2>
+        <div class="story-card">
+          <p>Adict Manlung is an independent Kenyan hip-hop artist and storyteller, based between Nairobi and Eldoret. He doesn't just make songs — he turns street realities into narrative: struggle, ambition, friendship, betrayal, survival and growth, told in order, like chapters.</p>
+          <p>He built the Flock without a label — writing, releasing and running the brand himself, and turning that independence into a wider world: music, streetwear, media and tech, all under one roof.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="clip-board">
+      <div class="clip-grid">
+        <div class="clip-card">
+          <h4>The storyteller</h4>
+          <p>His records read as chapters, not singles — struggle leads to consequence, consequence leads to ambition. It's a more autobiographical, cinematic approach than the usual party-or-flex record.</p>
+        </div>
+        <div class="clip-card">
+          <h4>Kenyan, on purpose</h4>
+          <p>Nairobi and Eldoret aren't backstory — they're the perspective. The brand is built for Kenya, East Africa and the diaspora rather than sanded down for anywhere.</p>
+        </div>
+        <div class="clip-card">
+          <h4>Independent by design</h4>
+          <p>No traditional label. Adict Manlung writes, releases and runs the business side himself — artist and publisher in one.</p>
+        </div>
+        <div class="clip-card">
+          <h4>12 Flock</h4>
+          <p>The streetwear line that lets the Flock wear the story, not just stream it — previewed through the Flock Show, with a collaboration alongside Tashlie Brands.</p>
+        </div>
+        <div class="clip-card">
+          <h4>Beyond the mic</h4>
+          <p>Also an entrepreneur and cybersecurity engineer — the same independent, build-it-yourself instinct shows up in the tech and business side of Manlung.</p>
+        </div>
+      </div>
+
+      <div class="chain-wrap">
+        <p class="chain-label">THE ECOSYSTEM</p>
+        <div class="chain">
+          <div class="chain-link accent"><b>ADICT MANLUNG</b><span>the artist</span></div>
+          <span class="chain-arrow">→</span>
+          <div class="chain-link"><b>THE FLOCK</b><span>the movement</span></div>
+          <span class="chain-arrow">→</span>
+          <div class="chain-link"><b>12 FLOCK</b><span>the culture / streetwear</span></div>
+          <span class="chain-arrow">→</span>
+          <div class="chain-link"><b>12 FLOCK TV</b><span>the media</span></div>
+          <span class="chain-arrow">→</span>
+          <div class="chain-link"><b>MANLUNG</b><span>the wider brand</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="live" class="section tone-a torn">
+    <div class="section-head">
+      <div>
+        <h2 class="section-title">On the road</h2>
+        <p class="section-lede">Bookings and show inquiries welcome — reach out through the contact section below.</p>
+      </div>
+    </div>
+    <div class="shows">
+      <div class="ticket">
+        <div class="ticket-date"><small>OCT</small><b>12</b><small>2026</small></div>
+        <div class="ticket-venue"><b>London, UK</b><span>O2 Academy</span></div>
+        <div class="ticket-actions"><a class="btn small" href="#contact">Get tickets</a></div>
+      </div>
+      <div class="ticket">
+        <span class="sold-stamp">SOLD OUT</span>
+        <div class="ticket-date"><small>OCT</small><b>18</b><small>2026</small></div>
+        <div class="ticket-venue"><b>Berlin, DE</b><span>Astra Kulturhaus</span></div>
+        <div class="ticket-actions"><button class="btn small disabled">Sold out</button></div>
+      </div>
+      <div class="ticket">
+        <div class="ticket-date"><small>NOV</small><b>04</b><small>2026</small></div>
+        <div class="ticket-venue"><b>New York, NY</b><span>Bowery Ballroom</span></div>
+        <div class="ticket-actions"><a class="btn small" href="#contact">Get tickets</a></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="merch" class="section tone-b torn">
+    <div class="section-head">
+      <div>
+        <h2 class="section-title">Wear the story</h2>
+        <p class="section-lede">Official merch, printed in small runs.</p>
+      </div>
+    </div>
+    <div class="merch-grid">
+      <div class="merch-item">
+        <div class="merch-polaroid">
+          <div class="merch-art" style="background:var(--red)"><span class="type-art">FLOCK<br>TEE</span></div>
+        </div>
+        <div class="merch-meta">
+          <div><h3>Flock Tee</h3><span class="price-tag">KES 2,500</span></div>
+          <button class="btn small" data-buy="Flock Tee">Add to bag</button>
+        </div>
+      </div>
+      <div class="merch-item">
+        <div class="merch-polaroid">
+          <div class="merch-art" style="background:var(--ink)"><span class="type-art">TOUR<br>HOODIE</span></div>
+        </div>
+        <div class="merch-meta">
+          <div><h3>Tour Hoodie</h3><span class="price-tag">KES 5,500</span></div>
+          <button class="btn small" data-buy="Tour Hoodie">Add to bag</button>
+        </div>
+      </div>
+      <div class="merch-item">
+        <div class="merch-polaroid">
+          <div class="merch-art">
+            <img src="https://raw.githubusercontent.com/markchtechcomputers/galary-/main/ChatGPT%20Image%20Aug%205%2C%202026%2C%2002_15_39%20PM.png" alt="Limited CD release">
+          </div>
+        </div>
+        <div class="merch-meta">
+          <div><h3>Limited CD</h3><span class="price-tag">KES 1,499</span></div>
+          <button class="btn small" data-buy="Limited CD">Add to bag</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="epk" class="section tone-ink torn epk">
+    <div class="epk-copy">
+      <h2 class="section-title" style="color:var(--paper)">Press &amp; bookings</h2>
+      <p>High-resolution photos, artist bio, music links and booking information — everything a promoter, journalist or collaborator needs in one place.</p>
+      <div class="epk-actions">
+        <a class="btn solid-red" href="mailto:booking@manlungshop.co.ke?subject=Adict%20Manlung%20Booking%20Inquiry">Book Adict</a>
+        <a class="btn ghost" style="border-color:var(--paper);color:var(--paper)" href="#contact">Press &amp; media</a>
+      </div>
+    </div>
+    <div class="press-stamp"><b>AM</b><small>PRESS KIT<br>2026</small></div>
+  </section>
+
+  <section class="newsletter torn">
+    <div class="newsletter-inner">
+      <div>
+        <h2>No noise. Just the real.</h2>
+        <p>New releases, show announcements and limited drops — before anyone else hears about them.</p>
+      </div>
+      <div class="tear-card">
+        <form id="newsletter-form">
+          <input type="email" id="newsletterEmail" placeholder="Your email address" required>
+          <button class="btn solid-red" type="submit">Join the Flock</button>
+        </form>
+        <div id="formMsg"></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact" class="section tone-a contact">
+    <div>
+      <h2 class="section-title">Let's connect</h2>
+      <p class="section-lede">Tear off whichever tab fits.</p>
+      <div class="socials">
+        <a href="#">Spotify</a><a href="#">YouTube</a><a href="#">Instagram</a><a href="#">TikTok</a>
+      </div>
+    </div>
+    <div class="tab-row">
+      <a class="tab" href="mailto:booking@manlungshop.co.ke"><small>BOOKING</small><b>booking@manlungshop.co.ke</b></a>
+      <a class="tab" href="mailto:mgmt@manlungshop.co.ke"><small>MANAGEMENT</small><b>mgmt@manlungshop.co.ke</b></a>
+      <a class="tab" href="mailto:press@manlungshop.co.ke"><small>PRESS</small><b>press@manlungshop.co.ke</b></a>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="foot-logo">ADICT MANLUNG</div>
+  <p>© 2026 Adict Manlung. All rights reserved.</p>
+  <a href="#top">Back to top ↑</a>
+</footer>
+
+<div class="toast" id="toast"></div>
+
+
+  <script src="js/config.js"></script>
+  <script src="js/data-store.js"></script>
+  <script src="data/products.js"></script>
+
+<script>
+window.MANLUNG_TRACKS=[{"id": 105, "title": "Money Bag", "description": "A motivational anthem about chasing success, making money, and building a better future.", "imgUrl": "https://raw.githubusercontent.com/markchtechcomputers/galary-/main/Black%20White%20Bold%20Minimalist%20Music%20Album%20Cover%20(5).jpg", "featured": false, "downloadUrl": "https://raw.githubusercontent.com/markchtechcomputers/galary-/main/Adict-Manlung-Money-Bag.mp3"},
+{"id": 1, "title": "My Gee", "imgUrl": "https://raw.githubusercontent.com/markchtechcomputers/galary-/main/Black%20White%20Bold%20Minimalist%20Music%20Album%20Cover.jpg", "featured": false, "description": "Friendship, loyalty, trust, gratitude.", "downloadUrl": "https://raw.githubusercontent.com/markchtechcomputers/galary-/main/Adict-Manlung-My-Gee.mp3"},
+{"id": 2, "title": "Unfinished Business", "imgUrl": "https://raw.githubusercontent.com/markchtechcomputers/galary-/main/Black%20White%20Bold%20Minimalist%20Music%20Album%20Cover%20(1).jpg", "featured": false, "description": "Redemption, unfinished dreams, perseverance, revenge.", "downloadUrl": "https://raw.githubusercontent.com/markchtechcomputers/galary-/main/Adict-Manlung-Unfinished-Business.mp3"},
+{"id": 3, "title": "Black Africa", "imgUrl": "https://raw.githubusercontent.com/markchtechcomputers/galary-/main/Black%20White%20Bold%20Minimalist%20Music%20Album%20Cover%20(2).jpg", "featured": false, "description": "A proud celebration of African culture, strength, and unity in the face of challenges.", "downloadUrl": "https://raw.githubusercontent.com/markchtechcomputers/galary-/main/Adict-Manlung-Black-Africa.mp3"},
+{"id": 4, "title": "Still Outside", "imgUrl": "https://raw.githubusercontent.com/markchtechcomputers/galary-/main/Black%20White%20Bold%20Minimalist%20Music%20Album%20Cover%20(3).jpg", "featured": true, "description": "A street-inspired record about loyalty, hustle, and never forgetting where you came from.", "downloadUrl": "https://raw.githubusercontent.com/markchtechcomputers/galary-/main/Adict-Manlung-Still-outside.mp3"},
+{"id": 5, "title": "Cold (Adict Manlung x Trecky)", "imgUrl": "https://raw.githubusercontent.com/markchtechcomputers/galary-/main/Black%20White%20Bold%20Minimalist%20Music%20Album%20Cover%20(4).jpg", "featured": false, "description": "Betrayal, pain, survival, resilience.", "downloadUrl": "https://raw.githubusercontent.com/markchtechcomputers/galary-/main/Adict-Manlung-Cold.mp3"}];
+
+const tracks = window.MANLUNG_TRACKS || [];
+const grid = document.querySelector('#tracks');
+tracks.forEach((t,i)=>{
+  const row = document.createElement('div');
+  row.className = 'track-row';
+  row.innerHTML = `
+    <div class="track-num">${String(i+1).padStart(2,'0')}</div>
+    <div class="track-cover"><img src="${t.imgUrl||''}" alt="${t.title} cover" loading="lazy"></div>
+    <div class="track-info">
+      ${t.featured ? '<span class="track-tag">Flock favorite</span><br>' : ''}
+      <h3>${t.title}</h3>
+      <p>${t.description || 'Official Adict Manlung release.'}</p>
+    </div>
+    <div class="track-actions">
+      <button class="play-btn" aria-label="Play ${t.title}">▶</button>
+    </div>
+    ${t.downloadUrl ? `<audio preload="none" src="${t.downloadUrl.trim()}"></audio>` : ''}
+  `;
+  const audio = row.querySelector('audio');
+  const playBtn = row.querySelector('.play-btn');
+  if(audio){
+    playBtn.addEventListener('click', ()=>{
+      document.querySelectorAll('.track-row').forEach(r=>{
+        if(r!==row){ r.classList.remove('open'); const a=r.querySelector('audio'); if(a) a.pause(); r.querySelector('.play-btn').classList.remove('playing'); r.querySelector('.play-btn').textContent='▶'; }
+      });
+      row.classList.add('open');
+      if(audio.paused){ audio.play(); playBtn.classList.add('playing'); playBtn.textContent='❚❚'; }
+      else { audio.pause(); playBtn.classList.remove('playing'); playBtn.textContent='▶'; }
+    });
+    audio.addEventListener('ended', ()=>{ playBtn.classList.remove('playing'); playBtn.textContent='▶'; });
+  }
+  grid.appendChild(row);
+});
+
+const menuBtn = document.querySelector('#menuBtn');
+const nav = document.querySelector('#nav');
+menuBtn.addEventListener('click', ()=> nav.classList.toggle('open'));
+nav.querySelectorAll('a').forEach(a=> a.addEventListener('click', ()=> nav.classList.remove('open')));
+
+const toast = document.querySelector('#toast');
+document.querySelectorAll('[data-buy]').forEach(b=>{
+  b.addEventListener('click', ()=>{
+    toast.textContent = `${b.dataset.buy} added to your bag.`;
+    toast.classList.add('show');
+    setTimeout(()=> toast.classList.remove('show'), 3200);
+  });
+});
+
+document.querySelector('#newsletter-form').addEventListener('submit', e=>{
+  e.preventDefault();
+  document.querySelector('#formMsg').textContent = "You're in the Flock. Check your inbox.";
+  e.target.reset();
+});
+</script>
+</body>
+</html>

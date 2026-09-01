@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Manlung Shop</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="apple-touch-icon" href="app-icon-512.png">
+<meta name="description" content="Official Manlung Shop by Adict Manlung — music, signed CDs, limited merch and tour tickets.">
+<link rel="canonical" href="https://www.manlungshop.co.ke/">
+<link rel="manifest" href="manifest.webmanifest">
+
+<!-- Social sharing previews -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="Manlung Shop | Adict Manlung Official Store">
+<meta property="og:description" content="Digital singles, signed CDs, merch, and tour tickets — straight from Adict Manlung, independent Kenyan hip-hop.">
+<meta property="og:image" content="https://files.catbox.moe/xt27vu.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Manlung Shop | Adict Manlung Official Store">
+<meta name="twitter:description" content="Digital singles, signed CDs, merch, and tour tickets — straight from Adict Manlung, independent Kenyan hip-hop.">
+<meta name="twitter:image" content="https://files.catbox.moe/xt27vu.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700;800&family=Anton&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/styles.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+<script type="application/ld+json">{
+  "@context":"https://schema.org",
+  "@type":"OnlineStore",
+  "name":"Manlung Shop",
+  "url":"https://www.manlungshop.co.ke/",
+  "description":"Official online store for Adict Manlung music, merchandise and tour tickets.",
+  "brand":{"@type":"Brand","name":"Manlung"},
+  "areaServed":"KE"
+}</script>
+</head>
+<body>
+
+<div class="top-marquee">
+  <div class="top-marquee-track">
+    <span>👟 Welcome to Manlung Shop&nbsp;&nbsp;✦&nbsp;&nbsp;👕 New Brands&nbsp;&nbsp;✦&nbsp;&nbsp;💎 New Products&nbsp;&nbsp;✦&nbsp;&nbsp;👟 Exclusive Shoes&nbsp;&nbsp;✦&nbsp;&nbsp;⌚ Watches&nbsp;&nbsp;✦&nbsp;&nbsp;🧥 Clothing&nbsp;&nbsp;✦&nbsp;&nbsp;💍 Jewelry&nbsp;&nbsp;✦&nbsp;&nbsp;</span>
+    <span>👟 Welcome to Manlung Shop&nbsp;&nbsp;✦&nbsp;&nbsp;👕 New Brands&nbsp;&nbsp;✦&nbsp;&nbsp;💎 New Products&nbsp;&nbsp;✦&nbsp;&nbsp;👟 Exclusive Shoes&nbsp;&nbsp;✦&nbsp;&nbsp;⌚ Watches&nbsp;&nbsp;✦&nbsp;&nbsp;🧥 Clothing&nbsp;&nbsp;✦&nbsp;&nbsp;💍 Jewelry&nbsp;&nbsp;✦&nbsp;&nbsp;</span>
+  </div>
+</div>
+
+<div id="currencyModal" class="currency-modal-overlay">
+  <div class="currency-modal-box">
+    <div class="currency-modal-icon">🌍</div>
+    <h2>Where are you shopping from?</h2>
+    <p>We'll show every price in your local currency.</p>
+    <select id="currencyModalSelect">
+      <option>Loading countries...</option>
+    </select>
+    <button id="currencyModalContinue">Continue Shopping</button>
+  </div>
+</div>
+
+<div class="main-content">
+<div class="container">
+
+  <!-- PREMIUM HEADER -->
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <button class="menu-btn" id="menuOpenBtn" aria-label="Open menu">☰</button>
+      <a class="brand-lockup" href="#" data-nav="home" aria-label="Manlung home">
+        <span class="brand-mark" aria-hidden="true">M</span>
+        <span class="brand-copy"><strong>MANLUNG</strong><small>ADICT MANLUNG</small></span>
+      </a>
+    </div>
+    <div class="nav-links">
+      <a data-nav="home">Home</a>
+      <a data-nav="music">Music</a>
+      <a data-nav="cds">CDs</a>
+      <a data-nav="merch">Merch</a>
+      <a data-nav="tour">Tour</a>
+      <a data-nav="contact">Contact</a>
+    </div>
+    <div class="navbar-right">
+      <button class="header-search-btn" id="headerSearchBtn" type="button" aria-label="Search products" title="Search products">⌕</button>
+      <select id="currencySelector" title="Display currency">
+        <option>...</option>
+      </select>
+      <button class="theme-toggle" id="themeToggle" type="button" aria-label="Switch to dark mode" title="Switch theme">
+        <span class="theme-icon" aria-hidden="true">☾</span><span class="theme-label">Dark</span>
+      </button>
+      <button class="cart-icon" id="cartIconBtn" type="button" aria-label="Open cart">
+        <span aria-hidden="true">🛒</span><span>Cart</span><span id="cartCountBadge">0</span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- HOME -->
+  <section id="home-section">
+
+    <div class="hero">
+      <div class="brands-carousel-wrap">
+        <div class="brands-carousel-label">MANLUNG BRANDS</div>
+        <div class="brands-carousel" id="brandsCarousel">
+          <img class="brands-carousel-img active" src="" alt="Manlung Brands">
+          <img class="brands-carousel-img" src="" alt="Manlung Brands">
+        </div>
+      </div>
+      <div class="hero-text">
+        <h1>ADICT <span class="highlight">MANLUNG</span></h1>
+        <div class="drip-influencer-tag">Certified Drip Influencer 🫟</div>
+        <div class="bio-text">
+          <p>Raw voice from the streets, painting vivid pictures of struggle, ambition, and growth. Independent Kenyan hip-hop — new music, merch, and tour dates, straight from the source.</p>
+        </div>
+        <button class="btn-primary" id="shopNowBtn">Shop Now</button>
+      </div>
+    </div>
+
+    <!-- HOME SEARCH: placed directly below the Home hero -->
+    <section class="home-search-strip" aria-label="Search Manlung Shop">
+      <div class="home-search-inner">
+        <div class="home-search-copy">
+          <span class="eyebrow">FIND YOUR NEXT PICK</span>
+          <h2>Search the Manlung Shop</h2>
+          <p>Music, CDs, merch and more.</p>
+        </div>
+        <div class="home-search-control">
+          <span aria-hidden="true">⌕</span>
+          <input id="homeSearchInput" type="search" autocomplete="off" placeholder="Search music, CDs, hoodies..." aria-label="Search music, CDs, hoodies">
+          <button id="homeSearchButton" type="button">Search</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- STORE HIGHLIGHTS -->
+    <section class="store-highlights" aria-label="Store highlights">
+      <div class="highlight-card"><span>🔒</span><div><strong>Secure checkout</strong><small>Pay safely with Paystack</small></div></div>
+      <div class="highlight-card"><span>🚚</span><div><strong>Fast dispatch</strong><small>Kenya &amp; international options</small></div></div>
+      <div class="highlight-card"><span>🎁</span><div><strong>Exclusive drops</strong><small>Limited Manlung releases</small></div></div>
+      <div class="highlight-card"><span>🇰🇪</span><div><strong>Proudly Kenyan</strong><small>Built from Nairobi</small></div></div>
+    </section>
+
+    <section class="featured-store-section">
+      <div class="section-heading-row"><div><span class="eyebrow">SHOP THE LATEST</span><h2>New &amp; Notable</h2><p>Fresh music, physical releases and selected merch — all in one place.</p></div><button class="text-link-btn" data-nav="music">View music →</button></div>
+      <div class="product-grid compact-grid" id="featuredGrid"></div>
+    </section>
+
+    <section class="featured-store-section alternate-section">
+      <div class="section-heading-row"><div><span class="eyebrow">BEST OF MANLUNG</span><h2>Fan Favourites</h2><p>Popular picks from the Manlung catalogue.</p></div><button class="text-link-btn" data-nav="merch">Shop merch →</button></div>
+      <div class="product-grid compact-grid" id="bestsellerGrid"></div>
+    </section>
+
+    <div class="about-section">
+      <div class="section-title">About Adict Manlung</div>
+      <div class="about-panel">
+        <div class="about-grid">
+          <div class="about-text">
+            <p>Adict Manlung is a Kenyan hip-hop artist known for raw, unfiltered storytelling — turning everyday struggle, street life, and ambition into music that hits close to home. Independent from day one, every release is self-driven: written, recorded, and put out without a label behind it.</p>
+            <p>The sound draws from classic boom-bap roots fused with a modern Nairobi edge, built for listeners who want lyrics with substance over throwaway hooks. Every single, CD, and piece of merch sold here goes straight back into the next project.</p>
+            <p>Beyond the music, Adict Manlung has stepped into fashion — featured at Flock Show and collaborating with Tashlie Brands, bringing the same street-rooted identity to style as to sound.</p>
+
+            <div class="profile-info-grid">
+              <div class="profile-info-item">
+                <div class="profile-info-label">📍 Based in</div>
+                <div class="profile-info-value">Nairobi, Kenya · Eldoret, Kenya</div>
+              </div>
+              <div class="profile-info-item">
+                <div class="profile-info-label">🏷️ Category</div>
+                <div class="profile-info-value">Creator · Kenyan Rapper · Entrepreneur · Cybersecurity Engineer</div>
+              </div>
+              <div class="profile-info-item">
+                <div class="profile-info-label">🎯 Audience</div>
+                <div class="profile-info-value">Kenya · East Africa · Diaspora</div>
+              </div>
+            </div>
+          </div>
+          <div class="stats-row">
+            <div class="stat-item"><div class="stat-icon-circle">💽</div><div class="stat-number">6+</div><div class="stat-label">Singles Released</div></div>
+            <div class="stat-item"><div class="stat-icon-circle">💯</div><div class="stat-number">100%</div><div class="stat-label">Independent</div></div>
+            <div class="stat-item"><div class="stat-icon-circle">🇰🇪</div><div class="stat-number">Kenya</div><div class="stat-label">Based &amp; Proud</div></div>
+            <div class="stat-item"><div class="stat-icon-circle">🧥</div><div class="stat-number">Flock</div><div class="stat-label">ft. Tashlie Brands</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="follow-card">
+        <div class="follow-card-heading">Follow Adict Manlung</div>
+        <div class="social-row">
+          <a href="https://open.spotify.com/artist/5lrdgGBgb8of6nOr5HF9kw" class="social-pill" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.784c.361.181.54.78.241 1.256zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/></svg> Spotify</a>
+          <a href="https://www.youtube.com/@iamadictmanlung" class="social-pill" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg> YouTube</a>
+          <a href="https://www.instagram.com/iamadictmanlung/" class="social-pill" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zm0 10.162a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/></svg> Instagram</a>
+          <a href="https://www.tiktok.com/@iamadictmanlung" class="social-pill" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg> TikTok</a>
+          <a href="https://web.facebook.com/iamadictmanlung1" class="social-pill" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg> Facebook</a>
+        </div>
+      </div>
+<div class="blog-section">
+      <div class="section-title">📝 From the Blog</div>
+      <article class="blog-card">
+        <div class="blog-meta">FASHION &amp; MUSIC · ADICT MANLUNG</div>
+        <h3 class="blog-title">Beyond the Mic: Adict Manlung's Move Into Streetwear</h3>
+        <p class="blog-excerpt">
+          <strong>Manlung Shop</strong> is a multi-platform digital brand founded by <strong>Adict Manlung</strong>, combining music, official merchandise, technology services, and cybersecurity resources under one trusted network. It is built to empower audiences with creative products, practical digital solutions, and a strong commitment to safe, ethical, and responsible technology use.
+        </p>
+        <p class="blog-excerpt">
+          Adict Manlung has never just been about the music. Alongside building a catalog of raw, street-rooted hip-hop, he's been quietly building a presence in Kenyan fashion — and it's starting to show.
+        </p>
+        <p class="blog-excerpt">
+          His own clothing line, <strong>12 Flock</strong>, carries the same identity as his music: unfiltered, street-first, built for people who wear their story rather than hide it. It's not a side project bolted onto the brand — it's an extension of the same worldview that shows up in tracks like "Black Africa" and "Money Bag." The Money Bag Hoodie in the Merch section is the first piece to come out of that world, with more planned as the line grows.
+        </p>
+        <p class="blog-excerpt">
+          On the footwear side, Adict Manlung has partnered with <strong>Tashlie</strong> on a shoe collection that leans into the same street-luxury lane — pieces designed to move between a studio session and a night out without missing a beat. The collaboration was previewed at Flock Show, where the collection got its first real audience reaction, and it's part of why "Certified Drip Influencer" isn't just a tagline on this site — it's earned.
+        </p>
+        <p class="blog-excerpt">
+          Expect both the 12 Flock line and the Tashlie shoe collection to expand alongside new music drops — this shop will carry each piece as it releases, so keep an eye on Merchandise for what's next.
+        </p>
+      </article>
+    </div>
+
+    <div class="sponsored-section">
+      <div class="section-title">🌟 Sponsored &amp; Featured</div>
+      <div class="sponsored-grid" id="sponsoredGrid"></div>
+    </div>
+
+    <div class="testimonials-section">
+      <div class="section-title">What People Are Saying</div>
+      <div class="testimonials-grid" id="testimonialsGrid"></div>
+    </div>
+
+    <div class="email-capture">
+      <h3>Join the Movement</h3>
+      <p>Get early access to new drops, tour dates, and exclusive merch.</p>
+      <div class="email-input-group">
+        <input type="email" id="captureEmail" placeholder="Enter your email">
+        <button id="subscribeEmailBtn">Subscribe</button>
+      </div>
+    </div>
+
+    <div class="trust-badges">
+      <div class="trust-item">🔒 Secure Paystack Checkout</div>
+      <div class="trust-item">📦 DHL Shipping Available</div>
+      <div class="trust-item">🚚 Fast Dispatch</div>
+      <div class="trust-item">🇰🇪 Proudly Kenyan</div>
+    </div>
+
+  </section>
+
+  <!-- MUSIC / DIGITAL -->
+  <section id="music-section">
+    <div class="section-title">Digital Singles</div>
+    <div class="shop-toolbar">
+      <div class="search-bar-wrap"><input type="text" id="musicSearch" class="search-bar" placeholder="🔍 Search songs..."></div>
+      <select class="shop-sort" id="musicSort" aria-label="Sort music"><option value="featured">Featured</option><option value="newest">Newest</option><option value="price-low">Price: low to high</option><option value="price-high">Price: high to low</option></select>
+    </div>
+    <div class="product-grid" id="digitalGrid"></div>
+  </section>
+
+  <!-- CDs -->
+  <section id="cds-section">
+    <div class="section-heading-row"><div><span class="eyebrow">PHYSICAL RELEASES</span><div class="section-title">Physical CDs</div><p>Collect the music, artwork and full project experience.</p></div><select class="shop-sort" id="cdSort" aria-label="Sort CDs"><option value="featured">Featured</option><option value="price-low">Price: low to high</option><option value="price-high">Price: high to low</option></select></div>
+    <div class="product-grid" id="cdGrid"></div>
+  </section>
+
+  <!-- MERCH -->
+  <section id="merch-section">
+    <div class="merch-hero">
+      <h1>Official Merch</h1>
+      <p>Wear the movement. Limited drops, made for the fans who ride from day one.</p>
+    </div>
+    <div class="shop-toolbar">
+      <div class="search-bar-wrap"><input type="text" id="merchSearch" class="search-bar" placeholder="🔍 Search merch..."></div>
+      <select class="shop-sort" id="merchSort" aria-label="Sort merchandise"><option value="featured">Featured</option><option value="price-low">Price: low to high</option><option value="price-high">Price: high to low</option></select>
+    </div>
+    <div class="merch-category-tabs">
+      <button class="merch-cat-tab active" data-cat="all">All</button>
+      <button class="merch-cat-tab" data-cat="men">Men's</button>
+      <button class="merch-cat-tab" data-cat="women">Women's</button>
+      <button class="merch-cat-tab" data-cat="jewelry">Jewelry</button>
+    </div>
+    <div class="merch-grid" id="merchGrid"></div>
+  </section>
+
+  <!-- TOUR -->
+  <section id="tour-section">
+    <div class="tour-bg-slideshow">
+      <div class="bg-slide active" style="background-image:url('https://placehold.co/1200x800/0b2a6b/ffffff?text=Tour')"></div>
+      <div class="bg-slide" style="background-image:url('https://placehold.co/1200x800/16213e/FFD700?text=Manlung+Live')"></div>
+    </div>
+    <div class="tour-bg-overlay"></div>
+
+    <div class="tour-content container">
+      <div class="tour-hero">
+        <div class="glow-badge">LIVE ON TOUR</div>
+        <h1>Upcoming Shows &amp; Events</h1>
+      </div>
+
+      <div class="rate-card-section" id="rateCardBtn">
+        <div class="rate-card-icon">📋</div>
+        <h3>Booking Rate Card</h3>
+        <p>Want to book Adict Manlung for a show or event? Tap to download rates.</p>
+      </div>
+
+      <div class="bandsintown-widget-wrap">
+        <a class="bit-widget-initializer"
+          data-artist-name="id_15644207"
+          data-display-local-dates="false"
+          data-display-past-dates="false"
+          data-auto-style="false"
+          data-text-color="#16213e"
+          data-link-color="#0a1e52"
+          data-background-color="#ffffff"
+          data-display-limit="4"
+          data-display-start-time="true"
+          data-date-format="ddd, MMM D, YYYY">
+        </a>
+      </div>
+
+      <div class="notify-section">
+        <h3>🔔 Never miss a show</h3>
+        <p>Enter your email and we'll let you know the moment a new show or event is announced here.</p>
+        <div class="email-input-group">
+          <input type="email" id="tourNotifyEmail" placeholder="Enter your email">
+          <button id="tourNotifyBtn">Get Notified</button>
+        </div>
+      </div>
+
+      <div class="show-grid" id="tourShowsGrid">
+      </div>
+
+      <div class="tour-features">
+        <div class="feature-item">
+          <div class="feature-icon">🎟️</div>
+          <h4>Instant Ticket</h4>
+          <p>Generated the moment payment clears</p>
+        </div>
+        <div class="feature-item">
+          <div class="feature-icon">🅿️</div>
+          <h4>Free Parking</h4>
+          <p>On-site parking included</p>
+        </div>
+        <div class="feature-item">
+          <div class="feature-icon">🔒</div>
+          <h4>Secure Payment</h4>
+          <p>Powered by Paystack</p>
+        </div>
+      </div>
+
+      <div class="details-panel" id="detailsForm">
+        <div class="form-row">
+          <input type="text" id="fullName" placeholder="Full Name">
+          <input type="text" id="idNumber" placeholder="ID Number">
+          <input type="text" id="phoneNumber" placeholder="Phone Number">
+        </div>
+        <button class="generate-ticket-btn" id="generateTicketBtn">✨ Generate My Ticket ✨</button>
+        <div class="ticket-output">
+          <canvas id="ticketCanvas"></canvas>
+          <button class="download-single-btn" id="downloadFinalBtn">⬇ Download Ticket</button>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact-section">
+    <div class="section-title">Get In Touch</div>
+    <div class="contact-grid">
+      <div class="contact-card">
+        <h3>Direct Contact</h3>
+        <p class="contact-sub">Business inquiries, bookings, or support — reach out directly.</p>
+        <a href="mailto:adictmanlung@gmail.com" class="contact-row">
+          <span class="contact-icon">📧</span>
+          <span>adictmanlung@gmail.com</span>
+        </a>
+         <a href="tel:+254724356178" class="contact-row">
+           <span class="contact-icon">📞</span>
+           <span>+254 724 356 178</span>
+         </a>
+       </div>
+
+      <div class="contact-card">
+        <h3>Follow Adict Manlung</h3>
+        <p class="contact-sub">New music, behind-the-scenes, and show announcements.</p>
+        <a href="https://open.spotify.com/artist/5lrdgGBgb8of6nOr5HF9kw" class="contact-row" target="_blank" rel="noopener">
+          <span class="contact-icon"><svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.784c.361.181.54.78.241 1.256zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/></svg></span><span>Spotify</span>
+        </a>
+        <a href="https://www.youtube.com/@iamadictmanlung" class="contact-row" target="_blank" rel="noopener">
+          <span class="contact-icon"><svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg></span><span>YouTube</span>
+        </a>
+        <a href="https://www.instagram.com/iamadictmanlung/" class="contact-row" target="_blank" rel="noopener">
+          <span class="contact-icon"><svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zm0 10.162a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/></svg></span><span>Instagram</span>
+        </a>
+        <a href="https://www.tiktok.com/@iamadictmanlung" class="contact-row" target="_blank" rel="noopener">
+          <span class="contact-icon"><svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg></span><span>TikTok</span>
+        </a>
+        <a href="https://web.facebook.com/iamadictmanlung1" class="contact-row" target="_blank" rel="noopener">
+          <span class="contact-icon"><svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></span><span>Facebook</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+    <!-- BLACK BRAND FOOTER -->
+  <footer class="payment-footer site-footer">
+    <div class="footer-container">
+      <div class="footer-brand-block">
+        <div class="footer-brand-lockup"><span class="brand-mark">M</span><span class="brand-copy"><strong>MANLUNG</strong><small>ADICT MANLUNG</small></span></div>
+        <p>Independent music, culture and merchandise from Adict Manlung.</p>
+        <div class="social-icons">
+          <a href="https://open.spotify.com/artist/5lrdgGBgb8of6nOr5HF9kw" target="_blank" rel="noopener" aria-label="Spotify"><i class="fab fa-spotify"></i></a>
+          <a href="https://www.youtube.com/@iamadictmanlung" target="_blank" rel="noopener" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+          <a href="https://www.instagram.com/iamadictmanlung/" target="_blank" rel="noopener" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+          <a href="https://www.tiktok.com/@iamadictmanlung" target="_blank" rel="noopener" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
+          <a href="https://web.facebook.com/iamadictmanlung1" target="_blank" rel="noopener" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+        </div>
+      </div>
+      <div class="footer-column"><h3>Explore</h3><a href="#" data-nav="home">Home</a><a href="#" data-nav="music">Music</a><a href="#" data-nav="merch">Merch</a><a href="#" data-nav="cds">CDs</a><a href="#" data-nav="tour">Tour</a></div>
+      <div class="footer-column"><h3>Help</h3><a href="#" data-policy="shipping">Shipping Info</a><a href="#" data-policy="sizechart">Size Chart</a><a href="#" data-policy="productcare">Product Care</a><a href="#" data-policy="returns">Returns</a><a href="#" data-policy="trackorder">Track My Order</a></div>
+      <div class="footer-column"><h3>Legal</h3><a href="#" data-policy="privacy">Privacy Policy</a><a href="#" data-policy="terms">Terms of Service</a><a href="#" data-policy="giftcard">Gift Card</a><a href="#" data-nav="contact" id="footerContactLink">Contact Us</a></div>
+    </div>
+    <div class="footer-bottom"><span class="footer-copyright">© 2026 Adict Manlung. All rights reserved.</span><span class="footer-location">Kenya · Based &amp; Proud</span></div>
+  </footer>
+
+</div>
+</div>
+
+<!-- CART SIDEBAR -->
+<div class="cart-overlay" id="cartSidebar">
+  <div class="cart-header">
+    <strong>Your Cart</strong>
+    <button class="close-cart" id="closeCartBtn">✕</button>
+  </div>
+  <div class="cart-items" id="cartItemsContainer"></div>
+  <div id="cartFooter" style="display:none;">
+    <div class="shipping-progress" id="shippingProgress"></div>
+    <div class="promo-row"><input id="promoCodeInput" type="text" placeholder="Promo code"><button id="promoApplyBtn" type="button">Apply</button></div>
+    <div class="promo-message" id="promoMessage"></div>
+    <div class="cart-total cart-subtotal"><span>Subtotal</span><span id="cartSubtotalPrice">KSh 0</span></div>
+    <div class="cart-total discount-row" id="cartDiscountRow" style="display:none"><span>Discount</span><span id="cartDiscountPrice">-KSh 0</span></div>
+    <div class="cart-total">
+      <span>Total</span>
+      <span id="cartTotalPrice">KSh 0</span>
+    </div>
+    <button class="checkout-btn" id="checkoutBtn">Checkout</button>
+  </div>
+</div>
+
+<!-- QUICK VIEW -->
+<div class="quick-view-modal" id="quickViewModal" aria-hidden="true">
+  <div class="quick-view-box"><button class="quick-view-close" id="quickViewClose" type="button">✕</button><div id="quickViewContent"></div></div>
+</div>
+
+<!-- MOBILE NAV -->
+<nav class="mobile-bottom-nav" aria-label="Mobile navigation">
+  <button data-nav="home"><span>⌂</span><small>Home</small></button>
+  <button data-nav="music"><span>♫</span><small>Music</small></button>
+  <button data-nav="merch"><span>◈</span><small>Shop</small></button>
+  <button id="mobileWishlistBtn"><span>♡</span><small>Saved</small><b id="wishlistBadge">0</b></button>
+  <button id="mobileCartBtn"><span>🛒</span><small>Cart</small><b id="mobileCartBadge">0</b></button>
+</nav>
+
+<!-- MENU PANEL -->
+<div class="menu-overlay" id="menuOverlay">
+  <div class="menu-header">
+    <strong>Menu</strong>
+    <button class="close-menu" id="closeMenuBtn">✕</button>
+  </div>
+  <div class="menu-body">
+
+    <div class="menu-section">
+      <h4>Sign up to get early access to all drops</h4>
+      <div class="email-input-group menu-email-group">
+        <input type="email" id="menuNewsletterEmail" placeholder="E-mail">
+        <button id="menuNewsletterBtn">Subscribe</button>
+      </div>
+      <p class="menu-fineprint">By signing up, you agree with our <a href="#" data-policy="privacy">privacy policy</a>.</p>
+    </div>
+
+    <div class="menu-section" id="accountSection">
+      <h4>Account</h4>
+      <div id="accountLoggedOut">
+        <p class="menu-fineprint">Login to your account to access your order history and other personalized features.</p>
+        <input type="email" id="accountEmail" placeholder="E-mail">
+        <input type="password" id="accountPassword" placeholder="Password">
+        <button class="menu-primary-btn" id="accountLoginBtn">Login</button>
+        <p class="menu-fineprint"><a href="#" id="accountCreateBtn">Create account</a></p>
+        <div id="accountError" class="menu-error"></div>
+      </div>
+      <div id="accountLoggedIn" style="display:none;">
+        <p class="menu-fineprint">Signed in as <strong id="accountEmailDisplay"></strong></p>
+        <button class="menu-primary-btn" id="accountLogoutBtn">Log Out</button>
+      </div>
+    </div>
+
+    <div class="menu-section">
+      <h4>Shopping From</h4>
+      <input type="text" id="countrySearchInput" placeholder="Search your country...">
+      <div id="countrySearchResults" class="country-search-results"></div>
+    </div>
+
+    <div class="menu-section menu-links">
+      <a href="#" data-policy="shipping">Shipping Info</a>
+      <a href="#" data-policy="sizechart">Size Chart</a>
+      <a href="#" data-policy="productcare">Product Care</a>
+      <a href="#" data-policy="returns">Returns</a>
+      <a href="#" data-policy="privacy">Privacy Policy</a>
+      <a href="#" data-policy="terms">Terms of Service</a>
+      <a href="#" data-nav="contact" id="menuContactLink">Contact Us</a>
+      <a href="#" data-policy="trackorder">Track My Order</a>
+      <a href="#" data-policy="giftcard">Gift Card</a>
+    </div>
+
+  </div>
+</div>
+
+<!-- CHECKOUT MODAL - UPDATED (OTP REMOVED) -->
+<div class="checkout-modal" id="checkoutModal">
+  <div class="checkout-modal-box">
+    <button class="checkout-modal-close" id="checkoutModalClose">✕</button>
+    <div class="checkout-modal-icon">🛍️</div>
+    <h2>Complete Your Order</h2>
+    <p class="checkout-modal-sub">Enter your details to complete your order.</p>
+
+    <div class="checkout-field-group">
+      <label>Email address</label>
+      <input type="email" id="coEmail" placeholder="you@example.com">
+    </div>
+
+    <div id="coShippingFields">
+      <div class="checkout-field-group">
+        <label>Full name</label>
+        <input type="text" id="coName" placeholder="Your full name">
+      </div>
+      <div class="checkout-field-group">
+        <label>Phone number</label>
+        <input type="text" id="coPhone" placeholder="0712345678 or +254712345678">
+      </div>
+      <div class="checkout-field-group">
+        <label>Delivery address</label>
+        <input type="text" id="coAddress" placeholder="Town, street, landmark">
+      </div>
+    </div>
+
+    <div class="checkout-modal-note" id="coGeneralNote"></div>
+
+    <button class="checkout-continue-btn" id="coContinueBtn">Continue to Payment</button>
+    <div class="checkout-security-note">🔒 Your details are only used to process this order</div>
+  </div>
+</div>
+
+<!-- POLICY MODAL -->
+<div class="policy-modal" id="policyModal">
+  <div class="policy-modal-box">
+    <button class="policy-modal-close" id="policyModalClose">✕</button>
+    <h3 id="policyModalTitle"></h3>
+    <div id="policyModalBody"></div>
+  </div>
+</div>
+
+<button id="scrollTopBtn" class="scroll-top-btn" aria-label="Scroll to top" style="display:none;">↑</button>
+
+<div class="toast-msg" id="toastMsg"></div>
+
+<!-- Bandsintown widget -->
+<script src="https://widgetv3.bandsintown.com/main.min.js"></script>
+
+<!-- Paystack -->
+<script src="https://js.paystack.co/v1/inline.js"></script>
+
+<!-- Data -->
+<script src="data/products.js"></script>
+<script src="data/countries.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-database-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-auth-compat.js"></script>
+<script src="js/config.js"></script>
+<script src="js/theme.js"></script>
+<script src="js/data-store.js"></script>
+
+<!-- App scripts -->
+<script src="js/currency.js"></script>
+<script src="js/paystack.js"></script>
+<script src="js/cart.js"></script>
+<script src="js/render.js"></script>
+<script src="js/tour.js"></script>
+<script src="js/menu.js"></script>
+<script src="js/brands-carousel.js"></script>
+<script src="js/app.js"></script>
+<script src="js/enhancements.js"></script>
+
+</body>
+</html>

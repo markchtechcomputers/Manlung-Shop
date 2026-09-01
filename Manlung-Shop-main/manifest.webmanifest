@@ -1,0 +1,9 @@
+{
+  "name": "Manlung Shop",
+  "short_name": "Manlung",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f6f7fb",
+  "theme_color": "#d6a900",
+  "icons": [{"src":"/app-icon-512.png","sizes":"512x512","type":"image/png"}]
+}
